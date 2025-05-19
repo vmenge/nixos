@@ -1,0 +1,134 @@
+return {
+  {
+    "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
+    opts = {
+      highlight = { enable = true, additional_vim_regex_highlighting = { "rust" } },
+      indent = { enable = true },
+      ensure_installed = {
+        "asm",
+        "bash",
+        "c",
+        "c_sharp",
+        "clojure",
+        "cmake",
+        "comment",
+        "cpp",
+        "css",
+        "csv",
+        "dart",
+        "dockerfile",
+        "elixir",
+        "elm",
+        "erlang",
+        "fsharp",
+        "git_config",
+        "git_rebase",
+        "gitattributes",
+        "gitcommit",
+        "gitignore",
+        "gleam",
+        "glsl",
+        "go",
+        "gdscript",
+        "graphql",
+        "html",
+        "hjson",
+        "hlsl",
+        "http",
+        "hocon",
+        "ini",
+        "java",
+        "javascript",
+        "jq",
+        "jsdoc",
+        "json",
+        "json5",
+        "kotlin",
+        "latex",
+        "lua",
+        "luadoc",
+        "luap",
+        "make",
+        "markdown",
+        "markdown_inline",
+        "nix",
+        "ocaml",
+        "ocaml_interface",
+        "python",
+        "prisma",
+        "query",
+        "r",
+        "roc",
+        "regex",
+        "ruby",
+        "rust",
+        "scss",
+        "scala",
+        "sql",
+        "svelte",
+        "swift",
+        "toml",
+        "tsx",
+        "typescript",
+        "vim",
+        "vimdoc",
+        "xml",
+        "yaml",
+        "zig",
+      },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = "<C-space>",
+          node_incremental = "<C-space>",
+          scope_incremental = false,
+          node_decremental = "<bs>",
+        },
+      },
+      filetype_to_parsername = {
+        fs = "fsharp",
+        fsi = "fsharp",
+        fsx = "fsharp",
+        fsscript = "fsharp"
+      },
+    },
+
+    config = function()
+      local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+      parser_config.fsharp = {
+        install_info = {
+          url = "https://github.com/ionide/tree-sitter-fsharp",
+          branch = "main",
+          files = { "src/scanner.c", "src/parser.c" },
+          location = "fsharp",
+        },
+        requires_generate_from_grammar = false,
+        filetype = "fsharp",
+      }
+
+      vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = { "*.fs", "*.fsi", "*.fsx", "*.fsscript" },
+        callback = function()
+          require("nvim-treesitter.highlight").attach(0, "fsharp")
+        end,
+      })
+
+      parser_config.roc = {
+        install_info = {
+          url = "https://github.com/faldor20/tree-sitter-roc",
+          branch = "master",
+          files = { "src/scanner.c", "src/parser.c" },
+          location = ".",
+        },
+        requires_generate_from_grammar = false,
+        filetype = "roc",
+      }
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+  },
+}

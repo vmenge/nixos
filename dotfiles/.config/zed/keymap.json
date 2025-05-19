@@ -1,0 +1,145 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "bindings": {
+      "ctrl-c": "editor::Cancel",
+      "ctrl-k": "menu::SelectPrevious",
+      "ctrl-j": "menu::SelectNext",
+      "ctrl-w": "pane::CloseActiveItem"
+    }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "ctrl-c": "editor::Cancel"
+    }
+  },
+  {
+    "context": "Workspace && not_editing",
+    "bindings": {
+      "space e": "workspace::ToggleLeftDock",
+      "space t": "workspace::ToggleBottomDock"
+    }
+  },
+  {
+    "context": "OutlinePanel && not_editing",
+    "bindings": {
+      "ctrl-c": "menu::Cancel"
+    }
+  },
+  {
+    "context": "Workspace && !FileFinder",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
+    "context": "Editor && !FileFinder",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
+    "context": "vim_mode != insert && not_editing",
+    "bindings": {
+      "space e": "project_panel::ToggleFocus",
+      "space d h": "workspace::ToggleLeftDock",
+      "space d l": "workspace::ToggleRightDock",
+      "space d j": "workspace::ToggleBottomDock"
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "ctrl-c": "editor::Cancel",
+      "space r": "editor::Rename",
+      "space l f": "editor::Format",
+      "space l l": "editor::ToggleInlayHints",
+      "space e": "project_panel::ToggleFocus",
+      "space t": "workspace::ToggleBottomDock",
+      "space k": "editor::Hover",
+      "space w d": "pane::CloseAllItems",
+      "space b d": "pane::CloseActiveItem",
+      "shift-j": "pane::ActivatePreviousItem",
+      "shift-k": "pane::ActivateNextItem",
+      "space w k": "pane::SplitUp",
+      "space w j": "pane::SplitDown",
+      "space w h": "pane::SplitLeft",
+      "space w l": "pane::SplitRight",
+      "space a": "editor::ToggleCodeActions", // zed specific
+      "g r": "editor::FindAllReferences", // zed specific
+      "space f f": "file_finder::Toggle",
+      "space f g": "pane::DeploySearch",
+      "space d": "editor::GoToDiagnostic",
+      "space D": "editor::GoToPreviousDiagnostic",
+      "space g b": "git::Blame",
+      "space f o": "outline::Toggle",
+      "space o": "outline_panel::ToggleFocus",
+      "space d h": "workspace::ToggleLeftDock",
+      "space d l": "workspace::ToggleRightDock",
+      "space d j": "workspace::ToggleBottomDock",
+      "space a a": "agent::ToggleFocus",
+      "space a n": "agent::NewThread"
+    }
+  },
+  {
+    "context": "Editor && editor_agent_diff",
+    "bindings": {
+      "ctrl-y": "agent::Keep",
+      "ctrl-n": "agent::Reject",
+      "ctrl-shift-y": "agent::KeepAll",
+      "ctrl-shift-n": "agent::RejectAll",
+      "shift-ctrl-r": "agent::OpenAgentDiff"
+    }
+  },
+  {
+    "context": "vim_mode == normal && !menu",
+    "bindings": {
+      // "shift-y": ["workspace::SendKeystrokes", "y $"] // use nvim's Y behavior
+    }
+  },
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      // "j k": "vim::NormalBefore" // remap jk in insert mode to escape.
+    }
+  },
+  {
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      // put key-bindings here (in addition to above) if you want them to
+      // work when no editor exists
+      // "space f": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "l": "project_panel::OpenPermanent",
+      "c": "project_panel::Rename",
+      "o": "project_panel::NewFile",
+      "space e": "workspace::ToggleLeftDock",
+      "ctrl-o": "project_panel::NewDirectory",
+      "d d": "project_panel::Delete"
+    }
+  },
+  {
+    "context": "Editor && (showing_code_actions || showing_completions)",
+    "bindings": {
+      "ctrl-k": "editor::ContextMenuPrevious",
+      "ctrl-j": "editor::ContextMenuNext"
+    }
+  }
+]

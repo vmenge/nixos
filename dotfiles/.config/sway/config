@@ -1,0 +1,347 @@
+#######################
+# autoexec on startup
+#######################
+
+# env vars
+exec systemctl --user set-environment XDG_CURRENT_DESKTOP=sway
+exec systemctl --user import-environment DISPLAY \
+                                         SWAYSOCK \
+                                         WAYLAND_DISPLAY \
+                                         XDG_CURRENT_DESKTOP 
+
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY \
+                                                  SWAYSOCK \
+                                                  XDG_CURRENT_DESKTOP=sway \
+                                                  WAYLAND_DISPLAY 
+
+# wallpaper management
+exec swww-daemon 
+# notifications daemon
+exec mako
+exec kanshi
+
+# keyboard
+input * xkb_layout us
+input * xkb_variant alt-intl
+
+#######################
+# config starts here: #
+#######################
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+# This font is widely installed, provides lots of unicode glyphs, right-to-left
+# text rendering and scalability on retina/hidpi displays (thanks to pango).
+font pango: JetBrains Mono 8
+
+# set the mod key to the winkey:
+set $mod Mod4
+
+# Vsync
+output * adaptive_sync off
+bindsym $mod+period exec emote
+
+#######################
+# effects             #
+#######################
+blur enable
+blur_radius 2
+corner_radius 10
+
+#####################
+# workspace layout: #
+#####################
+
+# default i3 tiling mode:
+workspace_layout default
+
+# i3 stacking layout:
+# Each window will be fullscreen and tabbed top to bottom.
+#workspace_layout stacking
+
+# i3 tabbed layout:
+# Each new window will open fullscreen as a tab (left to right)
+#workspace_layout tabbed
+
+##############################
+# extra options for windows: #
+##############################
+
+#border indicator on windows:
+default_border pixel 1
+smart_borders on
+hide_edge_borders none
+
+# Set inner/outer gaps
+gaps inner 8
+gaps outer 2
+
+# show window title bars (not officially supported with i3gaps)
+# default_border normal
+
+# window title alignment
+title_align center
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# switch/iterate between workspaces
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+
+# switch to workspace
+bindsym $mod+1    workspace  1
+bindsym $mod+2    workspace  2
+bindsym $mod+3    workspace  3
+bindsym $mod+4    workspace  4
+bindsym $mod+5    workspace  5
+bindsym $mod+6    workspace  6
+bindsym $mod+7    workspace  7
+bindsym $mod+8    workspace  8
+bindsym $mod+9    workspace  9
+bindsym $mod+0    workspace  0
+
+# move focused container to workspace
+bindsym $mod+Shift+1    move container to workspace  1
+bindsym $mod+Shift+2    move container to workspace  2
+bindsym $mod+Shift+3    move container to workspace  3
+bindsym $mod+Shift+4    move container to workspace  4
+bindsym $mod+Shift+5    move container to workspace  5
+bindsym $mod+Shift+6    move container to workspace  6
+bindsym $mod+Shift+7    move container to workspace  7
+bindsym $mod+Shift+8    move container to workspace  8
+bindsym $mod+Shift+9    move container to workspace  9
+bindsym $mod+Shift+0    move container to workspace  0
+
+# move focused container to workspace with numpad keys
+bindcode $mod+Shift+Mod2+87 	move container to workspace  1
+bindcode $mod+Shift+Mod2+88 	move container to workspace  2
+bindcode $mod+Shift+Mod2+89 	move container to workspace  3
+bindcode $mod+Shift+Mod2+83 	move container to workspace  4
+bindcode $mod+Shift+Mod2+84 	move container to workspace  5
+bindcode $mod+Shift+Mod2+85 	move container to workspace  6
+bindcode $mod+Shift+Mod2+79 	move container to workspace  7
+bindcode $mod+Shift+Mod2+80 	move container to workspace  8
+bindcode $mod+Shift+Mod2+81 	move container to workspace  9
+bindcode $mod+Shift+Mod2+90 	move container to workspace  0
+
+# move focused container to workspace with numpad keys
+bindcode $mod+Shift+87 	 move container to workspace  1
+bindcode $mod+Shift+88 	 move container to workspace  2
+bindcode $mod+Shift+89 	 move container to workspace  3
+bindcode $mod+Shift+83 	 move container to workspace  4
+bindcode $mod+Shift+84 	 move container to workspace  5
+bindcode $mod+Shift+85 	 move container to workspace  6
+bindcode $mod+Shift+79 	 move container to workspace  7
+bindcode $mod+Shift+80 	 move container to workspace  8
+bindcode $mod+Shift+81 	 move container to workspace  9
+bindcode $mod+Shift+90 	 move container to workspace  0
+
+# resize window (you can also use the mouse for that):
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+        # Pressing left will shrink the window's width.
+        # Pressing right will grow the window's width.
+        # Pressing up will shrink the window's height.
+        # Pressing down will grow the window's height.
+        bindsym h resize shrink width   5 px or 5 ppt
+        bindsym j resize grow   height  5 px or 5 ppt
+        bindsym k resize shrink height  5 px or 5 ppt
+        bindsym l resize grow   width   5 px or 5 ppt
+
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+mode Mouse {
+    bindsym a mode default, exec 'wl-kbptr-sway-active-win; swaymsg mode Mouse'
+    bindsym Shift+a mode default, exec 'wl-kbptr; swaymsg mode Mouse'
+
+    # Mouse move
+    bindsym h seat seat0 cursor move -15 0
+    bindsym j seat seat0 cursor move 0 15
+    bindsym k seat seat0 cursor move 0 -15
+    bindsym l seat seat0 cursor move 15 0
+
+    # Left button
+    bindsym s seat seat0 cursor press button1
+    bindsym --release s seat seat0 cursor release button1
+
+    # Middle button
+    bindsym d seat seat0 cursor press button2
+    bindsym --release d seat seat0 cursor release button2
+
+    # Right button
+    bindsym f seat seat0 cursor press button3
+    bindsym --release f seat seat0 cursor release button3
+
+    bindsym Escape mode default
+}
+
+bindsym $mod+m mode Mouse
+
+######################################
+# keybindings for different actions: #
+######################################
+
+# start a terminal
+bindsym $mod+Return exec ghostty
+
+# kill focused window
+bindsym $mod+q kill
+
+# exit-menu
+bindsym $mod+Shift+e exec ~/.config/i3/scripts/powermenu
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# restart sway
+bindsym $mod+Shift+r exec swaymsg reload
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+w split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+g layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# Multimedia Keys
+
+# Brightness
+bindsym XF86MonBrightnessDown exec light -U 10
+bindsym XF86MonBrightnessUp exec light -A 10
+
+# Volume
+bindsym XF86AudioRaiseVolume exec pamixer -i 5
+bindsym XF86AudioLowerVolume exec pamixer -d 5
+bindsym XF86AudioMute exec pamixer -t
+
+# audio control
+bindsym XF86AudioPlay exec playerctl play
+bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# Redirect sound to headphones
+bindsym $mod+p exec /usr/local/bin/switch-audio-port
+
+## App shortcuts
+bindsym $mod+shift+p exec bash -c '$HOME/.scripts/screencap.sh && notify-send "Screenshot saved to ~/.screenshots/"'
+bindsym $mod+alt+p exec bash -c '$HOME/.scripts/screencap.sh clip && notify-send "Screenshot saved to clipboard"'
+
+
+##########################################
+# configuration for workspace behaviour: #
+##########################################
+
+bindsym $mod+Ctrl+Shift+Left  move workspace to output left
+bindsym $mod+Ctrl+Shift+Right move workspace to output right
+bindsym $mod+Ctrl+Shift+Up move workspace to output up
+bindsym $mod+Ctrl+Shift+Down move workspace to output down
+
+bindsym $mod+Ctrl+Shift+h  move workspace to output left
+bindsym $mod+Ctrl+Shift+l move workspace to output right
+bindsym $mod+Ctrl+Shift+k move workspace to output up
+bindsym $mod+Ctrl+Shift+j move workspace to output down
+
+
+######################################
+# color settings for bar and windows #
+######################################
+
+# Define colors variables:
+set $darkbluetrans    #08052be6
+set $darkblue         #08052b
+set $lightblue        #5294e2
+set $urgentred        #e53935
+set $white            #ffffff
+set $black            #010101
+set $purple           #e345ff
+set $darkgrey         #383c4a
+set $grey             #b0b5bd
+set $mediumgrey       #8b8b8b
+set $yellowbrown      #e1b700
+set $orange           #FFA500
+set $opacity          00
+
+# define colors for windows:
+#class                   border        bground       text       indicator       child_border
+client.focused           $white        $black        $white     $white          $white
+client.focused_inactive  $black        $black        $white     $black          $black
+client.unfocused         $darkgrey     $darkgrey     $grey      $darkgrey       $darkgrey
+client.urgent            $urgentred    $urgentred    $white     $yellowbrown    $yellowbrown
+
+############################################
+# bar settings 
+############################################
+
+# bar {
+#     font pango: JetBrains Mono 8
+#     status_command i3blocks -c ~/.config/i3/i3blocks.conf
+#     position bottom
+#     tray_padding 0
+#
+#     # When strip_workspace_numbers is set to yes,
+#     # any workspace that has a name of the form
+#     # “[n][:][NAME]” will display only the name.
+#     strip_workspace_numbers yes
+#     # strip_workspace_name no
+#
+#     colors {
+#         separator           $purple
+#         background          $black
+#         statusline          $white
+#         # class             border      bg          txt       indicator
+#         focused_workspace   $white      $black      $white    
+#         active_workspace    $grey       $black      $grey    
+#         inactive_workspace  $darkgrey   $black      $darkgrey 
+#         urgent_workspace    $urgentred  $urgentred  $white   
+#     }
+# }
+
+bar swaybar_command waybar
+
+bindsym $mod+b bar mode dock
+bindsym $mod+Shift+b bar mode invisible
+
+#strip_workspace_numbers yes
+
+bindsym $mod+d exec fuzzel
+
+input * {
+  tap enabled
+}

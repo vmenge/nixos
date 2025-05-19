@@ -1,0 +1,17 @@
+[Default Applications]
+x-scheme-handler/webcal=google-chrome.desktop
+x-scheme-handler/postman=Postman.desktop
+x-scheme-handler/http=google-chrome.desktop
+x-scheme-handler/https=google-chrome.desktop
+text/html=google-chrome.desktop
+text/plain=nvim.desktop
+x-scheme-handler/mailto=google-chrome.desktop
+application/pdf=org.pwmt.zathura.desktop
+x-scheme-handler/eclipse+command=_usr_lib_dbeaver_.desktop
+video/mp4=vlc.desktop
+video/x-matroska=vlc.desktop
+video/x-msvideo=vlc.desktop
+video/quicktime=vlc.desktop
+video/x-flv=vlc.desktop
+video/webm=vlc.desktop
+video/x-ms-wmv=vlc.desktop
