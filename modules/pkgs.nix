@@ -53,6 +53,8 @@
     zig
     nixd
     nixfmt-rfc-style
+    rustup
+    jdk
 
     # dev services
     gh # GitHub cli
