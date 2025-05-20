@@ -126,6 +126,8 @@
     google-chrome
 
     # images / video / audio
+    vlc
+    mpv
     spotify
     cava # visualizer for alsa
     alsa-utils
