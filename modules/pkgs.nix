@@ -6,6 +6,8 @@
     "flakes"
   ];
 
+  programs.nix-ld.enable = true;
+
   programs.steam.enable = true;
 
   programs.zsh.enable = true;
@@ -52,7 +54,8 @@
     i2c-tools
     stlink-gui
     zig
-    nixd
+    nixd # nix lsp
+    nil # nix lsp
     nixfmt-rfc-style
     rustup
     jdk
@@ -152,6 +155,7 @@
     magic-wormhole # transfer data across computers
     lshw # provide detailed information on the hw cfg of host
     gnupg
+    jq
   ];
 
   fonts.packages = with pkgs; [

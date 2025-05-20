@@ -27,8 +27,8 @@
   },
   "tab_bar": { "show": true },
   "scrollbar": { "show": "auto" },
-  "buffer_font_family": "TX-02",
-  "ui_font_family": "TX-02",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "ui_font_family": "JetBrainsMono Nerd Font",
   "ui_font_size": 14,
   "buffer_font_size": 14,
   "theme": {
@@ -71,9 +71,57 @@
       "formatter": {
         "external": {
           "command": "bash",
-          "arguments": ["-c", "set -o pipefail; dx fmt -f - | rustfmt --edition 2021"]
+          "arguments": [
+            "-c",
+            "set -o pipefail; dx fmt -f - | rustfmt --edition 2021"
+          ]
         }
       }
     }
+  },
+  "auto_install_extensions": {
+    "ansible": true,
+    "astro": true,
+    "basher": true,
+    "blade": true,
+    "catppuccin": true,
+    "csharp": true,
+    "dart": true,
+    "dockerfile": true,
+    "elixir": true,
+    "erlang": true,
+    "fsharp": true,
+    "gleam": true,
+    "graphql": true,
+    "haskell": true,
+    "html": true,
+    "ini": true,
+    "java": true,
+    "just": true,
+    "latex": true,
+    "lua": true,
+    "make": true,
+    "nim": true,
+    "nix": true,
+    "odin": true,
+    "oxocarbon": true,
+    "php": true,
+    "powershell": true,
+    "proto": true,
+    "python-requirements": true,
+    "r": true,
+    "ruby": true,
+    "scala": true,
+    "scheme": true,
+    "scss": true,
+    "sql": true,
+    "svelte": true,
+    "swift": true,
+    "templ": true,
+    "terraform": true,
+    "toml": true,
+    "vue": true,
+    "xml": true,
+    "zig": true
   }
 }
