@@ -18,6 +18,7 @@
     # text editors
     neovim
     vim
+    zed-editor
 
     # dev tools, lsps, fmts, runtimes and compilers
     git

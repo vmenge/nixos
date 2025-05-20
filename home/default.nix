@@ -1,6 +1,10 @@
 { pkgs, config, ... }:
 {
-  imports = [ ./apps.nix ];
+  imports = [
+    ./apps.nix
+    ./services.nix
+  ];
+
   home.username = "vmenge";
   home.homeDirectory = "/home/vmenge";
   home.stateVersion = "25.11";
@@ -54,20 +58,4 @@
     BROWSER = "google-chrome";
   };
 
-  systemd.user.services.wallpaper-randomizer = {
-    Unit.Description = "Random wallpaper rotator";
-    Unit.After = [ "graphical-session.target" ];
-
-    Service = {
-      # run a *login* shell → inherits the same PATH you get in a terminal
-      ExecStart = ''
-        ${pkgs.bashInteractive}/bin/bash -l -c \
-        "${config.home.homeDirectory}/.scripts/wallpaper.sh \
-         ${config.home.homeDirectory}/.wallpaper"
-      '';
-      Restart = "on-failure";
-    };
-
-    Install.WantedBy = [ "default.target" ];
-  };
 }
