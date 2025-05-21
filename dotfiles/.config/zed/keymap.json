@@ -92,7 +92,7 @@
       "space d j": "workspace::ToggleBottomDock",
       "space a a": "agent::ToggleFocus",
       "space a n": "agent::NewThread",
-      "space x x": "editor::GoToDiagnostic",
+      "space x x": "diagnostics::Deploy",
       "space s c": "command_palette::Toggle",
       "space s C": "theme_selector::Toggle"
     }
