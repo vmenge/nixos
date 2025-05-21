@@ -157,6 +157,7 @@
     lshw # provide detailed information on the hw cfg of host
     gnupg
     jq
+    cachix
   ];
 
   fonts.packages = with pkgs; [
