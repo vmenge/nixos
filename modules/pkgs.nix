@@ -164,6 +164,7 @@
     file
     picocom
     parted
+    f2fs-tools
   ];
 
   fonts.packages = with pkgs; [
