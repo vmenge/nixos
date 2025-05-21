@@ -59,6 +59,7 @@
     nil # nix lsp
     nixfmt-rfc-style
     rustup
+    dioxus-cli # dioxus
     jdk
 
     # dev services
