@@ -37,7 +37,7 @@
     lldb # debugger
     dotnetCorePackages.aspnetcore_8_0-bin
     dotnetCorePackages.aspnetcore_9_0-bin
-    dotnetCorePackages.aspnetcore_10_0-bin # latest dotnet
+    dotnetCorePackages.aspnetcore_10_0-bin
     bun # js runtime
     eslint_d # eslint lsp
     prettierd # prettier as a daemon
@@ -63,6 +63,7 @@
     # dev services
     gh # GitHub cli
     awscli2 # AWS cli
+    ssm-session-manager-plugin # AWS session manager
     cloudflared # CloudFlare tunnel daemon, toolkit and dns-over-https client
     doctl # DigitalOcean cli
 

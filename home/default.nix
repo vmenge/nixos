@@ -42,6 +42,7 @@
 
     ".config/starship.toml".source = ../dotfiles/.config/starship.toml;
     ".zshrc".source = ../dotfiles/.zshrc;
+    ".aws/config".source = ../dotfiles/.aws/config;
   };
 
   home.sessionVariables = {
