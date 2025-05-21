@@ -91,7 +91,9 @@
       "space d l": "workspace::ToggleRightDock",
       "space d j": "workspace::ToggleBottomDock",
       "space a a": "agent::ToggleFocus",
-      "space a n": "agent::NewThread"
+      "space a n": "agent::NewThread",
+      "space x x": "editor::GoToDiagnostic",
+      "space s C": "command_palette::Toggle"
     }
   },
   {
@@ -102,6 +104,14 @@
       "ctrl-shift-y": "agent::KeepAll",
       "ctrl-shift-n": "agent::RejectAll",
       "shift-ctrl-r": "agent::OpenAgentDiff"
+    }
+  },
+  {
+    "context": "MessageEditor > Editor",
+    "bindings": {
+      "enter": "editor::Newline",
+      "ctrl-enter": "agent::Chat",
+      "ctrl-w": "workspace::ToggleRightDock"
     }
   },
   {
@@ -119,9 +129,21 @@
   {
     "context": "EmptyPane || SharedScreen",
     "bindings": {
-      // put key-bindings here (in addition to above) if you want them to
-      // work when no editor exists
-      // "space f": "file_finder::Toggle"
+      "space e": "project_panel::ToggleFocus",
+      "space f f": "file_finder::Toggle",
+      "space f g": "pane::DeploySearch",
+      "space d": "editor::GoToDiagnostic",
+      "space D": "editor::GoToPreviousDiagnostic",
+      "space g b": "git::Blame",
+      "space f o": "outline::Toggle",
+      "space o": "outline_panel::ToggleFocus",
+      "space d h": "workspace::ToggleLeftDock",
+      "space d l": "workspace::ToggleRightDock",
+      "space d j": "workspace::ToggleBottomDock",
+      "space a a": "agent::ToggleFocus",
+      "space a n": "agent::NewThread",
+      "space x x": "editor::GoToDiagnostic",
+      "space s C": "command_palette::Toggle"
     }
   },
   {
@@ -132,7 +154,22 @@
       "o": "project_panel::NewFile",
       "space e": "workspace::ToggleLeftDock",
       "ctrl-o": "project_panel::NewDirectory",
-      "d d": "project_panel::Delete"
+      "d d": "project_panel::Delete",
+      "ctrl-w": "workspace::ToggleLeftDock",
+      "space f f": "file_finder::Toggle",
+      "space f g": "pane::DeploySearch",
+      "space d": "editor::GoToDiagnostic",
+      "space D": "editor::GoToPreviousDiagnostic",
+      "space g b": "git::Blame",
+      "space f o": "outline::Toggle",
+      "space o": "outline_panel::ToggleFocus",
+      "space d h": "workspace::ToggleLeftDock",
+      "space d l": "workspace::ToggleRightDock",
+      "space d j": "workspace::ToggleBottomDock",
+      "space a a": "agent::ToggleFocus",
+      "space a n": "agent::NewThread",
+      "space x x": "editor::GoToDiagnostic",
+      "space s C": "command_palette::Toggle"
     }
   },
   {

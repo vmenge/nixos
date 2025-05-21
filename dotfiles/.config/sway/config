@@ -7,16 +7,16 @@ exec systemctl --user set-environment XDG_CURRENT_DESKTOP=sway
 exec systemctl --user import-environment DISPLAY \
                                          SWAYSOCK \
                                          WAYLAND_DISPLAY \
-                                         XDG_CURRENT_DESKTOP 
+                                         XDG_CURRENT_DESKTOP
 
 exec hash dbus-update-activation-environment 2>/dev/null && \
      dbus-update-activation-environment --systemd DISPLAY \
                                                   SWAYSOCK \
                                                   XDG_CURRENT_DESKTOP=sway \
-                                                  WAYLAND_DISPLAY 
+                                                  WAYLAND_DISPLAY
 
 # wallpaper management
-exec swww-daemon 
+exec swww-daemon
 # notifications daemon
 exec mako
 exec kanshi
@@ -48,6 +48,8 @@ bindsym $mod+period exec emote
 blur enable
 blur_radius 2
 corner_radius 10
+default_dim_inactive 0.0
+for_window [all] opacity 1
 
 #####################
 # workspace layout: #
@@ -306,7 +308,7 @@ client.unfocused         $darkgrey     $darkgrey     $grey      $darkgrey       
 client.urgent            $urgentred    $urgentred    $white     $yellowbrown    $yellowbrown
 
 ############################################
-# bar settings 
+# bar settings
 ############################################
 
 # bar {
@@ -326,10 +328,10 @@ client.urgent            $urgentred    $urgentred    $white     $yellowbrown    
 #         background          $black
 #         statusline          $white
 #         # class             border      bg          txt       indicator
-#         focused_workspace   $white      $black      $white    
-#         active_workspace    $grey       $black      $grey    
-#         inactive_workspace  $darkgrey   $black      $darkgrey 
-#         urgent_workspace    $urgentred  $urgentred  $white   
+#         focused_workspace   $white      $black      $white
+#         active_workspace    $grey       $black      $grey
+#         inactive_workspace  $darkgrey   $black      $darkgrey
+#         urgent_workspace    $urgentred  $urgentred  $white
 #     }
 # }
 
