@@ -12,39 +12,26 @@
   outputs =
     { nixpkgs, home-manager, ... }:
     let
-      homeManager = [
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.vmenge = import ./home;
-          home-manager.extraSpecialArgs = { inherit nixpkgs; };
-          home-manager.backupFileExtension = "bak";
-        }
-      ];
+      cfg = system: hostName: nixpkgs.lib.nixosSystem {
+        system = system;
+        modules = [
+          ./hosts/${hostName}
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.vmenge = import ./home;
+            home-manager.extraSpecialArgs = { inherit nixpkgs; };
+            home-manager.backupFileExtension = "bak";
+          }
+        ];
+      };
     in
     {
       nixosConfigurations = {
-        vm-gl502v = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/vm-gl502v
-          ] ++ homeManager;
-        };
-
-        vm-raiderge67hx = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/vm-raiderge67hx
-          ] ++ homeManager;
-        };
-
-        vm-thinkpadx111 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/vm-thinkpadx111
-          ] ++ homeManager;
-        };
+        vm-gl502v = cfg "x86_64-linux" "vm-gl502v";
+        vm-raiderge67hx = cfg "x86_64-linux" "vm-raiderge67hx";
+        vm-thinkpadx111 = cfg "x86_64-linux" "vm-thinkpadx111";
       };
     };
 }
