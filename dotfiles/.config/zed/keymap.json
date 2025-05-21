@@ -64,7 +64,7 @@
     "context": "VimControl && !menu",
     "bindings": {
       "ctrl-c": "editor::Cancel",
-      "space r": "editor::Rename",
+      "g r r": "editor::Rename",
       "space l f": "editor::Format",
       "space l l": "editor::ToggleInlayHints",
       "space e": "project_panel::ToggleFocus",
