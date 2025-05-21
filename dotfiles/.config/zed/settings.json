@@ -33,8 +33,8 @@
   "buffer_font_size": 14,
   "theme": {
     "mode": "dark",
-    "light": "Carbonfox",
-    "dark": "Ayu Dark"
+    "light": "Oxocarbon Light (IBM Carbon)",
+    "dark": "Carbonfox"
   },
   "vim_mode": true,
   "vim": {
@@ -83,6 +83,7 @@
     "ansible": true,
     "astro": true,
     "basher": true,
+    "blackfox": true,
     "blade": true,
     "catppuccin": true,
     "csharp": true,
@@ -94,6 +95,7 @@
     "gleam": true,
     "graphql": true,
     "haskell": true,
+    "helm": true,
     "html": true,
     "ini": true,
     "java": true,
@@ -103,13 +105,16 @@
     "make": true,
     "nim": true,
     "nix": true,
+    "nvim-nightfox": true,
     "odin": true,
+    "one-dark-pro-monokai-darker": true,
     "oxocarbon": true,
     "php": true,
     "powershell": true,
     "proto": true,
     "python-requirements": true,
     "r": true,
+    "roc": true,
     "ruby": true,
     "scala": true,
     "scheme": true,
