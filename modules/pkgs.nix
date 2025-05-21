@@ -162,6 +162,7 @@
     jq
     cachix
     file
+    picocom
   ];
 
   fonts.packages = with pkgs; [
