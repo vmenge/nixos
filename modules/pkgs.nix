@@ -61,6 +61,7 @@
     rustup
     dioxus-cli # dioxus
     jdk
+    claude-code
 
     # dev services
     gh # GitHub cli
