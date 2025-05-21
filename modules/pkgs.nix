@@ -163,6 +163,7 @@
     cachix
     file
     picocom
+    parted
   ];
 
   fonts.packages = with pkgs; [
