@@ -9,6 +9,10 @@ _prompt_pass() {
 
 env_new() {
   local f="${1:-.env}"
+  # If f is a directory, append .env to it
+  if [[ -d "$f" ]]; then
+    f="${f}/.env"
+  fi
   local p="$(_prompt_pass)" || return
   local t=$(mktemp)
   : >"$t"
@@ -19,6 +23,10 @@ env_new() {
 
 env_edit() {                           # env_edit [file] (default .env)
   local f="${1:-.env}" t=$(mktemp) p
+  # If f is a directory, append .env to it
+  if [[ -d "$f" ]]; then
+    f="${f}/.env"
+  fi
   if [[ -f $f ]]; then                 # existing file → decrypt first
     p="$(_prompt_pass)" || { rm -f "$t"; return; }
     printf '%s' "$p" | gpg --quiet --batch --yes --pinentry-mode loopback \
@@ -38,6 +46,10 @@ env_edit() {                           # env_edit [file] (default .env)
 
 env_load() {
   local f="${1:-.env}"
+  # If f is a directory, append .env to it
+  if [[ -d "$f" ]]; then
+    f="${f}/.env"
+  fi
   local p="$(_prompt_pass)" || return
   local t=$(mktemp)
   printf '%s' "$p" | gpg --quiet --batch --yes --pinentry-mode loopback \
