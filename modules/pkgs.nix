@@ -28,6 +28,7 @@
     openssh
     just # command runner
     tldr
+    gcc
     gnumake
     cmake
     dasm # assembler for 6502
