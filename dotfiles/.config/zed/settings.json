@@ -33,8 +33,8 @@
   "buffer_font_size": 14,
   "theme": {
     "mode": "dark",
-    "light": "Monospace dark",
-    "dark": "Monospace dark"
+    "light": "Monokai Vibrant Amped",
+    "dark": "Monokai Vibrant Amped"
   },
   "icon_theme": {
     "mode": "dark",
@@ -143,9 +143,11 @@
     "java": true,
     "just": true,
     "kanagawa-themes": true,
+    "ktrz-monokai": true,
     "latex": true,
     "lua": true,
     "make": true,
+    "monokai-vibrant-amped": true,
     "monospace-icon-theme": true,
     "monospace-theme": true,
     "nim": true,
@@ -170,6 +172,7 @@
     "templ": true,
     "terraform": true,
     "toml": true,
+    "vscode-monokai-charcoal": true,
     "vue": true,
     "xml": true,
     "zig": true
