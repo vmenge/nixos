@@ -64,7 +64,7 @@
     "context": "VimControl && !menu",
     "bindings": {
       "ctrl-c": "editor::Cancel",
-      "g r r": "editor::Rename",
+      "g r n": "editor::Rename",
       "space l f": "editor::Format",
       "space l l": "editor::ToggleInlayHints",
       "space e": "project_panel::ToggleFocus",
@@ -78,8 +78,8 @@
       "space w j": "pane::SplitDown",
       "space w h": "pane::SplitLeft",
       "space w l": "pane::SplitRight",
-      "space a": "editor::ToggleCodeActions", // zed specific
-      "g r": "editor::FindAllReferences", // zed specific
+      "space l a": "editor::ToggleCodeActions", // zed specific
+      "g r r": "editor::FindAllReferences", // zed specific
       "space f f": "file_finder::Toggle",
       "space f g": "pane::DeploySearch",
       "space d": "editor::GoToDiagnostic",
