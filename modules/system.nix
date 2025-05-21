@@ -39,6 +39,7 @@
       "wheel"
     ];
   };
+  nix.settings.trusted-users = [ "root" "vmenge" ];
 
   security.polkit.enable = true;
 
