@@ -161,6 +161,7 @@
     gnupg
     jq
     cachix
+    file
   ];
 
   fonts.packages = with pkgs; [
