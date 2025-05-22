@@ -19,7 +19,7 @@ exec hash dbus-update-activation-environment 2>/dev/null && \
 exec swww-daemon
 # notifications daemon
 exec mako
-exec_always killall kanshi && kanshi
+exec_always killall kanshi; kanshi 
 
 # keyboard
 input * xkb_layout us

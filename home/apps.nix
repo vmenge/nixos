@@ -21,7 +21,7 @@
     lock = {
       type = "Application";
       name = "Lock Screen";
-      icon = "system-lock-screen"; 
+      icon = "system-lock-screen";
       exec = "${pkgs.bash}/bin/bash -l -c \"${config.home.homeDirectory}/.scripts/lock.sh\"";
       terminal = false;
       categories = [ "Utility" ];
@@ -30,10 +30,19 @@
     suspend = {
       type = "Application";
       name = "Suspend";
-      icon = "system-suspend"; 
+      icon = "system-suspend";
       exec = "${pkgs.bash}/bin/bash -l -c \"${config.home.homeDirectory}/.scripts/suspend.sh\"";
       terminal = false;
       categories = [ "System" ];
+    };
+  };
+
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "text/html" = "google-chrome.desktop";
+      "x-scheme-handler/http" = "google-chrome.desktop";
+      "x-scheme-handler/https" = "google-chrome.desktop";
     };
   };
 }

@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   imports = [
     ./apps.nix
@@ -50,6 +50,7 @@
     VISUAL = "nvim";
     XDG_CURRENT_DESKTOP = "sway";
     XDG_SESSION_TYPE = "wayland";
+    XDG_CONFIG_HOME = "${config.home.homeDirectory}/.config/";
     ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     MOZ_ENABLE_WAYLAND = "1";
     GDK_BACKEND = "wayland";

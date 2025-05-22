@@ -59,6 +59,7 @@
     nil # nix lsp
     nixfmt-rfc-style
     rustup
+    bacon # rust test watcher 
     dioxus-cli # dioxus
     jdk
     claude-code
@@ -106,6 +107,7 @@
     zathura # pdf viewer
     wl-clipboard # clipboard for wayland
     wdisplays # configure displays
+    xdg-utils
 
     # gaming
     game-devices-udev-rules # udev rules to make supported controlles available
