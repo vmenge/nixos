@@ -22,17 +22,4 @@
   };
 
   security.pam.services.swaylock = { };
-
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = ''
-          ${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd \
-          "bash -lc \"source /etc/profiles/per-user/\$USER/etc/profile.d/hm-session-vars.sh; exec sway --unsupported-gpu\""
-        '';
-        user = "greeter";
-      };
-    };
-  };
 }

@@ -31,6 +31,7 @@
 
   users.users.vmenge = {
     isNormalUser = true;
+    # linger = true;
     extraGroups = [
       "networkmanager"
       "audio"
@@ -39,7 +40,14 @@
       "wheel"
     ];
   };
-  nix.settings.trusted-users = [ "root" "vmenge" ];
+  nix.settings.trusted-users = [
+    "root"
+    "vmenge"
+  ];
+
+  services.logind.lidSwitch = "suspend";
+  services.logind.lidSwitchDocked = "ignore";
+  services.logind.killUserProcesses = false;
 
   security.polkit.enable = true;
 

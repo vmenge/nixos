@@ -4,7 +4,7 @@
 {
   systemd.user.services.wallpaper-randomizer = {
     Unit.Description = "Random wallpaper rotator";
-    Unit.After = [ "graphical-session.target" ];
+    Unit.After = [ "kanshi.target" ];
 
     Service.ExecStart = ''
       ${pkgs.bashInteractive}/bin/bash -l -c \

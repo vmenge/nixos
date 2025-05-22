@@ -40,3 +40,10 @@ fi
 avahi() {
   avahi-resolve -4 --name $1 | awk '{print $2}'
 }
+
+##########################################
+# auto start sway on tty login          #
+##########################################
+if [ "$(tty)" = "/dev/tty1" ]; then
+  exec sway --unsupported-gpu
+fi
