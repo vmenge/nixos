@@ -1,3 +1,4 @@
+source /etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh
 source $HOME/.scripts/tfh.sh
 source $HOME/.scripts/safe_env.sh
 source $HOME/.scripts/zed.sh
