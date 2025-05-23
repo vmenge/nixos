@@ -31,11 +31,15 @@
     gcc
     gnumake
     cmake
+    clang
+    clang-tools
     dasm # assembler for 6502
     bear # gen compilation db for clang tooling
     postman # http API dev env
     atac # postman-like TUI
     lldb # debugger
+    gdb
+    valgrind
     dotnetCorePackages.aspnetcore_8_0-bin
     dotnetCorePackages.aspnetcore_9_0-bin
     dotnetCorePackages.aspnetcore_10_0-bin
