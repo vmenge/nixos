@@ -22,7 +22,7 @@
       type = "Application";
       name = "Lock Screen";
       icon = "system-lock-screen";
-      exec = "${pkgs.bash}/bin/bash -l -c \"${config.home.homeDirectory}/.scripts/lock.sh\"";
+      exec = "${config.home.homeDirectory}/.scripts/lock.sh";
       terminal = false;
       categories = [ "Utility" ];
     };
@@ -31,7 +31,7 @@
       type = "Application";
       name = "Suspend";
       icon = "system-suspend";
-      exec = "${pkgs.bash}/bin/bash -l -c \"${config.home.homeDirectory}/.scripts/suspend.sh\"";
+      exec = "${config.home.homeDirectory}/.scripts/suspend.sh";
       terminal = false;
       categories = [ "System" ];
     };
