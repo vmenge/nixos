@@ -1,14 +1,32 @@
 #!/usr/bin/env bash
 swaylock \
   --screenshots \
+  --clock \
   --indicator \
   --indicator-radius 100 \
-  --indicator-thickness 10 \
-  --effect-pixelate 25 \
-  --ring-color 000000 \
+  --indicator-thickness 5 \
+  --ring-color 000000FF \
   --key-hl-color FFFFFF \
   --line-color 00000000 \
-  --inside-color 00000000 \
+  --line-clear-color 00000000 \
+  --line-wrong-color 00000000 \
+  --line-caps-lock-color 00000000 \
+  --line-ver-color 00000000 \
+  --inside-color 000000BB \
+  --inside-clear-color 000000BB \
+  --inside-ver-color 000000BB \
+  --inside-wrong-color 000000BB \
+  --inside-caps-lock-color 00000000 \
   --separator-color 00000000 \
+  --ring-color 00000000 \
+  --ring-clear-color 00000000 \
+  --ring-caps-lock-color 00000000 \
+  --ring-wrong-color 00000000 \
+  --ring-ver-color 00000000 \
+  --text-color FFFFFFFF \
+  --text-clear-color FFFFFFFF \
+  --text-caps-lock-color FFFFFFFF \
+  --text-wrong-color FFFFFFFF \
+  --text-ver-color FFFFFFFF \
   --grace 0 \
   --fade-in 0.1
