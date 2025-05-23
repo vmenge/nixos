@@ -168,6 +168,7 @@
     picocom
     parted
     f2fs-tools
+    usbutils
   ];
 
   fonts.packages = with pkgs; [
