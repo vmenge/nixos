@@ -63,6 +63,7 @@
     dioxus-cli # dioxus
     jdk
     claude-code
+    probe-rs
 
     # dev services
     gh # GitHub cli
