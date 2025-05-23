@@ -18,7 +18,7 @@
     modesetting.enable = true;
     powerManagement.enable = false;
     powerManagement.finegrained = false;
-    open = true;
+    open = false;
 
     nvidiaSettings = true;
   };
@@ -32,5 +32,6 @@
 
   environment.systemPackages = with pkgs; [
     mcontrolcenter # tool to change the settings of msi laptops
+    egl-wayland
   ];
 }
