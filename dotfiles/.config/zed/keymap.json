@@ -151,6 +151,8 @@
   {
     "context": "ProjectPanel && not_editing",
     "bindings": {
+      "k": "editor::ContextMenuPrevious",
+      "j": "editor::ContextMenuNext",
       "l": "project_panel::OpenPermanent",
       "c": "project_panel::Rename",
       "o": "project_panel::NewFile",
