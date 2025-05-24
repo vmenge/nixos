@@ -323,18 +323,15 @@ return {
     opts = {},
   },
   {
-    "scottmckendry/cyberdream.nvim",
-    lazy = false,
-    priority = 1000,
+  	"yorik1984/newpaper.nvim",
+  	priority = 1000,
+  	config = function()
+      -- vim.cmd.colorscheme("newpaper")
+    end,
+  	opts = {
+  		style = "dark",
+  	},
   },
-  -- {
-  -- 	"yorik1984/newpaper.nvim",
-  -- 	priority = 1000,
-  -- 	-- config = true,
-  -- 	opts = {
-  -- 		style = "dark",
-  -- 	},
-  -- },
   {
     "sho-87/kanagawa-paper.nvim",
     lazy = false,

@@ -14,39 +14,39 @@ in
   home.stateVersion = "25.11";
 
   home.file = {
-    ".config/nvim".source = sl .config/nvim;
+    ".config/nvim".source = sl ".config/nvim";
     ".config/nvim".recursive = true;
 
-    ".config/ghostty".source = sl .config/ghostty;
+    ".config/ghostty".source = sl ".config/ghostty";
     ".config/ghostty".recursive = true;
 
-    ".config/sway".source = sl .config/sway;
+    ".config/sway".source = sl ".config/sway";
     ".config/sway".recursive = true;
 
-    ".config/waybar".source = sl .config/waybar;
+    ".config/waybar".source = sl ".config/waybar";
     ".config/waybar".recursive = true;
 
-    ".config/fuzzel".source = sl .config/fuzzel;
+    ".config/fuzzel".source = sl ".config/fuzzel";
     ".config/fuzzel".recursive = true;
 
-    ".config/i3".source = sl .config/i3;
+    ".config/i3".source = sl ".config/i3";
     ".config/i3".recursive = true;
 
-    ".config/mako".source = sl .config/mako;
+    ".config/mako".source = sl ".config/mako";
     ".config/mako".recursive = true;
 
-    ".config/kanshi".source = sl .config/kanshi;
+    ".config/kanshi".source = sl ".config/kanshi";
     ".config/kanshi".recursive = true;
 
-    ".config/zed".source = sl .config/zed;
+    ".config/zed".source = sl ".config/zed";
     ".config/zed".recursive = true;
 
-    ".scripts".source = sl .scripts;
+    ".scripts".source = sl ".scripts";
     ".scripts".recursive = true;
 
-    ".config/starship.toml".source = sl .config/starship.toml;
-    ".zshrc".source = sl .zshrc;
-    ".aws/config".source = sl .aws/config;
+    ".config/starship.toml".source = sl ".config/starship.toml";
+    ".zshrc".source = sl ".zshrc";
+    ".aws/config".source = sl ".aws/config";
   };
 
   home.sessionVariables = {
