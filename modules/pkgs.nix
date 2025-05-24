@@ -69,6 +69,7 @@
     claude-code
     opencode
     probe-rs
+    man-pages
 
     # dev services
     gh # GitHub cli
