@@ -1,8 +1,8 @@
 return {
-  setup = function(opts)
-    vim.lsp.enable("nixd")
-    vim.lsp.config('nixd', {
-      capabilities = opts.capabilities
-    })
-  end
+    setup = function(opts)
+        vim.lsp.enable("nil_ls")
+        vim.lsp.config('nil_ls', {
+            capabilities = opts.capabilities
+        })
+    end
 }

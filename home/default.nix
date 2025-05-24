@@ -1,4 +1,8 @@
 { config, ... }:
+let
+  p = path: /. + "${config.home.homeDirectory}/nixos/dotfiles/${path}";
+  sl = path: config.lib.file.mkOutOfStoreSymlink (p path);
+in
 {
   imports = [
     ./apps.nix
@@ -10,39 +14,39 @@
   home.stateVersion = "25.11";
 
   home.file = {
-    ".config/nvim".source = ../dotfiles/.config/nvim;
+    ".config/nvim".source = sl .config/nvim;
     ".config/nvim".recursive = true;
 
-    ".config/ghostty".source = ../dotfiles/.config/ghostty;
+    ".config/ghostty".source = sl .config/ghostty;
     ".config/ghostty".recursive = true;
 
-    ".config/sway".source = ../dotfiles/.config/sway;
+    ".config/sway".source = sl .config/sway;
     ".config/sway".recursive = true;
 
-    ".config/waybar".source = ../dotfiles/.config/waybar;
+    ".config/waybar".source = sl .config/waybar;
     ".config/waybar".recursive = true;
 
-    ".config/fuzzel".source = ../dotfiles/.config/fuzzel;
+    ".config/fuzzel".source = sl .config/fuzzel;
     ".config/fuzzel".recursive = true;
 
-    ".config/i3".source = ../dotfiles/.config/i3;
+    ".config/i3".source = sl .config/i3;
     ".config/i3".recursive = true;
 
-    ".config/mako".source = ../dotfiles/.config/mako;
+    ".config/mako".source = sl .config/mako;
     ".config/mako".recursive = true;
 
-    ".config/kanshi".source = ../dotfiles/.config/kanshi;
+    ".config/kanshi".source = sl .config/kanshi;
     ".config/kanshi".recursive = true;
 
-    ".config/zed".source = ../dotfiles/.config/zed;
+    ".config/zed".source = sl .config/zed;
     ".config/zed".recursive = true;
 
-    ".scripts".source = ../dotfiles/.scripts;
+    ".scripts".source = sl .scripts;
     ".scripts".recursive = true;
 
-    ".config/starship.toml".source = ../dotfiles/.config/starship.toml;
-    ".zshrc".source = ../dotfiles/.zshrc;
-    ".aws/config".source = ../dotfiles/.aws/config;
+    ".config/starship.toml".source = sl .config/starship.toml;
+    ".zshrc".source = sl .zshrc;
+    ".aws/config".source = sl .aws/config;
   };
 
   home.sessionVariables = {

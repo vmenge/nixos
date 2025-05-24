@@ -67,6 +67,7 @@
     dioxus-cli # dioxus
     jdk
     claude-code
+    opencode
     probe-rs
 
     # dev services
