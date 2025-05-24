@@ -35,6 +35,15 @@
       terminal = false;
       categories = [ "System" ];
     };
+
+    shutdown = {
+      type = "Application";
+      name = "Shutdown";
+      icon = "system-suspend";
+      exec = "shutdown now";
+      terminal = false;
+      categories = [ "System" ];
+    };
   };
 
   xdg.mimeApps = {
