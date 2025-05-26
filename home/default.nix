@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 let
   p = path: /. + "${config.home.homeDirectory}/nixos/dotfiles/${path}";
   sl = path: config.lib.file.mkOutOfStoreSymlink (p path);
@@ -52,6 +52,7 @@ in
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
+    TERMINAL = "ghostty";
     XDG_CURRENT_DESKTOP = "sway";
     XDG_SESSION_TYPE = "wayland";
     XDG_CONFIG_HOME = "${config.home.homeDirectory}/.config/";
@@ -64,4 +65,11 @@ in
     BROWSER = "google-chrome";
   };
 
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
+    };
+  };
 }

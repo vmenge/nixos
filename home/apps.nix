@@ -21,7 +21,7 @@
     lock = {
       type = "Application";
       name = "Lock Screen";
-      icon = "system-lock-screen";
+      icon = "lock";
       exec = "${config.home.homeDirectory}/.scripts/lock.sh";
       terminal = false;
       categories = [ "Utility" ];
@@ -30,7 +30,7 @@
     suspend = {
       type = "Application";
       name = "Suspend";
-      icon = "system-suspend";
+      icon = "sleep";
       exec = "${config.home.homeDirectory}/.scripts/suspend.sh";
       terminal = false;
       categories = [ "System" ];
@@ -39,8 +39,17 @@
     shutdown = {
       type = "Application";
       name = "Shutdown";
-      icon = "system-suspend";
+      icon = "system-shutdown";
       exec = "shutdown now";
+      terminal = false;
+      categories = [ "System" ];
+    };
+
+    reboot = {
+      type = "Application";
+      name = "Reboot";
+      icon = "refresh";
+      exec = "reboot";
       terminal = false;
       categories = [ "System" ];
     };
@@ -53,7 +62,9 @@
       "x-scheme-handler/http" = "google-chrome.desktop";
       "x-scheme-handler/https" = "google-chrome.desktop";
       "application/pdf" = "org.pwmt.zathura.desktop";
-      "inode/directory" = "thunar.desktop";
+      "inode/directory" = "dolphin.desktop";
+      "TerminalEmulator" = "com.mitchellh.ghostty.desktop";
+      "x-scheme-handler/terminal" = "com.mitchellh.ghostty.desktop";
     };
   };
 }

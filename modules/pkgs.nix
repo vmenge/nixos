@@ -63,7 +63,7 @@
     nil # nix lsp
     nixfmt-rfc-style
     rustup
-    bacon # rust test watcher 
+    bacon # rust test watcher
     dioxus-cli # dioxus
     jdk
     claude-code
@@ -116,7 +116,12 @@
     wl-clipboard # clipboard for wayland
     wdisplays # configure displays
     xdg-utils
-    xfce.thunar
+    kdePackages.dolphin
+    adwaita-icon-theme
+    adwaita-icon-theme-legacy
+    hicolor-icon-theme
+    kdePackages.breeze-icons
+    dconf
 
     # gaming
     game-devices-udev-rules # udev rules to make supported controlles available
