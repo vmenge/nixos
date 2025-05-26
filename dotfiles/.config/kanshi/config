@@ -18,6 +18,6 @@ profile MunichTfhNotebook {
 }
 
 profile MunichTfhNotebook2 {
-  output "Samsung Display Corp. 0x4193 Unknown"  mode 2880x1800@90Hz      position 2028,1440
-  output "Dell Inc. DELL U2723QE 4VYDBH3"        mode 3840x2160@59.997Hz  position 1440,0
+  output "Samsung Display Corp. 0x4193 Unknown"  mode 2880x1800@90Hz      position 475,1440
+  output "Dell Inc. DELL U2723QE 4VYDBH3"        mode 3840x2160@59.997Hz  position 0,0
 }
