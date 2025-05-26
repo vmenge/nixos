@@ -12,8 +12,9 @@
     wlr.enable = true;
     config.sway = {
       default = [
-        "wlr"
+        "kde"
         "gtk"
+        "wlr"
       ];
     };
     extraPortals = with pkgs; [
