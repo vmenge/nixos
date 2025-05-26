@@ -116,6 +116,7 @@
     wl-clipboard # clipboard for wayland
     wdisplays # configure displays
     xdg-utils
+    xfce.thunar
 
     # gaming
     game-devices-udev-rules # udev rules to make supported controlles available
