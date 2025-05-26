@@ -34,4 +34,9 @@
     mcontrolcenter # tool to change the settings of msi laptops
     egl-wayland
   ];
+
+  fileSystems."/mnt/ntfs" = {
+    device = "/dev/disk/by-uuid/2834BB6434BB33A2";
+    fsType = "ntfs";
+  };
 }
