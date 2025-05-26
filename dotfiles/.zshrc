@@ -7,6 +7,7 @@ source $HOME/.scripts/zed.sh
 # aliases                                #
 ##########################################
 alias gc="git commit"
+alias gcdate="git commit -m \"$(date)\""
 alias gst="git status"
 alias glog="git log --oneline --decorate --graph"
 alias gloga="git log --oneline --decorate --graph --all"

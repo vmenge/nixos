@@ -105,7 +105,8 @@
     swww # wallpaper daemon
     acpi # battery status and other ACPI info
     acpilight # backlight control
-    bluetuith # bluetooth
+    bluez # bluetooth
+    bluetuith # bluetooth tui (req bluez)
     btop # resource monitoring
     emote # emoji picker
     pavucontrol # volume control
