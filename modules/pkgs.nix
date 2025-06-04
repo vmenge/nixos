@@ -40,9 +40,15 @@
     lldb # debugger
     gdb
     valgrind
-    dotnetCorePackages.aspnetcore_8_0-bin
-    dotnetCorePackages.aspnetcore_9_0-bin
-    dotnetCorePackages.aspnetcore_10_0-bin
+    (dotnetCorePackages.combinePackages [
+      dotnetCorePackages.sdk_8_0-bin
+      dotnetCorePackages.sdk_9_0-bin
+      dotnetCorePackages.sdk_10_0-bin
+      dotnetCorePackages.aspnetcore_8_0-bin
+      dotnetCorePackages.aspnetcore_9_0-bin
+      dotnetCorePackages.aspnetcore_10_0-bin
+    ])
+    fsautocomplete
     bun # js runtime
     eslint_d # eslint lsp
     prettierd # prettier as a daemon
