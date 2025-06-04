@@ -49,6 +49,7 @@
       dotnetCorePackages.aspnetcore_10_0-bin
     ])
     fsautocomplete
+    fantomas
     bun # js runtime
     eslint_d # eslint lsp
     prettierd # prettier as a daemon
