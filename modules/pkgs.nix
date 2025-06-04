@@ -51,6 +51,7 @@
     fsautocomplete
     fantomas
     bun # js runtime
+    nodejs
     eslint_d # eslint lsp
     prettierd # prettier as a daemon
     gopls # official go lsp
@@ -60,6 +61,8 @@
     helm-ls # helm lsp
     terraform # build, change and version infra
     terraform-ls # terraform lsp
+    pulumi
+    pulumiPackages.pulumi-nodejs
     lua-language-server
     markdown-oxide # markdown lsp
     opam # OCaml package manager
