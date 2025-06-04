@@ -127,10 +127,11 @@
     wdisplays # configure displays
     xdg-utils
     kdePackages.dolphin
+    kdePackages.ffmpegthumbs
+    kdePackages.breeze-icons
     adwaita-icon-theme
     adwaita-icon-theme-legacy
     hicolor-icon-theme
-    kdePackages.breeze-icons
     dconf
 
     # gaming
@@ -166,6 +167,7 @@
     cava # visualizer for alsa
     alsa-utils
     imagemagick # create, edit, compose or convert bitmap images
+    ffmpeg
 
     # filesystems
     ntfs3g

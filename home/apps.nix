@@ -65,6 +65,8 @@
       "inode/directory" = "dolphin.desktop";
       "TerminalEmulator" = "com.mitchellh.ghostty.desktop";
       "x-scheme-handler/terminal" = "com.mitchellh.ghostty.desktop";
+      "video/mp4" = "vlc.desktop";
+      "video/x-matroska" = "vlc.desktop";
     };
   };
 }
