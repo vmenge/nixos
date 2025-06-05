@@ -16,8 +16,8 @@ alias gb="git branch"
 alias ga="git add"
 alias gaa="git add --all"
 alias gp="git push"
-alias ggp="git push origin $(git branch --show-current)"
-alias ggl="git pull origin $(git branch --show-current)"
+ggp() { git push origin "$(git branch --show-current)" "$@" }
+ggl() { git pull origin "$(git branch --show-current)" "$@" }
 alias zed="zeditor"
 alias grep="rg"
 alias yy="yazi"
