@@ -47,6 +47,9 @@ in
     ".config/starship.toml".source = sl ".config/starship.toml";
     ".zshrc".source = sl ".zshrc";
     ".aws/config".source = sl ".aws/config";
+
+    ".config/sunshine/sunshine.conf".source = sl ".config/sunshine/sunshine.conf";
+    ".config/sunshine/apps.json".source = sl ".config/sunshine/apps.json";
   };
 
   home.sessionVariables = {

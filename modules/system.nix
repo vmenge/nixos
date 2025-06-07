@@ -67,6 +67,29 @@
   services.dbus.enable = true;
   services.avahi.enable = true;
 
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [
+      # sunshine
+      47984
+      47989
+      47990
+      48010
+    ];
+    allowedUDPPortRanges = [
+      # sunshine
+      {
+        from = 47998;
+        to = 48000;
+      }
+      # sunshine
+      {
+        from = 8000;
+        to = 8010;
+      }
+    ];
+  };
+
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
   #

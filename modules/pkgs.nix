@@ -16,6 +16,13 @@
 
   programs.light.enable = true;
 
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+  };
+
   environment.systemPackages = with pkgs; [
     # text editors
     neovim
