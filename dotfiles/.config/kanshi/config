@@ -4,7 +4,7 @@ profile RaiderGe {
 
 profile RaiderGeAlienwareUW {
   output "Samsung Display Corp. 0x4179 Unknown"  disable mode 2560x1440@240Hz    position 0,0    scale 1.5
-  output "Dell Inc. Dell AW3821DW #GTIYMxgwABWz" enable  mode 3840x1600@84.971Hz position 0,0
+  output "Dell Inc. Dell AW3821DW #GTIYMxgwABWz" enable  mode 3840x1600@119.982Hz position 0,0
 }
 
 profile HomeTfhNotebook {
