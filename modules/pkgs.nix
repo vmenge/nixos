@@ -64,6 +64,8 @@
     nodejs
     eslint_d # eslint lsp
     prettierd # prettier as a daemon
+    typescript
+    typescript-language-server
     gopls # official go lsp
     k9s # k8s TUI
     kubectl # k8s CLI
