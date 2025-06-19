@@ -4,6 +4,7 @@ return {
   config = function()
     local lsps = {
       "c",
+      "clojure",
       "fsharp",
       "golang",
       "helm",
