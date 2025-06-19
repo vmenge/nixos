@@ -49,6 +49,7 @@
     valgrind
     clojure
     clojure-lsp
+    leiningen
     (dotnetCorePackages.combinePackages [
       dotnetCorePackages.sdk_8_0-bin
       dotnetCorePackages.sdk_9_0-bin
