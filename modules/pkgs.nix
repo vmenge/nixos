@@ -152,6 +152,7 @@
     protontricks # winetricks wrapper for proton games
     protonup-qt # proton GE ver manager
     stella # Atari 2600 VCS emulator
+    vrrtest
 
     # messaging
     slack
