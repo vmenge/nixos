@@ -92,7 +92,6 @@
     opencode
     probe-rs
     man-pages
-    kamal
 
     # dev services
     gh # GitHub cli
