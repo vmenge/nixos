@@ -3,6 +3,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
+      "OXY2DEV/markview.nvim",
     },
     opts = {
       highlight = { enable = true, additional_vim_regex_highlighting = { "rust" } },

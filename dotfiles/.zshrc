@@ -24,7 +24,7 @@ alias yy="yazi"
 alias cat="bat"
 alias ls="lsd"
 alias nxs="sudo nixos-rebuild switch"
-alias nxu="sudo nixos-rebuild switch --upgrade"
+alias nxu="sudo nix flake update && sudo nixos-rebuild switch"
 alias nxg="sudo nix-collect-garbage -d && nix-collect-garbage -d"
 
 
