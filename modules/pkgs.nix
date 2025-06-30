@@ -93,6 +93,7 @@
     opencode
     probe-rs
     man-pages
+    python3
 
     # dev services
     gh # GitHub cli
