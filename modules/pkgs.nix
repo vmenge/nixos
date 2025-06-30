@@ -67,6 +67,7 @@
     typescript
     typescript-language-server
     gopls # official go lsp
+    protobuf
     k9s # k8s TUI
     kubectl # k8s CLI
     kubernetes-helm # k8s package manager
