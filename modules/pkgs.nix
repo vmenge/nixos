@@ -108,6 +108,7 @@
 
     # containerization
     docker # containerization client and daemon
+    docker-compose
     podman # containerization client and daemon
     distrobox # podman / docker wrapper for distros
     toolbox # podman / docker wrapper for distros
