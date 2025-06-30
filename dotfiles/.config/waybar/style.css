@@ -93,3 +93,7 @@ window#waybar {
   color: #ffffff;
   box-shadow: none;
 }
+
+#battery.warning   { color: #f1c40f; } /* yellow  */
+#battery.critical  { color: #ff5555; } /* red     */
+#battery.charging  { color: #a6e22e; }
