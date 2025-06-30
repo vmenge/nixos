@@ -23,6 +23,14 @@
     openFirewall = true;
   };
 
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     # text editors
     neovim
@@ -107,7 +115,6 @@
     mongosh
 
     # containerization
-    docker # containerization client and daemon
     docker-compose
     podman # containerization client and daemon
     distrobox # podman / docker wrapper for distros
