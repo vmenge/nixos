@@ -4,6 +4,11 @@ source $HOME/.scripts/safe_env.sh
 source $HOME/.scripts/zed.sh
 
 ##########################################
+# rust                                   #
+##########################################
+export PATH="$HOME/.rustup/toolchains/$(rustup show active-toolchain | cut -d" " -f1)/bin:$PATH"
+
+##########################################
 # aliases                                #
 ##########################################
 alias gc="git commit"
