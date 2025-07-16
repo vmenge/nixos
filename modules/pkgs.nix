@@ -191,6 +191,7 @@
     alsa-utils
     imagemagick # create, edit, compose or convert bitmap images
     ffmpeg
+    shotcut
 
     # filesystems
     ntfs3g
