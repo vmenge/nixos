@@ -65,6 +65,9 @@ in
     QT_QPA_PLATFORM = "wayland";
     SDL_VIDEODRIVER = "wayland,x11,windows";
     GBM_BACKEND = "nvidia-drm";
+    LIBVA_DRIVER_NAME = "nvidia";
+    __GL_THREADED_OPTIMIZATIONS = "0";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     BROWSER = "google-chrome";
   };
 
