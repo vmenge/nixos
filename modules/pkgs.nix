@@ -102,7 +102,7 @@
     probe-rs
     man-pages
     python3
-    godot
+    godot-mono
 
     # dev services
     gh # GitHub cli
