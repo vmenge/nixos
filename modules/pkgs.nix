@@ -66,6 +66,7 @@
       dotnetCorePackages.aspnetcore_9_0-bin
       dotnetCorePackages.aspnetcore_10_0-bin
     ])
+    omnisharp-roslyn
     fsautocomplete
     fantomas
     bun # js runtime
