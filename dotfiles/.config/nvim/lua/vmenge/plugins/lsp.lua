@@ -5,6 +5,7 @@ return {
     local lsps = {
       "c",
       "clojure",
+      "csharp",
       "fsharp",
       "golang",
       "helm",
