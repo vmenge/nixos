@@ -99,7 +99,6 @@
     dioxus-cli # dioxus
     jdk
     claude-code
-    opencode
     probe-rs
     man-pages
     python3
