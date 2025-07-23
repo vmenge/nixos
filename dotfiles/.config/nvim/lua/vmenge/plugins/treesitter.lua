@@ -24,7 +24,7 @@ return {
         "elixir",
         "elm",
         "erlang",
-        "fsharp",
+        -- "fsharp",
         "git_config",
         "git_rebase",
         "gitattributes",
@@ -89,33 +89,33 @@ return {
           node_decremental = "<bs>",
         },
       },
-      filetype_to_parsername = {
-        fs = "fsharp",
-        fsi = "fsharp",
-        fsx = "fsharp",
-        fsscript = "fsharp"
-      },
+      -- filetype_to_parsername = {
+      --   fs = "fsharp",
+      --   fsi = "fsharp",
+      --   fsx = "fsharp",
+      --   fsscript = "fsharp"
+      -- },
     },
 
     config = function()
       local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-      parser_config.fsharp = {
-        install_info = {
-          url = "https://github.com/ionide/tree-sitter-fsharp",
-          branch = "main",
-          files = { "src/scanner.c", "src/parser.c" },
-          location = "fsharp",
-        },
-        requires_generate_from_grammar = false,
-        filetype = "fsharp",
-      }
-
-      vim.api.nvim_create_autocmd("BufEnter", {
-        pattern = { "*.fs", "*.fsi", "*.fsx", "*.fsscript" },
-        callback = function()
-          require("nvim-treesitter.highlight").attach(0, "fsharp")
-        end,
-      })
+      -- parser_config.fsharp = {
+      --   install_info = {
+      --     url = "https://github.com/ionide/tree-sitter-fsharp",
+      --     branch = "main",
+      --     files = { "src/scanner.c", "src/parser.c" },
+      --     location = "fsharp",
+      --   },
+      --   requires_generate_from_grammar = false,
+      --   filetype = "fsharp",
+      -- }
+      --
+      -- vim.api.nvim_create_autocmd("BufEnter", {
+      --   pattern = { "*.fs", "*.fsi", "*.fsx", "*.fsscript" },
+      --   callback = function()
+      --     require("nvim-treesitter.highlight").attach(0, "fsharp")
+      --   end,
+      -- })
 
       parser_config.roc = {
         install_info = {
