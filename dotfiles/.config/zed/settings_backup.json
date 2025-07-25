@@ -11,7 +11,7 @@
   "features": {
     "edit_prediction_provider": "zed"
   },
-  "agent": {
+  "assistant": {
     "default_profile": "write",
     "default_model": {
       "provider": "anthropic",
@@ -34,7 +34,7 @@
   "theme": {
     "mode": "dark",
     "light": "Catppuccin Macchiato (Blur)",
-    "dark": "Catppuccin Mocha (Blur)"
+    "dark": "Nightfox"
   },
   "icon_theme": {
     "mode": "dark",
