@@ -193,6 +193,7 @@
     imagemagick # create, edit, compose or convert bitmap images
     ffmpeg
     shotcut
+    libcamera
 
     # filesystems
     ntfs3g
