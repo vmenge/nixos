@@ -5,12 +5,15 @@ if not vim.loop.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=main",
     lazypath,
   })
 end
 vim.opt.rtp:prepend(lazypath)
 
+local loader = require("lazy.core.loader")
+loader.check_rtp = function() end
 require("lazy").setup({
-  { import = "vmenge.plugins" },
+  spec = { { import = "vmenge.plugins" } },
+  experimental = { check_rtp = false, check_rtp_message = false },
 })

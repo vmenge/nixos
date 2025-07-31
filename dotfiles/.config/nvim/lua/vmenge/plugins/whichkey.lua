@@ -80,6 +80,7 @@ return {
       { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Find Files" },
       { "<leader>fg", "<cmd>Telescope live_grep<CR>", desc = "Live Grep" },
       { "<leader>fh", "<cmd>Telescope help_tags<CR>", desc = "Help Tags" },
+      { "<leader>fo", "<cmd>Outline<CR>", desc = "Toggle Outline" },
       { "<leader>k", "<cmd>lua vim.lsp.buf.hover()<CR>", desc = "Hover", icon = "" },
       { "<leader>l", group = "Lsp", icon = "" },
       { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code Action" },
