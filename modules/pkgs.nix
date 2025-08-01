@@ -23,6 +23,8 @@
     openFirewall = true;
   };
 
+  services.tailscale.enable = true;
+
   virtualisation.docker = {
     enable = true;
     rootless = {
@@ -110,7 +112,6 @@
     ssm-session-manager-plugin # AWS session manager
     cloudflared # CloudFlare tunnel daemon, toolkit and dns-over-https client
     doctl # DigitalOcean cli
-    tailscale
 
     # databases and related
     mongodb-compass
