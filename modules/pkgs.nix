@@ -7,6 +7,7 @@
   ];
 
   programs.nix-ld.enable = true;
+  services.fwupd.enable = true;
 
   programs.steam.enable = true;
 

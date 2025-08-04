@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   imports = [
@@ -6,7 +6,12 @@
     ./hardware-configuration.nix
   ];
 
+  boot.extraModulePackages = [ config.boot.kernelPackages.msi-ec ];
+  boot.kernelModules = [ "msi-ec" ];
+
   networking.hostName = "vm-raiderge67hx";
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 
   hardware.graphics = {
     enable = true;

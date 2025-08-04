@@ -46,6 +46,7 @@
 
   services.logind.lidSwitch = "suspend";
   services.logind.lidSwitchDocked = "ignore";
+  services.logind.lidSwitchExternalPower = "ignore";
   services.logind.killUserProcesses = false;
 
   security.polkit.enable = true;
