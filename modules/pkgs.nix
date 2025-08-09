@@ -182,6 +182,7 @@
     atool # archive command line helper
     zip
     unzip
+    zlib
 
     # browsers
     brave
