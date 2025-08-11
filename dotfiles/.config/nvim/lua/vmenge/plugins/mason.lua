@@ -83,7 +83,7 @@ local ignore = {
 		end,
 	},
 
-	{ "rust-lang/rust.vim" },
+	-- { "rust-lang/rust.vim" },
 
 	{
 		"mrcjkb/rustaceanvim",

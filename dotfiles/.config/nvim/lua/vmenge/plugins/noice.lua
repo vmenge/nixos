@@ -3,7 +3,8 @@ return {
   event = "VeryLazy",
   config = function()
     require("noice").setup({
-       routes = {
+      presets = { bottom_search = true },
+      routes = {
         {
           filter = {
             event = "lsp",
