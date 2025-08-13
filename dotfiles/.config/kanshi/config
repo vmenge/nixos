@@ -3,7 +3,7 @@ profile RaiderGe {
 }
 
 profile RaiderGeAlienwareUW {
-  output "Samsung Display Corp. 0x4179 Unknown"  disable mode 2560x1440@240Hz    position 0,0    scale 1.5
+  output "Samsung Display Corp. 0x4179 Unknown"  disable mode 2560x1440@240Hz     position 0,0 scale 1.5
   output "Dell Inc. Dell AW3821DW #GTIYMxgwABWz" enable  mode 3840x1600@119.982Hz position 0,0
 }
 
@@ -13,11 +13,17 @@ profile HomeTfhNotebook {
 }
 
 profile MunichTfhNotebook {
-  output "Samsung Display Corp. 0x4193 Unknown"  mode 2880x1800@90Hz      position 2028,1440
-  output "Dell Inc. DELL U2723QE 56CGH34"        mode 3840x2160@59.997Hz  position 1440,0
+  output "Samsung Display Corp. 0x4193 Unknown" mode 2880x1800@90Hz     position 2028,1440
+  output "Dell Inc. DELL U2723QE 56CGH34"       mode 3840x2160@59.997Hz position 1440,0
 }
 
 profile MunichTfhNotebook2 {
-  output "Samsung Display Corp. 0x4193 Unknown"  mode 2880x1800@90Hz      position 475,1440
-  output "Dell Inc. DELL U2723QE 4VYDBH3"        mode 3840x2160@59.997Hz  position 0,0
+  output "Samsung Display Corp. 0x4193 Unknown" mode 2880x1800@90Hz     position 475,1440
+  output "Dell Inc. DELL U2723QE 4VYDBH3"       mode 3840x2160@59.997Hz position 0,0
+}
+
+profile MunichTfh3ScreenAlekseiDesk {
+  output "Dell Inc. DELL U2723QE DQJYD34"           mode 3840x2160@59.997Hz position 1440,802  scale 1.5
+  output "LG Electronics LG ULTRAFINE 111NTABEY592" mode 3840x2160@59.997Hz position 0,0       scale 1.5 transform 270
+  output "Samsung Display Corp. 0x4193 Unknown"     mode 2880x1800@90Hz     position 1849,2242 scale 2
 }
