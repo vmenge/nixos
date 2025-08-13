@@ -13,6 +13,7 @@ return {
       "markdown",
       "nix",
       "ocaml",
+      "python",
       "rust",
       "terraform",
       "toml",
