@@ -24,6 +24,6 @@ profile MunichTfhNotebook2 {
 
 profile MunichTfh3ScreenAlekseiDesk {
   output "Dell Inc. DELL U2723QE DQJYD34"           mode 3840x2160@59.997Hz position 1440,802  scale 1.5
-  output "LG Electronics LG ULTRAFINE 111NTABEY592" mode 3840x2160@59.997Hz position 0,0       scale 1.5 transform 270
+  output "LG Electronics LG ULTRAFINE 111NTABEY592" mode 3840x2160@59.997Hz position 0,0       scale 1.5 transform 90
   output "Samsung Display Corp. 0x4193 Unknown"     mode 2880x1800@90Hz     position 1849,2242 scale 2
 }
