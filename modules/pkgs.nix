@@ -24,14 +24,8 @@
     openFirewall = true;
   };
 
-  services.tailscale.enable = true;
-
   virtualisation.docker = {
     enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
   };
 
   environment.systemPackages = with pkgs; [
@@ -121,6 +115,7 @@
 
     # containerization
     docker-compose
+    docker-buildx
     podman # containerization client and daemon
     distrobox # podman / docker wrapper for distros
     toolbox # podman / docker wrapper for distros

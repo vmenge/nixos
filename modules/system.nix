@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
     ./pkgs.nix
@@ -14,6 +14,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   networking.networkmanager.enable = true;
+  boot.binfmt.emulatedSystems = lib.filter (s: s != pkgs.stdenv.hostPlatform.system) [
+    "aarch64-linux"
+    "x86_64-linux"
+  ];
 
   time.timeZone = "Europe/Berlin";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -37,6 +41,7 @@
       "audio"
       "video"
       "wheel"
+      "docker"
     ];
   };
   nix.settings.trusted-users = [
