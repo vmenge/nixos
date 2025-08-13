@@ -99,6 +99,9 @@
     probe-rs
     man-pages
     python3
+    pyright
+    pylint
+    uv
     godot
     godot-mono
 
