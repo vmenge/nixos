@@ -83,7 +83,7 @@ return {
       { "<leader>fo", "<cmd>Outline<CR>", desc = "Toggle Outline" },
       { "<leader>k", "<cmd>lua vim.lsp.buf.hover()<CR>", desc = "Hover", icon = "" },
       { "<leader>l", group = "Lsp", icon = "" },
-      { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code Action" },
+      { "<leader>la", function() require('actions-preview').code_actions() end, desc = "Code Action" },
       { "<leader>lc", "<cmd>lua vim.lsp.codelens.display()<CR>", desc = "CodeLens" },
       { "<leader>ld", "<cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
       { "<leader>lf", "<cmd>lua Format()<CR>", desc = "Format" },
