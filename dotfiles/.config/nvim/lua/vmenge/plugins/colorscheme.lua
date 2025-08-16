@@ -37,7 +37,7 @@ return {
       require("ayu").setup({
         mirage = true,
         overrides = {
-          Normal = { bg = "None" },
+          -- Normal = { bg = "None" },
           -- NormalFloat = { bg = "none" },
           -- ColorColumn = { bg = "None" },
           -- SignColumn = { bg = "None" },
@@ -255,12 +255,6 @@ return {
     end,
   },
   {
-    "chriskempson/base16-vim",
-    config = function()
-      -- vim.cmd.colorscheme("base16-black-metal-immortal")
-    end,
-  },
-  {
     "ntk148v/komau.vim",
     config = function()
       -- vim.cmd.colorscheme("komau")
@@ -323,14 +317,14 @@ return {
     opts = {},
   },
   {
-  	"yorik1984/newpaper.nvim",
-  	priority = 1000,
-  	config = function()
+    "yorik1984/newpaper.nvim",
+    priority = 1000,
+    config = function()
       -- vim.cmd.colorscheme("newpaper")
     end,
-  	opts = {
-  		style = "dark",
-  	},
+    opts = {
+      style = "dark",
+    },
   },
   {
     "sho-87/kanagawa-paper.nvim",
@@ -434,4 +428,49 @@ return {
     lazy = false,
     priority = 1000,
   },
+  {
+    "luisiacc/gruvbox-baby"
+  },
+  { "miikanissi/modus-themes.nvim", priority = 1000 },
+  {
+    'olivercederborg/poimandres.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('poimandres').setup {
+        -- leave this setup function empty for default config
+        -- or refer to the configuration section
+        -- for configuration options
+      }
+    end,
+
+    -- optionally set the colorscheme within lazy config
+    init = function()
+      -- vim.cmd("colorscheme poimandres")
+    end
+  },
+  {
+    'ashish2508/Eezzy.nvim',
+    config = function()
+      require('Eezzy').setup({
+        -- NOTE: if your configuration sets vim.o.background in your configuration for Neovim,
+        -- the following setting will do nothing, since it'll be overriden.
+        transparent = false, -- Boolean: Sets the background to transparent
+        italics = {
+          comments = true,   -- Boolean: Italicizes comments
+          keywords = true,   -- Boolean: Italicizes keywords
+          functions = true,  -- Boolean: Italicizes functions
+          strings = true,    -- Boolean: Italicizes strings
+          variables = true,  -- Boolean: Italicizes variables
+        },
+        overrides = {},      -- A dictionary of group names, can be a function returning a dictionary or a table.
+      })
+    end,
+
+    init = function()
+      -- vim.cmd("colorscheme Eezzy")
+    end
+  },
+  { "adisen99/apprentice.nvim" },
+  { "darkvoid-theme/darkvoid.nvim" }
 }

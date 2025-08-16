@@ -33,7 +33,7 @@ input * xkb_variant alt-intl
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango: JetBrains Mono 8
+font pango: Berkeley Mono 8
 
 # set the mod key to the winkey:
 set $mod Mod4
@@ -306,34 +306,6 @@ client.focused           $white        $black        $white     $white          
 client.focused_inactive  $black        $black        $white     $black          $black
 client.unfocused         $darkgrey     $darkgrey     $grey      $darkgrey       $darkgrey
 client.urgent            $urgentred    $urgentred    $white     $yellowbrown    $yellowbrown
-
-############################################
-# bar settings
-############################################
-
-# bar {
-#     font pango: JetBrains Mono 8
-#     status_command i3blocks -c ~/.config/i3/i3blocks.conf
-#     position bottom
-#     tray_padding 0
-#
-#     # When strip_workspace_numbers is set to yes,
-#     # any workspace that has a name of the form
-#     # “[n][:][NAME]” will display only the name.
-#     strip_workspace_numbers yes
-#     # strip_workspace_name no
-#
-#     colors {
-#         separator           $purple
-#         background          $black
-#         statusline          $white
-#         # class             border      bg          txt       indicator
-#         focused_workspace   $white      $black      $white
-#         active_workspace    $grey       $black      $grey
-#         inactive_workspace  $darkgrey   $black      $darkgrey
-#         urgent_workspace    $urgentred  $urgentred  $white
-#     }
-# }
 
 bar swaybar_command waybar
 

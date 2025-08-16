@@ -1,6 +1,6 @@
 * {
   /* `otf-font-awesome` and SpaceMono Nerd Font are required to be installed for icons */
-  font-family: "JetBrainsMono Nerd Font Mono", FontAwesome, Roboto, Helvetica,
+  font-family: "Berkeley Mono", "JetBrainsMono Nerd Font Mono", FontAwesome, Roboto, Helvetica,
     Arial, sans-serif;
   font-size: 11px;
   transition: background-color 0.3s ease-out;
@@ -10,6 +10,7 @@ window#waybar {
   background: rgba(26, 27, 38, 0);
   color: #ffffff;
   font-family:
+    Berkeley Mono,
     JetBrainsMono Nerd Font Mono,
     SpaceMono Nerd Font,
     feather;
@@ -74,6 +75,7 @@ window#waybar {
 #workspaces button {
   background: transparent;
   font-family:
+    Berkeley Mono,
     JetBrainsMono Nerd Font Mono,
     SpaceMono Nerd Font,
     feather;
