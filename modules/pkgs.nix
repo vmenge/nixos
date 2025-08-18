@@ -223,6 +223,8 @@
     parted
     f2fs-tools
     usbutils
+    edid-decode
+    pciutils
   ];
 
   fonts.packages = with pkgs; [

@@ -39,7 +39,12 @@ font pango: Berkeley Mono 8
 set $mod Mod4
 
 # Vsync
-output * adaptive_sync off
+output * adaptive_sync on
+output eDP-1 {
+    mode 2560x1440@240Hz
+    adaptive_sync off
+}
+
 bindsym $mod+period exec emote
 
 #######################

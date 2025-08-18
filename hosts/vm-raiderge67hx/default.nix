@@ -26,6 +26,13 @@
     open = false;
 
     nvidiaSettings = true;
+    prime = {
+      sync.enable = true;
+      offload.enable = false;
+
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
   };
 
   hardware.graphics.extraPackages = with pkgs; [
@@ -39,6 +46,12 @@
     mcontrolcenter # tool to change the settings of msi laptops
     egl-wayland
   ];
+
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_RENDERER = "vulkan";
+    WLR_RENDERER_DEVICE = "/dev/dri/card0";
+  };
 
   fileSystems."/mnt/ntfs" = {
     device = "/dev/disk/by-uuid/2834BB6434BB33A2";
