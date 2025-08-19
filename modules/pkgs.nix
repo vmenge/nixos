@@ -227,7 +227,6 @@
     usbutils
     edid-decode
     pciutils
-    ventoy
   ];
 
   fonts.packages = with pkgs; [
