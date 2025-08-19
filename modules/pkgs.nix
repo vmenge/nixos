@@ -38,6 +38,7 @@
     git
     strace
     openssh
+    openssl
     just # command runner
     tldr
     gcc
@@ -104,6 +105,7 @@
     uv
     godot
     godot-mono
+    cargo-zigbuild
 
     # dev services
     gh # GitHub cli
@@ -225,6 +227,7 @@
     usbutils
     edid-decode
     pciutils
+    ventoy
   ];
 
   fonts.packages = with pkgs; [
