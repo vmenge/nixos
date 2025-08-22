@@ -307,7 +307,7 @@ return {
       require("tokyonight").setup({
         transparent = true,
       })
-      vim.cmd.colorscheme("tokyonight")
+      -- vim.cmd.colorscheme("tokyonight")
     end,
   },
   {
@@ -427,6 +427,9 @@ return {
     "Mofiqul/vscode.nvim",
     lazy = false,
     priority = 1000,
+    init = function()
+      vim.cmd("colorscheme vscode")
+    end
   },
   {
     "luisiacc/gruvbox-baby"

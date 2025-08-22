@@ -12,6 +12,7 @@ return {
       "lua",
       "markdown",
       "nix",
+      "nushell",
       "ocaml",
       "python",
       "rust",

@@ -106,6 +106,7 @@
     godot
     godot-mono
     cargo-zigbuild
+    nushell
 
     # dev services
     gh # GitHub cli

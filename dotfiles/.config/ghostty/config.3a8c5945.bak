@@ -30,4 +30,3 @@ keybind = alt+k=goto_split:top
 keybind = alt+j=goto_split:bottom
 keybind = ctrl+space>z=toggle_split_zoom
 keybind = alt+shift+h=write_screen_file:paste
-keybind = shift+enter=text:\n
