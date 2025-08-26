@@ -107,6 +107,7 @@
     godot-mono
     cargo-zigbuild
     nushell
+    waydroid
 
     # dev services
     gh # GitHub cli

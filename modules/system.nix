@@ -35,7 +35,6 @@
 
   users.users.vmenge = {
     isNormalUser = true;
-    # linger = true;
     extraGroups = [
       "networkmanager"
       "audio"
@@ -44,15 +43,18 @@
       "docker"
     ];
   };
+
   nix.settings.trusted-users = [
     "root"
     "vmenge"
   ];
 
-  services.logind.lidSwitch = "suspend";
-  services.logind.lidSwitchDocked = "ignore";
-  services.logind.lidSwitchExternalPower = "ignore";
-  services.logind.killUserProcesses = false;
+  services.logind.settings.Login = {
+    HandleLidSwitchDocked = "ignore";
+    HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitch = "suspend";
+    KillUserProcesses = false;
+  };
 
   security.polkit.enable = true;
 
