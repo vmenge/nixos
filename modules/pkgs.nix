@@ -201,6 +201,7 @@
     ffmpeg
     shotcut
     libcamera
+    reco
 
     # filesystems
     ntfs3g
