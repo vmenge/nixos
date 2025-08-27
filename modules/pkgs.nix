@@ -24,8 +24,9 @@
     openFirewall = true;
   };
 
-  virtualisation.docker = {
-    enable = true;
+  virtualisation = {
+    waydroid.enable = true;
+    docker.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -107,7 +108,6 @@
     godot-mono
     cargo-zigbuild
     nushell
-    waydroid
 
     # dev services
     gh # GitHub cli
