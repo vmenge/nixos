@@ -7,6 +7,7 @@ in
   imports = [
     ./apps.nix
     ./services.nix
+    ./dconf.nix
   ];
 
   home.username = "vmenge";

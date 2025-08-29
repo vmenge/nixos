@@ -4,7 +4,6 @@
     ./pkgs.nix
     ./sway.nix
     ./gnome.nix
-    ./dconf.nix
   ];
 
   nix.settings.experimental-features = [
