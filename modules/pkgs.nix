@@ -113,6 +113,7 @@
     godot-mono
     cargo-zigbuild
     nushell
+    vulkan-tools
 
     # dev services
     gh # GitHub cli
@@ -167,6 +168,9 @@
     adwaita-icon-theme-legacy
     hicolor-icon-theme
     dconf
+    dconf2nix
+    gnomeExtensions.focus-changer
+    gnomeExtensions.tactile
 
     # gaming
     game-devices-udev-rules # udev rules to make supported controlles available
@@ -176,6 +180,8 @@
     stella # Atari 2600 VCS emulator
     vrrtest
     mangohud
+    lsfg-vk
+    lsfg-vk-ui
 
     # messaging
     slack

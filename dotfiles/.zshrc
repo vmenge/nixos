@@ -2,6 +2,7 @@ source /etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh
 source $HOME/.scripts/tfh.sh
 source $HOME/.scripts/safe_env.sh
 source $HOME/.scripts/zed.sh
+source $HOME/.scripts/dconf.sh
 
 ##########################################
 # rust                                   #
@@ -58,6 +59,6 @@ bindkey '^X^E' edit-command-line
 ##########################################
 # auto start sway on tty login          #
 ##########################################
-if [ "$(tty)" = "/dev/tty1" ]; then
-  exec sway --unsupported-gpu
-fi
+# if [ "$(tty)" = "/dev/tty1" ]; then
+#   exec sway --unsupported-gpu
+# fi

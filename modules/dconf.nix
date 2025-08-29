@@ -1,0 +1,134 @@
+# Generated via dconf2nix: https://github.com/gvolpe/dconf2nix
+{ lib, ... }:
+
+with lib.hm.gvariant;
+
+{
+  dconf.settings = {
+    "org/gnome/control-center" = {
+      last-panel = "keyboard";
+      window-state = mkTuple [ 1280 784 false ];
+    };
+
+    "org/gnome/desktop/app-folders" = {
+      folder-children = [ "System" "Utilities" "YaST" "Pardus" ];
+    };
+
+    "org/gnome/desktop/app-folders/folders/Pardus" = {
+      categories = [ "X-Pardus-Apps" ];
+      name = "X-Pardus-Apps.directory";
+      translate = true;
+    };
+
+    "org/gnome/desktop/app-folders/folders/System" = {
+      name = "X-GNOME-Shell-System.directory";
+      translate = true;
+    };
+
+    "org/gnome/desktop/app-folders/folders/Utilities" = {
+      name = "X-GNOME-Shell-Utilities.directory";
+      translate = true;
+    };
+
+    "org/gnome/desktop/app-folders/folders/YaST" = {
+      categories = [ "X-SuSE-YaST" ];
+      name = "suse-yast.directory";
+      translate = true;
+    };
+
+    "org/gnome/desktop/background" = {
+      color-shading-type = "solid";
+      picture-options = "zoom";
+      picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/ring-l.jxl";
+      picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/gnome/ring-d.jxl";
+      primary-color = "#26a269";
+      secondary-color = "#000000";
+    };
+
+    "org/gnome/desktop/input-sources" = {
+      sources = [ (mkTuple [ "xkb" "us" ]) ];
+      xkb-options = [];
+    };
+
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      icon-theme = "Adwaita";
+    };
+
+    "org/gnome/desktop/notifications" = {
+      application-children = [ "steam" ];
+    };
+
+    "org/gnome/desktop/notifications/application/steam" = {
+      application-id = "steam.desktop";
+    };
+
+    "org/gnome/desktop/screensaver" = {
+      color-shading-type = "solid";
+      picture-options = "zoom";
+      picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/ring-l.jxl";
+      primary-color = "#26a269";
+      secondary-color = "#000000";
+    };
+
+    "org/gnome/desktop/search-providers" = {
+      sort-order = [ "org.gnome.Settings.desktop" "org.gnome.Contacts.desktop" "org.gnome.Nautilus.desktop" ];
+    };
+
+    "org/gnome/desktop/wm/keybindings" = {
+      close = [ "<Super>q" ];
+      minimize = [];
+      move-to-workspace-1 = [ "<Shift><Super>1" ];
+      move-to-workspace-2 = [ "<Shift><Super>2" ];
+      move-to-workspace-3 = [ "<Shift><Super>3" ];
+      move-to-workspace-4 = [ "<Shift><Super>4" ];
+      switch-to-workspace-1 = [ "<Super>1" ];
+      switch-to-workspace-2 = [ "<Super>2" ];
+      switch-to-workspace-3 = [ "<Super>3" ];
+      switch-to-workspace-4 = [ "<Super>4" ];
+      switch-to-workspace-left = [ "<Shift><Super>h" ];
+      switch-to-workspace-right = [ "<Shift><Super>l" ];
+      toggle-fullscreen = [ "<Super>f" ];
+    };
+
+    "org/gnome/evolution-data-server" = {
+      migrated = true;
+    };
+
+    "org/gnome/mutter" = {
+      output-luminance = [ (mkTuple [ "DP-1" "DEL" "Dell AW3821DW" "#GTIYMxgwABWz" (mkUint32 1) 190.0 ]) ];
+    };
+
+    "org/gnome/settings-daemon/plugins/color" = {
+      night-light-schedule-automatic = false;
+    };
+
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      screensaver = [];
+    };
+
+    "org/gnome/shell" = {
+      enabled-extensions = [ "tactile@lundal.io" "focus-changer@heartmire" ];
+      last-selected-power-profile = "performance";
+      welcome-dialog-last-shown-version = "48.4";
+    };
+
+    "org/gnome/shell/extensions/tactile" = {
+      col-0 = 0;
+      layout-2-col-0 = 2;
+      layout-2-col-2 = 0;
+      layout-2-col-3 = 0;
+      monitor-0-layout = 1;
+      row-0 = 1;
+      show-tiles = [ "<Super>e" ];
+    };
+
+    "org/gnome/shell/keybindings" = {
+      switch-to-application-1 = [];
+      switch-to-application-2 = [];
+      switch-to-application-3 = [];
+      switch-to-application-4 = [];
+    };
+
+  };
+}
