@@ -3,6 +3,7 @@
   imports = [
     ./pkgs.nix
     ./sway.nix
+    ./gnome.nix
   ];
 
   nix.settings.experimental-features = [
