@@ -24,6 +24,8 @@
     openFirewall = true;
   };
 
+  services.mullvad-vpn.enable = true;
+
   virtualisation = {
     waydroid.enable = true;
     docker.enable = true;
