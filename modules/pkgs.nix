@@ -10,6 +10,9 @@
   services.fwupd.enable = true;
 
   programs.steam.enable = true;
+  programs.steam.gamescopeSession.enable = true;
+  programs.gamemode.enable = true;
+  programs.gamescope.capSysNice = true;
 
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
@@ -169,6 +172,7 @@
     protonup-qt # proton GE ver manager
     stella # Atari 2600 VCS emulator
     vrrtest
+    mangohud
 
     # messaging
     slack
