@@ -41,6 +41,11 @@ set $mod Mod4
 # Vsync
 output * adaptive_sync off
 output eDP-1 {
+    mode 3840x1600@119.982Hz
+    adaptive_sync on
+}
+
+output eDP-1 {
     mode 2560x1440@240Hz
     adaptive_sync off
 }
