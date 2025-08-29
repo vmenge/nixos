@@ -27,8 +27,11 @@
     openFirewall = true;
   };
 
-  virtualisation.docker = {
-    enable = true;
+  services.mullvad-vpn.enable = true;
+
+  virtualisation = {
+    waydroid.enable = true;
+    docker.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -204,6 +207,7 @@
     ffmpeg
     shotcut
     libcamera
+    reco
 
     # filesystems
     ntfs3g

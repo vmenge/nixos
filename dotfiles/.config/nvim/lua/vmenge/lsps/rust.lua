@@ -1,15 +1,7 @@
 return {
   setup = function(opts)
     vim.lsp.enable("rust_analyzer")
-    
-    -- Configure hover timeout specifically
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-      vim.lsp.handlers.hover, {
-        timeout_ms = 1000,
-        silent = true,
-      }
-    )
-    
+
     vim.lsp.config('rust_analyzer', {
       settings = {
         ['rust-analyzer'] = {

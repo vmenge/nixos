@@ -35,7 +35,6 @@
 
   users.users.vmenge = {
     isNormalUser = true;
-    # linger = true;
     extraGroups = [
       "networkmanager"
       "audio"
@@ -44,6 +43,7 @@
       "docker"
     ];
   };
+
   nix.settings.trusted-users = [
     "root"
     "vmenge"
