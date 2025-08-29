@@ -17,42 +17,6 @@
         "AudioVideo"
       ];
     };
-
-    lock = {
-      type = "Application";
-      name = "Lock Screen";
-      icon = "lock";
-      exec = "${config.home.homeDirectory}/.scripts/lock.sh";
-      terminal = false;
-      categories = [ "Utility" ];
-    };
-
-    suspend = {
-      type = "Application";
-      name = "Suspend";
-      icon = "sleep";
-      exec = "${config.home.homeDirectory}/.scripts/suspend.sh";
-      terminal = false;
-      categories = [ "System" ];
-    };
-
-    shutdown = {
-      type = "Application";
-      name = "Shutdown";
-      icon = "system-shutdown";
-      exec = "shutdown now";
-      terminal = false;
-      categories = [ "System" ];
-    };
-
-    reboot = {
-      type = "Application";
-      name = "Reboot";
-      icon = "refresh";
-      exec = "reboot";
-      terminal = false;
-      categories = [ "System" ];
-    };
   };
 
   xdg.mimeApps = {
