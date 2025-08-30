@@ -11,11 +11,20 @@ with lib.hm.gvariant;
 
     "org/gnome/control-center" = {
       last-panel = "keyboard";
-      window-state = mkTuple [ 1280 784 false ];
+      window-state = mkTuple [
+        1280
+        784
+        false
+      ];
     };
 
     "org/gnome/desktop/app-folders" = {
-      folder-children = [ "System" "Utilities" "YaST" "Pardus" ];
+      folder-children = [
+        "System"
+        "Utilities"
+        "YaST"
+        "Pardus"
+      ];
     };
 
     "org/gnome/desktop/app-folders/folders/Pardus" = {
@@ -25,13 +34,25 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/desktop/app-folders/folders/System" = {
-      apps = [ "org.gnome.baobab.desktop" "org.gnome.DiskUtility.desktop" "org.gnome.Logs.desktop" "org.gnome.SystemMonitor.desktop" ];
+      apps = [
+        "org.gnome.baobab.desktop"
+        "org.gnome.DiskUtility.desktop"
+        "org.gnome.Logs.desktop"
+        "org.gnome.SystemMonitor.desktop"
+      ];
       name = "X-GNOME-Shell-System.directory";
       translate = true;
     };
 
     "org/gnome/desktop/app-folders/folders/Utilities" = {
-      apps = [ "org.gnome.Connections.desktop" "org.gnome.Evince.desktop" "org.gnome.FileRoller.desktop" "org.gnome.font-viewer.desktop" "org.gnome.Loupe.desktop" "org.gnome.seahorse.Application.desktop" ];
+      apps = [
+        "org.gnome.Connections.desktop"
+        "org.gnome.Evince.desktop"
+        "org.gnome.FileRoller.desktop"
+        "org.gnome.font-viewer.desktop"
+        "org.gnome.Loupe.desktop"
+        "org.gnome.seahorse.Application.desktop"
+      ];
       name = "X-GNOME-Shell-Utilities.directory";
       translate = true;
     };
@@ -52,8 +73,13 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/desktop/input-sources" = {
-      sources = [ (mkTuple [ "xkb" "us" ]) ];
-      xkb-options = [];
+      sources = [
+        (mkTuple [
+          "xkb"
+          "us"
+        ])
+      ];
+      xkb-options = [ ];
     };
 
     "org/gnome/desktop/interface" = {
@@ -82,12 +108,39 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/desktop/search-providers" = {
-      sort-order = [ "org.gnome.Settings.desktop" "org.gnome.Contacts.desktop" "org.gnome.Nautilus.desktop" ];
+      sort-order = [
+        "org.gnome.Settings.desktop"
+        "org.gnome.Contacts.desktop"
+        "org.gnome.Nautilus.desktop"
+      ];
+    };
+
+    "org/gnome/shell/keybindings" = {
+      switch-to-application-1 = [ ];
+      switch-to-application-2 = [ ];
+      switch-to-application-3 = [ ];
+      switch-to-application-4 = [ ];
+      switch-to-application-5 = [ ];
+      switch-to-application-6 = [ ];
+      switch-to-application-7 = [ ];
+      switch-to-application-8 = [ ];
+      switch-to-application-9 = [ ];
+      switch-to-application-10 = [ ];
     };
 
     "org/gnome/desktop/wm/keybindings" = {
       close = [ "<Super>q" ];
-      minimize = [];
+      minimize = [ ];
+      switch-to-application-1 = [ ];
+      switch-to-application-2 = [ ];
+      switch-to-application-3 = [ ];
+      switch-to-application-4 = [ ];
+      switch-to-application-5 = [ ];
+      switch-to-application-6 = [ ];
+      switch-to-application-7 = [ ];
+      switch-to-application-8 = [ ];
+      switch-to-application-9 = [ ];
+      switch-to-application-10 = [ ];
       move-to-workspace-1 = [ "<Shift><Super>1" ];
       move-to-workspace-10 = [ "<Shift><Super>0" ];
       move-to-workspace-2 = [ "<Shift><Super>2" ];
@@ -108,8 +161,8 @@ with lib.hm.gvariant;
       switch-to-workspace-7 = [ "<Super>7" ];
       switch-to-workspace-8 = [ "<Super>8" ];
       switch-to-workspace-9 = [ "<Super>9" ];
-      switch-to-workspace-left = [ "<Shift><Super>h" ];
-      switch-to-workspace-right = [ "<Shift><Super>l" ];
+      switch-to-workspace-left = [ "<Ctrl><Super>h" ];
+      switch-to-workspace-right = [ "<Ctrl><Super>l" ];
       toggle-fullscreen = [ "<Super>f" ];
     };
 
@@ -122,7 +175,104 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/gnome-system-monitor" = {
-      cpu-colors = [ (mkTuple [ (mkUint32 0) "#e01b24" ]) (mkTuple [ 1 "#ff7800" ]) (mkTuple [ 2 "#f6d32d" ]) (mkTuple [ 3 "#33d17a" ]) (mkTuple [ 4 "#26a269" ]) (mkTuple [ 5 "#62a0ea" ]) (mkTuple [ 6 "#1c71d8" ]) (mkTuple [ 7 "#613583" ]) (mkTuple [ 8 "#9141ac" ]) (mkTuple [ 9 "#c061cb" ]) (mkTuple [ 10 "#ffbe6f" ]) (mkTuple [ 11 "#f9f06b" ]) (mkTuple [ 12 "#8ff0a4" ]) (mkTuple [ 13 "#2ec27e" ]) (mkTuple [ 14 "#1a5fb4" ]) (mkTuple [ 15 "#c061cb" ]) (mkTuple [ 16 "#7999c483f332" ]) (mkTuple [ 17 "#e7fff3327999" ]) (mkTuple [ 18 "#dae97999f332" ]) (mkTuple [ 19 "#7999f332b76e" ]) (mkTuple [ 20 "#f33293f37999" ]) (mkTuple [ 21 "#799982baf332" ]) (mkTuple [ 22 "#a635f3327999" ]) (mkTuple [ 23 "#f3327999c9b1" ]) ];
+      cpu-colors = [
+        (mkTuple [
+          (mkUint32 0)
+          "#e01b24"
+        ])
+        (mkTuple [
+          1
+          "#ff7800"
+        ])
+        (mkTuple [
+          2
+          "#f6d32d"
+        ])
+        (mkTuple [
+          3
+          "#33d17a"
+        ])
+        (mkTuple [
+          4
+          "#26a269"
+        ])
+        (mkTuple [
+          5
+          "#62a0ea"
+        ])
+        (mkTuple [
+          6
+          "#1c71d8"
+        ])
+        (mkTuple [
+          7
+          "#613583"
+        ])
+        (mkTuple [
+          8
+          "#9141ac"
+        ])
+        (mkTuple [
+          9
+          "#c061cb"
+        ])
+        (mkTuple [
+          10
+          "#ffbe6f"
+        ])
+        (mkTuple [
+          11
+          "#f9f06b"
+        ])
+        (mkTuple [
+          12
+          "#8ff0a4"
+        ])
+        (mkTuple [
+          13
+          "#2ec27e"
+        ])
+        (mkTuple [
+          14
+          "#1a5fb4"
+        ])
+        (mkTuple [
+          15
+          "#c061cb"
+        ])
+        (mkTuple [
+          16
+          "#7999c483f332"
+        ])
+        (mkTuple [
+          17
+          "#e7fff3327999"
+        ])
+        (mkTuple [
+          18
+          "#dae97999f332"
+        ])
+        (mkTuple [
+          19
+          "#7999f332b76e"
+        ])
+        (mkTuple [
+          20
+          "#f33293f37999"
+        ])
+        (mkTuple [
+          21
+          "#799982baf332"
+        ])
+        (mkTuple [
+          22
+          "#a635f3327999"
+        ])
+        (mkTuple [
+          23
+          "#f3327999c9b1"
+        ])
+      ];
       maximized = false;
       show-dependencies = false;
       show-whose-processes = "user";
@@ -137,7 +287,16 @@ with lib.hm.gvariant;
 
     "org/gnome/mutter" = {
       dynamic-workspaces = false;
-      output-luminance = [ (mkTuple [ "DP-1" "DEL" "Dell AW3821DW" "#GTIYMxgwABWz" (mkUint32 1) 190.0 ]) ];
+      output-luminance = [
+        (mkTuple [
+          "DP-1"
+          "DEL"
+          "Dell AW3821DW"
+          "#GTIYMxgwABWz"
+          (mkUint32 1)
+          190.0
+        ])
+      ];
     };
 
     "org/gnome/nautilus/preferences" = {
@@ -147,7 +306,10 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/nautilus/window-state" = {
-      initial-size = mkTuple [ 711 916 ];
+      initial-size = mkTuple [
+        711
+        916
+      ];
     };
 
     "org/gnome/settings-daemon/plugins/color" = {
@@ -155,8 +317,10 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/settings-daemon/plugins/media-keys" = {
-      custom-keybindings = [ "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" ];
-      screensaver = [];
+      custom-keybindings = [
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+      ];
+      screensaver = [ ];
     };
 
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
@@ -166,8 +330,13 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/shell" = {
-      disabled-extensions = [];
-      enabled-extensions = [ "tactile@lundal.io" "focus-changer@heartmire" "Vitals@CoreCoding.com" "blur-my-shell@aunetx" ];
+      disabled-extensions = [ ];
+      enabled-extensions = [
+        "tactile@lundal.io"
+        "focus-changer@heartmire"
+        "Vitals@CoreCoding.com"
+        "blur-my-shell@aunetx"
+      ];
       last-selected-power-profile = "performance";
       welcome-dialog-last-shown-version = "48.4";
     };
@@ -231,20 +400,20 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/shell/extensions/vitals" = {
-      hot-sensors = [ "_memory_usage_" "_system_load_1m_" "_processor_usage_" "__temperature_avg__" "__network-rx_max__" "__network-tx_max__" ];
+      hot-sensors = [
+        "_memory_usage_"
+        "_system_load_1m_"
+        "_processor_usage_"
+        "__temperature_avg__"
+        "__network-rx_max__"
+        "__network-tx_max__"
+      ];
       icon-style = 1;
       show-battery = false;
     };
 
-    "org/gnome/shell/keybindings" = {
-      switch-to-application-1 = [];
-      switch-to-application-2 = [];
-      switch-to-application-3 = [];
-      switch-to-application-4 = [];
-    };
-
     "org/gnome/shell/world-clocks" = {
-      locations = [];
+      locations = [ ];
     };
 
   };
