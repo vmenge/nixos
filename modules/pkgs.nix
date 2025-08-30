@@ -161,9 +161,6 @@
     wl-clipboard # clipboard for wayland
     wdisplays # configure displays
     xdg-utils
-    kdePackages.dolphin
-    kdePackages.ffmpegthumbs
-    kdePackages.breeze-icons
     adwaita-icon-theme
     adwaita-icon-theme-legacy
     hicolor-icon-theme
@@ -171,6 +168,8 @@
     dconf2nix
     gnomeExtensions.focus-changer
     gnomeExtensions.tactile
+    gnomeExtensions.blur-my-shell
+    gnomeExtensions.vitals
 
     # gaming
     game-devices-udev-rules # udev rules to make supported controlles available

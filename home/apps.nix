@@ -26,7 +26,6 @@
       "x-scheme-handler/http" = "google-chrome.desktop";
       "x-scheme-handler/https" = "google-chrome.desktop";
       "application/pdf" = "org.pwmt.zathura.desktop";
-      "inode/directory" = "dolphin.desktop";
       "TerminalEmulator" = "com.mitchellh.ghostty.desktop";
       "x-scheme-handler/terminal" = "com.mitchellh.ghostty.desktop";
       "video/mp4" = "vlc.desktop";

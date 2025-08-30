@@ -50,10 +50,12 @@
     "vmenge"
   ];
 
-  services.logind.lidSwitch = "suspend";
-  services.logind.lidSwitchDocked = "ignore";
-  services.logind.lidSwitchExternalPower = "ignore";
-  services.logind.killUserProcesses = false;
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchDocked = "ignore";
+    HandleLidSwitchExternalPower = "ignore";
+    KillUserProcesses = false;
+  };
 
   security.polkit.enable = true;
 
