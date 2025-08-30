@@ -54,28 +54,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/Weather" = {
-      locations = [
-        (mkVariant [
-          (mkUint32 2)
-          (mkVariant [
-            "Berlin"
-            "EDDB"
-            true
-            [
-              (mkTuple [
-                0.9142616340185987
-                0.23591034304566436
-              ])
-            ]
-            [
-              (mkTuple [
-                0.916588751323453
-                0.23387411976724018
-              ])
-            ]
-          ])
-        ])
-      ];
+      locations = [];
       window-height = 494;
       window-maximized = false;
       window-width = 439;
@@ -554,28 +533,7 @@ with lib.hm.gvariant;
 
     "org/gnome/shell/weather" = {
       automatic-location = true;
-      locations = [
-        (mkVariant [
-          (mkUint32 2)
-          (mkVariant [
-            "Berlin"
-            "EDDB"
-            true
-            [
-              (mkTuple [
-                0.9142616340185987
-                0.23591034304566436
-              ])
-            ]
-            [
-              (mkTuple [
-                0.916588751323453
-                0.23387411976724018
-              ])
-            ]
-          ])
-        ])
-      ];
+      locations = [];
     };
 
     "org/gnome/shell/world-clocks" = {
