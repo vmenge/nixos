@@ -5,8 +5,97 @@ with lib.hm.gvariant;
 
 {
   dconf.settings = {
+    "apps/seahorse/listing" = {
+      keyrings-selected = [ "gnupg://" ];
+    };
+
+    "apps/seahorse/windows/key-manager" = {
+      height = 476;
+      width = 600;
+    };
+
     "com/github/ryonakano/reco" = {
       autosave-destination = "/home/vmenge/Downloads";
+    };
+
+    "org/gnome/Characters" = {
+      recent-characters = [ "\128517" ];
+    };
+
+    "org/gnome/Connections" = {
+      first-run = false;
+    };
+
+    "org/gnome/Music" = {
+      window-maximized = true;
+    };
+
+    "org/gnome/Snapshot" = {
+      is-maximized = false;
+      window-height = 640;
+      window-width = 800;
+    };
+
+    "org/gnome/Totem" = {
+      active-plugins = [
+        "rotation"
+        "autoload-subtitles"
+        "mpris"
+        "movie-properties"
+        "screenshot"
+        "save-file"
+        "open-directory"
+        "screensaver"
+        "recent"
+        "skipto"
+        "variable-rate"
+      ];
+      subtitle-encoding = "UTF-8";
+    };
+
+    "org/gnome/Weather" = {
+      locations = [
+        (mkVariant [
+          (mkUint32 2)
+          (mkVariant [
+            "Berlin"
+            "EDDB"
+            true
+            [
+              (mkTuple [
+                0.9142616340185987
+                0.23591034304566436
+              ])
+            ]
+            [
+              (mkTuple [
+                0.916588751323453
+                0.23387411976724018
+              ])
+            ]
+          ])
+        ])
+      ];
+      window-height = 494;
+      window-maximized = false;
+      window-width = 439;
+    };
+
+    "org/gnome/baobab/ui" = {
+      is-maximized = false;
+      window-size = mkTuple [
+        960
+        600
+      ];
+    };
+
+    "org/gnome/clocks/state/window" = {
+      maximized = false;
+      panel-id = "world";
+      size = mkTuple [
+        870
+        690
+      ];
     };
 
     "org/gnome/control-center" = {
@@ -95,6 +184,10 @@ with lib.hm.gvariant;
       application-id = "gnome-power-panel.desktop";
     };
 
+    "org/gnome/desktop/notifications/application/org-gnome-characters" = {
+      application-id = "org.gnome.Characters.desktop";
+    };
+
     "org/gnome/desktop/notifications/application/steam" = {
       application-id = "steam.desktop";
     };
@@ -115,32 +208,9 @@ with lib.hm.gvariant;
       ];
     };
 
-    "org/gnome/shell/keybindings" = {
-      switch-to-application-1 = [ ];
-      switch-to-application-2 = [ ];
-      switch-to-application-3 = [ ];
-      switch-to-application-4 = [ ];
-      switch-to-application-5 = [ ];
-      switch-to-application-6 = [ ];
-      switch-to-application-7 = [ ];
-      switch-to-application-8 = [ ];
-      switch-to-application-9 = [ ];
-      switch-to-application-10 = [ ];
-    };
-
     "org/gnome/desktop/wm/keybindings" = {
       close = [ "<Super>q" ];
       minimize = [ ];
-      switch-to-application-1 = [ ];
-      switch-to-application-2 = [ ];
-      switch-to-application-3 = [ ];
-      switch-to-application-4 = [ ];
-      switch-to-application-5 = [ ];
-      switch-to-application-6 = [ ];
-      switch-to-application-7 = [ ];
-      switch-to-application-8 = [ ];
-      switch-to-application-9 = [ ];
-      switch-to-application-10 = [ ];
       move-to-workspace-1 = [ "<Shift><Super>1" ];
       move-to-workspace-10 = [ "<Shift><Super>0" ];
       move-to-workspace-2 = [ "<Shift><Super>2" ];
@@ -151,6 +221,16 @@ with lib.hm.gvariant;
       move-to-workspace-7 = [ "<Shift><Super>7" ];
       move-to-workspace-8 = [ "<Shift><Super>8" ];
       move-to-workspace-9 = [ "<Shift><Super>9" ];
+      switch-to-application-1 = [ ];
+      switch-to-application-10 = [ ];
+      switch-to-application-2 = [ ];
+      switch-to-application-3 = [ ];
+      switch-to-application-4 = [ ];
+      switch-to-application-5 = [ ];
+      switch-to-application-6 = [ ];
+      switch-to-application-7 = [ ];
+      switch-to-application-8 = [ ];
+      switch-to-application-9 = [ ];
       switch-to-workspace-1 = [ "<Super>1" ];
       switch-to-workspace-10 = [ "<Super>0" ];
       switch-to-workspace-2 = [ "<Super>2" ];
@@ -285,6 +365,17 @@ with lib.hm.gvariant;
       col-26-width = 0;
     };
 
+    "org/gnome/maps" = {
+      last-viewed-location = [
+        44.075354682282466
+        32.99014580089556
+      ];
+      map-type = "MapsVectorSource";
+      transportation-type = "pedestrian";
+      window-maximized = true;
+      zoom-level = 2;
+    };
+
     "org/gnome/mutter" = {
       dynamic-workspaces = false;
       output-luminance = [
@@ -310,6 +401,19 @@ with lib.hm.gvariant;
         711
         916
       ];
+      initial-size-file-chooser = mkTuple [
+        890
+        550
+      ];
+      maximized = false;
+    };
+
+    "org/gnome/portal/filechooser/google-chrome" = {
+      last-folder-path = "/home/vmenge/Downloads";
+    };
+
+    "org/gnome/portal/filechooser/org/gnome/Settings" = {
+      last-folder-path = "/home/vmenge/.wallpaper";
     };
 
     "org/gnome/settings-daemon/plugins/color" = {
@@ -337,6 +441,7 @@ with lib.hm.gvariant;
         "Vitals@CoreCoding.com"
         "blur-my-shell@aunetx"
       ];
+      favorite-apps = [ ];
       last-selected-power-profile = "performance";
       welcome-dialog-last-shown-version = "48.4";
     };
@@ -389,14 +494,36 @@ with lib.hm.gvariant;
     "org/gnome/shell/extensions/tactile" = {
       col-0 = 0;
       gap-size = 12;
+      grid-rows = 3;
+      layout-1 = [ "1" ];
+      layout-2 = [ "2" ];
       layout-2-col-0 = 1;
       layout-2-col-1 = 1;
       layout-2-col-2 = 1;
       layout-2-col-3 = 1;
-      layout-2-row-2 = 1;
+      layout-2-row-2 = 0;
+      layout-3 = [ "3" ];
+      layout-3-row-3 = 0;
+      layout-4 = [ "4" ];
       monitor-0-layout = 2;
       row-0 = 1;
       show-tiles = [ "<Super>e" ];
+      tile-0-0 = [ "q" ];
+      tile-0-1 = [ "a" ];
+      tile-0-2 = [ "z" ];
+      tile-0-3 = [ "z" ];
+      tile-1-0 = [ "w" ];
+      tile-1-1 = [ "s" ];
+      tile-1-2 = [ "x" ];
+      tile-1-3 = [ "x" ];
+      tile-2-0 = [ "e" ];
+      tile-2-1 = [ "d" ];
+      tile-2-2 = [ "c" ];
+      tile-2-3 = [ "c" ];
+      tile-3-0 = [ "r" ];
+      tile-3-1 = [ "f" ];
+      tile-3-2 = [ "v" ];
+      tile-3-3 = [ "v" ];
     };
 
     "org/gnome/shell/extensions/vitals" = {
@@ -412,8 +539,51 @@ with lib.hm.gvariant;
       show-battery = false;
     };
 
+    "org/gnome/shell/keybindings" = {
+      switch-to-application-1 = [ ];
+      switch-to-application-10 = [ ];
+      switch-to-application-2 = [ ];
+      switch-to-application-3 = [ ];
+      switch-to-application-4 = [ ];
+      switch-to-application-5 = [ ];
+      switch-to-application-6 = [ ];
+      switch-to-application-7 = [ ];
+      switch-to-application-8 = [ ];
+      switch-to-application-9 = [ ];
+    };
+
+    "org/gnome/shell/weather" = {
+      automatic-location = true;
+      locations = [
+        (mkVariant [
+          (mkUint32 2)
+          (mkVariant [
+            "Berlin"
+            "EDDB"
+            true
+            [
+              (mkTuple [
+                0.9142616340185987
+                0.23591034304566436
+              ])
+            ]
+            [
+              (mkTuple [
+                0.916588751323453
+                0.23387411976724018
+              ])
+            ]
+          ])
+        ])
+      ];
+    };
+
     "org/gnome/shell/world-clocks" = {
       locations = [ ];
+    };
+
+    "org/gtk/gtk4/settings/file-chooser" = {
+      show-hidden = true;
     };
 
   };
