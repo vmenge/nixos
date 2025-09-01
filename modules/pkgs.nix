@@ -114,6 +114,7 @@
     cargo-zigbuild
     nushell
     vulkan-tools
+    woeusb-ng # windows bootable usb
 
     # dev services
     gh # GitHub cli

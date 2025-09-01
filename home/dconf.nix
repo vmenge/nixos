@@ -245,10 +245,6 @@ with lib.hm.gvariant;
       last-folder-path = "/home/vmenge/.wallpaper";
     };
 
-    "org/gnome/portal/filechooser/org/gnome/Settings" = {
-      last-folder-path = "/home/vmenge/.wallpaper";
-    };
-
     "org/gnome/settings-daemon/plugins/color" = {
       night-light-schedule-automatic = false;
     };
