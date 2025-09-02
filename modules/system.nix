@@ -1,4 +1,16 @@
 { pkgs, lib, ... }:
+let
+  vmRegOpts = {
+    fixBinary = true;
+    matchCredentials = true;
+    wrapInterpreterInShell = false;
+  };
+
+  emuSys = lib.filter (s: s != pkgs.stdenv.hostPlatform.system) [
+    "aarch64-linux"
+    "x86_64-linux"
+  ];
+in
 {
   imports = [
     ./pkgs.nix
@@ -15,10 +27,12 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   networking.networkmanager.enable = true;
-  boot.binfmt.emulatedSystems = lib.filter (s: s != pkgs.stdenv.hostPlatform.system) [
-    "aarch64-linux"
-    "x86_64-linux"
-  ];
+
+  boot.binfmt = {
+    preferStaticEmulators = true;
+    emulatedSystems = emuSys;
+    registrations = lib.genAttrs emuSys (_: vmRegOpts);
+  };
 
   time.timeZone = "Europe/Berlin";
   i18n.defaultLocale = "en_US.UTF-8";
