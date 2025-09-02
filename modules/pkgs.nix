@@ -172,6 +172,7 @@
     gnomeExtensions.tactile
     gnomeExtensions.blur-my-shell
     gnomeExtensions.vitals
+    gnomeExtensions.clipboard-indicator
 
     # gaming
     game-devices-udev-rules # udev rules to make supported controlles available
