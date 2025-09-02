@@ -103,6 +103,7 @@
     dioxus-cli # dioxus
     jdk
     claude-code
+    codex
     probe-rs
     man-pages
     python3
