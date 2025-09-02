@@ -60,7 +60,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/control-center" = {
-      last-panel = "background";
+      last-panel = "power";
       window-state = mkTuple [ 1280 784 false ];
     };
 
@@ -113,7 +113,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/desktop/notifications" = {
-      application-children = [ "steam" ];
+      application-children = [ "steam" "gnome-power-panel" "google-chrome" ];
     };
 
     "org/gnome/desktop/notifications/application/com-mitchellh-ghostty" = {
@@ -150,6 +150,10 @@ with lib.hm.gvariant;
 
     "org/gnome/desktop/search-providers" = {
       sort-order = [ "org.gnome.Settings.desktop" "org.gnome.Contacts.desktop" "org.gnome.Nautilus.desktop" ];
+    };
+
+    "org/gnome/desktop/session" = {
+      idle-delay = mkUint32 0;
     };
 
     "org/gnome/desktop/wm/keybindings" = {
@@ -241,10 +245,6 @@ with lib.hm.gvariant;
       last-folder-path = "/home/vmenge/Downloads";
     };
 
-    "org/gnome/portal/filechooser/org/gnome/Settings" = {
-      last-folder-path = "/home/vmenge/.wallpaper";
-    };
-
     "org/gnome/settings-daemon/plugins/color" = {
       night-light-schedule-automatic = false;
     };
@@ -258,6 +258,11 @@ with lib.hm.gvariant;
       binding = "<Super>Return";
       command = "ghostty";
       name = "terminal";
+    };
+
+    "org/gnome/settings-daemon/plugins/power" = {
+      sleep-inactive-ac-type = "nothing";
+      sleep-inactive-battery-type = "nothing";
     };
 
     "org/gnome/shell" = {
