@@ -117,6 +117,8 @@
     nushell
     vulkan-tools
     woeusb-ng # windows bootable usb
+    python313Packages.west
+    taplo
 
     # dev services
     gh # GitHub cli
