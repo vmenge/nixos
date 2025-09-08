@@ -60,8 +60,8 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/control-center" = {
-      last-panel = "power";
-      window-state = mkTuple [ 1280 784 false ];
+      last-panel = "keyboard";
+      window-state = mkTuple [ 1440 928 true ];
     };
 
     "org/gnome/desktop/app-folders" = {
@@ -113,7 +113,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/desktop/notifications" = {
-      application-children = [ "steam" "gnome-power-panel" "google-chrome" ];
+      application-children = [ "steam" "gnome-power-panel" "google-chrome" "spotify" ];
     };
 
     "org/gnome/desktop/notifications/application/com-mitchellh-ghostty" = {
@@ -134,6 +134,10 @@ with lib.hm.gvariant;
 
     "org/gnome/desktop/notifications/application/slack" = {
       application-id = "slack.desktop";
+    };
+
+    "org/gnome/desktop/notifications/application/spotify" = {
+      application-id = "spotify.desktop";
     };
 
     "org/gnome/desktop/notifications/application/steam" = {
@@ -159,6 +163,10 @@ with lib.hm.gvariant;
     "org/gnome/desktop/wm/keybindings" = {
       close = [ "<Super>q" ];
       minimize = [];
+      move-to-monitor-down = [ "<Shift><Control><Super>j" ];
+      move-to-monitor-left = [ "<Shift><Control><Super>h" ];
+      move-to-monitor-right = [ "<Shift><Control><Super>l" ];
+      move-to-monitor-up = [ "<Shift><Control><Super>k" ];
       move-to-workspace-1 = [ "<Shift><Super>1" ];
       move-to-workspace-10 = [ "<Shift><Super>0" ];
       move-to-workspace-2 = [ "<Shift><Super>2" ];
@@ -227,6 +235,7 @@ with lib.hm.gvariant;
     "org/gnome/mutter" = {
       dynamic-workspaces = false;
       output-luminance = [ (mkTuple [ "DP-1" "DEL" "Dell AW3821DW" "#GTIYMxgwABWz" (mkUint32 1) 190.0 ]) ];
+      workspaces-only-on-primary = true;
     };
 
     "org/gnome/nautilus/preferences" = {
@@ -242,6 +251,14 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/portal/filechooser/google-chrome" = {
+      last-folder-path = "/home/vmenge/Screenshots";
+    };
+
+    "org/gnome/portal/filechooser/org/gnome/Settings" = {
+      last-folder-path = "/home/vmenge/.wallpaper";
+    };
+
+    "org/gnome/portal/filechooser/slack" = {
       last-folder-path = "/home/vmenge/Downloads";
     };
 
@@ -337,6 +354,8 @@ with lib.hm.gvariant;
       layout-3-row-3 = 0;
       layout-4 = [ "4" ];
       monitor-0-layout = 2;
+      monitor-1-layout = 2;
+      monitor-2-layout = 2;
       row-0 = 1;
       show-tiles = [ "<Super>e" ];
       tile-0-0 = [ "q" ];
