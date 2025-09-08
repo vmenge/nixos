@@ -119,6 +119,7 @@
     woeusb-ng # windows bootable usb
     python313Packages.west
     taplo
+    qemu
 
     # dev services
     gh # GitHub cli
