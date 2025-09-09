@@ -250,6 +250,7 @@
     usbutils
     edid-decode
     pciutils
+    socat
   ];
 
   fonts.packages = with pkgs; [
