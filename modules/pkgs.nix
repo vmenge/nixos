@@ -121,6 +121,7 @@
     taplo
     qemu
     cloud-init
+    cloud-utils
 
     # dev services
     gh # GitHub cli
