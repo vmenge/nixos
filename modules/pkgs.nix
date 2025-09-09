@@ -123,6 +123,7 @@
     cloud-init
     cloud-utils
     libguestfs
+    guestfs-tools
 
     # dev services
     gh # GitHub cli

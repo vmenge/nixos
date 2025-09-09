@@ -258,6 +258,10 @@ with lib.hm.gvariant;
       last-folder-path = "/home/vmenge/.wallpaper";
     };
 
+    "org/gnome/portal/filechooser/org/gnome/Settings" = {
+      last-folder-path = "/home/vmenge/.wallpaper";
+    };
+
     "org/gnome/portal/filechooser/slack" = {
       last-folder-path = "/home/vmenge/Downloads";
     };
@@ -284,7 +288,7 @@ with lib.hm.gvariant;
 
     "org/gnome/shell" = {
       disabled-extensions = [];
-      enabled-extensions = [ "tactile@lundal.io" "focus-changer@heartmire" "Vitals@CoreCoding.com" "blur-my-shell@aunetx" ];
+      enabled-extensions = [ "tactile@lundal.io" "focus-changer@heartmire" "Vitals@CoreCoding.com" "blur-my-shell@aunetx" "clipboard-indicator@tudmotu.com" ];
       favorite-apps = [];
       last-selected-power-profile = "performance";
       welcome-dialog-last-shown-version = "48.4";
