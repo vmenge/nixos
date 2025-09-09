@@ -258,10 +258,6 @@ with lib.hm.gvariant;
       last-folder-path = "/home/vmenge/.wallpaper";
     };
 
-    "org/gnome/portal/filechooser/org/gnome/Settings" = {
-      last-folder-path = "/home/vmenge/.wallpaper";
-    };
-
     "org/gnome/portal/filechooser/slack" = {
       last-folder-path = "/home/vmenge/Downloads";
     };
