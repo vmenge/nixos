@@ -122,6 +122,7 @@
     qemu
     cloud-init
     cloud-utils
+    libguestfs
 
     # dev services
     gh # GitHub cli
