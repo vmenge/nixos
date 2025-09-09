@@ -120,6 +120,7 @@
     python313Packages.west
     taplo
     qemu
+    cloud-init
 
     # dev services
     gh # GitHub cli
