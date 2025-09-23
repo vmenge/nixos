@@ -17,7 +17,6 @@
       "provider": "anthropic",
       "model": "claude-3-7-sonnet-latest"
     },
-    "version": "2",
     "enabled": true
   },
   "toolbar": {
@@ -27,14 +26,14 @@
   },
   "tab_bar": { "show": true },
   "scrollbar": { "show": "auto" },
-  "buffer_font_family": "JetBrainsMono Nerd Font",
-  "ui_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_family": "Berkeley Mono",
+  "ui_font_family": "Berkeley Mono",
   "ui_font_size": 14,
   "buffer_font_size": 14,
   "theme": {
     "mode": "dark",
     "light": "Catppuccin Macchiato (Blur)",
-    "dark": "Gruvbox Dark"
+    "dark": "Gentle Dark"
   },
   "icon_theme": {
     "mode": "dark",

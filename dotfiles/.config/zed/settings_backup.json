@@ -11,7 +11,7 @@
   "features": {
     "edit_prediction_provider": "zed"
   },
-  "assistant": {
+  "agent": {
     "default_profile": "write",
     "default_model": {
       "provider": "anthropic",
@@ -34,7 +34,7 @@
   "theme": {
     "mode": "dark",
     "light": "Catppuccin Macchiato (Blur)",
-    "dark": "Nightfox"
+    "dark": "Gruvbox Dark Hard"
   },
   "icon_theme": {
     "mode": "dark",
@@ -57,9 +57,7 @@
     },
     "rust-analyzer": {
       "initialization_options": {
-        "checkOnSave": {
-          "command": "clippy"
-        }
+        "checkOnSave": true
       }
     },
     "zls": {
