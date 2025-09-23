@@ -60,7 +60,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/control-center" = {
-      last-panel = "keyboard";
+      last-panel = "power";
       window-state = mkTuple [ 1440 928 true ];
     };
 
@@ -113,7 +113,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/desktop/notifications" = {
-      application-children = [ "steam" "gnome-power-panel" "google-chrome" "spotify" ];
+      application-children = [ "steam" "gnome-power-panel" "google-chrome" "spotify" "org-gnome-characters" "com-mitchellh-ghostty" "slack" ];
     };
 
     "org/gnome/desktop/notifications/application/com-mitchellh-ghostty" = {
@@ -210,6 +210,20 @@ with lib.hm.gvariant;
       migrated = true;
     };
 
+    "org/gnome/file-roller/listing" = {
+      list-mode = "as-folder";
+      name-column-width = 67;
+      show-path = false;
+      sort-method = "name";
+      sort-type = "ascending";
+    };
+
+    "org/gnome/file-roller/ui" = {
+      sidebar-width = 200;
+      window-height = 480;
+      window-width = 600;
+    };
+
     "org/gnome/gnome-system-monitor" = {
       cpu-colors = [ (mkTuple [ (mkUint32 0) "#e01b24" ]) (mkTuple [ 1 "#ff7800" ]) (mkTuple [ 2 "#f6d32d" ]) (mkTuple [ 3 "#33d17a" ]) (mkTuple [ 4 "#26a269" ]) (mkTuple [ 5 "#62a0ea" ]) (mkTuple [ 6 "#1c71d8" ]) (mkTuple [ 7 "#613583" ]) (mkTuple [ 8 "#9141ac" ]) (mkTuple [ 9 "#c061cb" ]) (mkTuple [ 10 "#ffbe6f" ]) (mkTuple [ 11 "#f9f06b" ]) (mkTuple [ 12 "#8ff0a4" ]) (mkTuple [ 13 "#2ec27e" ]) (mkTuple [ 14 "#1a5fb4" ]) (mkTuple [ 15 "#c061cb" ]) (mkTuple [ 16 "#7999c483f332" ]) (mkTuple [ 17 "#e7fff3327999" ]) (mkTuple [ 18 "#dae97999f332" ]) (mkTuple [ 19 "#7999f332b76e" ]) (mkTuple [ 20 "#f33293f37999" ]) (mkTuple [ 21 "#799982baf332" ]) (mkTuple [ 22 "#a635f3327999" ]) (mkTuple [ 23 "#f3327999c9b1" ]) ];
       maximized = false;
@@ -258,6 +272,10 @@ with lib.hm.gvariant;
       last-folder-path = "/home/vmenge/.wallpaper";
     };
 
+    "org/gnome/portal/filechooser/org/gnome/Settings" = {
+      last-folder-path = "/home/vmenge/.wallpaper";
+    };
+
     "org/gnome/portal/filechooser/slack" = {
       last-folder-path = "/home/vmenge/Downloads";
     };
@@ -286,7 +304,7 @@ with lib.hm.gvariant;
       disabled-extensions = [];
       enabled-extensions = [ "tactile@lundal.io" "focus-changer@heartmire" "Vitals@CoreCoding.com" "blur-my-shell@aunetx" "clipboard-indicator@tudmotu.com" ];
       favorite-apps = [];
-      last-selected-power-profile = "performance";
+      last-selected-power-profile = "power-saver";
       welcome-dialog-last-shown-version = "48.4";
     };
 
