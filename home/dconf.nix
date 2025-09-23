@@ -60,7 +60,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/control-center" = {
-      last-panel = "keyboard";
+      last-panel = "display";
       window-state = mkTuple [ 1440 928 true ];
     };
 
@@ -234,7 +234,7 @@ with lib.hm.gvariant;
 
     "org/gnome/mutter" = {
       dynamic-workspaces = false;
-      output-luminance = [ (mkTuple [ "DP-1" "DEL" "Dell AW3821DW" "#GTIYMxgwABWz" (mkUint32 1) 190.0 ]) ];
+      output-luminance = [ (mkTuple [ "DP-1" "DEL" "Dell AW3821DW" "#GTIYMxgwABWz" (mkUint32 1) 190.0 ]) (mkTuple [ "DP-3" "DEL" "Dell AW3821DW" "#GTIYMxgwABWz" 1 190.0 ]) ];
       workspaces-only-on-primary = true;
     };
 
@@ -252,6 +252,10 @@ with lib.hm.gvariant;
 
     "org/gnome/portal/filechooser/google-chrome" = {
       last-folder-path = "/home/vmenge/Screenshots";
+    };
+
+    "org/gnome/portal/filechooser/org/gnome/Settings" = {
+      last-folder-path = "/home/vmenge/.wallpaper";
     };
 
     "org/gnome/portal/filechooser/org/gnome/Settings" = {
