@@ -9,10 +9,8 @@ window-colorspace = "display-p3"
 window-decoration = true
 confirm-close-surface = false
 adw-toolbar-style = raised-border
-gtk-adwaita = true
 gtk-wide-tabs = true
 gtk-tabs-location = top
-theme = tokyonight
 background-opacity=0.95
 background-blur=true
 
