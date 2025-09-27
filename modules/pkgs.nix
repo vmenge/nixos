@@ -224,6 +224,7 @@
     shotcut
     libcamera
     reco
+    gpu-screen-recorder-gtk
 
     # filesystems
     ntfs3g
