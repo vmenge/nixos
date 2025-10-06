@@ -50,6 +50,13 @@ avahi() {
 }
 
 ##########################################
+# restart sound
+##########################################
+rsound() {
+  systemctl --user restart pipewire pipewire-pulse wireplumber
+}
+
+##########################################
 # edit command line                      #
 ##########################################
 autoload -Uz edit-command-line
