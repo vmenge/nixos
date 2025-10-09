@@ -96,7 +96,7 @@
     opam # OCaml package manager
     ocamlPackages.ocaml-lsp
     ocamlPackages.ocamlformat
-    ocamlPackages.ocamlformat-ocamlformat-rpc-lib
+    ocamlPackages.ocamlformat-rpc-lib
     ocamlPackages.ocp-indent
     i2c-tools
     stlink-gui
