@@ -98,6 +98,11 @@
     ocamlPackages.ocamlformat
     ocamlPackages.ocamlformat-rpc-lib
     ocamlPackages.ocp-indent
+    ocamlPackages.merlin
+    ocamlPackages.reason
+    ocamlPackages.dune_3
+    ocamlPackages.findlib
+    ocamlPackages.melange
     i2c-tools
     stlink-gui
     zig
