@@ -8,6 +8,19 @@ source $HOME/.scripts/dconf.sh
 # rust                                   #
 ##########################################
 export PATH="$HOME/.rustup/toolchains/$(rustup show active-toolchain | cut -d" " -f1)/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+
+##########################################
+# ocaml                                  #
+##########################################
+# BEGIN opam configuration
+# This is useful if you're using opam as it adds:
+#   - the correct directories to the PATH
+#   - auto-completion for the opam binary
+# This section can be safely removed at any time if needed.
+[[ ! -r '/home/vmenge/.opam/opam-init/init.zsh' ]] || source '/home/vmenge/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
+# END opam configuration
 
 ##########################################
 # aliases                                #

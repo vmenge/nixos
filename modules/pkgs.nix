@@ -60,6 +60,7 @@
     lldb # debugger
     gdb
     valgrind
+    ante
     clojure
     clojure-lsp
     leiningen
@@ -93,6 +94,10 @@
     lua-language-server
     markdown-oxide # markdown lsp
     opam # OCaml package manager
+    ocamlPackages.ocaml-lsp
+    ocamlPackages.ocamlformat
+    ocamlPackages.ocamlformat-ocamlformat-rpc-lib
+    ocamlPackages.ocp-indent
     i2c-tools
     stlink-gui
     zig
@@ -105,6 +110,7 @@
     jdk
     claude-code
     codex
+    amp-cli
     probe-rs
     man-pages
     python3
@@ -267,6 +273,8 @@
     nerd-fonts.droid-sans-mono
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
+    nerd-fonts.iosevka
+    nerd-fonts.iosevka-term
     noto-fonts
     noto-fonts
     noto-fonts-cjk-sans
