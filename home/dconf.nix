@@ -60,7 +60,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/control-center" = {
-      last-panel = "display";
+      last-panel = "background";
       window-state = mkTuple [ 1440 928 true ];
     };
 
@@ -95,8 +95,8 @@ with lib.hm.gvariant;
     "org/gnome/desktop/background" = {
       color-shading-type = "solid";
       picture-options = "zoom";
-      picture-uri = "file:///home/vmenge/.local/share/backgrounds/2025-09-01-19-02-56-wallhaven-yj9w9g.jpg";
-      picture-uri-dark = "file:///home/vmenge/.local/share/backgrounds/2025-09-01-19-02-56-wallhaven-yj9w9g.jpg";
+      picture-uri = "file:///home/vmenge/.local/share/backgrounds/2025-10-10-19-13-24-wallhaven-wqogd6.jpg";
+      picture-uri-dark = "file:///home/vmenge/.local/share/backgrounds/2025-10-10-19-13-24-wallhaven-wqogd6.jpg";
       primary-color = "#000000000000";
       secondary-color = "#000000000000";
     };
@@ -113,11 +113,15 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/desktop/notifications" = {
-      application-children = [ "steam" "gnome-power-panel" "google-chrome" "spotify" "org-gnome-characters" "com-mitchellh-ghostty" "slack" ];
+      application-children = [ "steam" "gnome-power-panel" "google-chrome" "spotify" "org-gnome-characters" "com-mitchellh-ghostty" "slack" "dev-zed-zed" ];
     };
 
     "org/gnome/desktop/notifications/application/com-mitchellh-ghostty" = {
       application-id = "com.mitchellh.ghostty.desktop";
+    };
+
+    "org/gnome/desktop/notifications/application/dev-zed-zed" = {
+      application-id = "dev.zed.Zed.desktop";
     };
 
     "org/gnome/desktop/notifications/application/gnome-power-panel" = {
@@ -130,6 +134,10 @@ with lib.hm.gvariant;
 
     "org/gnome/desktop/notifications/application/org-gnome-characters" = {
       application-id = "org.gnome.Characters.desktop";
+    };
+
+    "org/gnome/desktop/notifications/application/org-gnome-nautilus" = {
+      application-id = "org.gnome.Nautilus.desktop";
     };
 
     "org/gnome/desktop/notifications/application/slack" = {
@@ -147,7 +155,7 @@ with lib.hm.gvariant;
     "org/gnome/desktop/screensaver" = {
       color-shading-type = "solid";
       picture-options = "zoom";
-      picture-uri = "file:///home/vmenge/.local/share/backgrounds/2025-09-01-19-02-56-wallhaven-yj9w9g.jpg";
+      picture-uri = "file:///home/vmenge/.local/share/backgrounds/2025-10-10-19-13-24-wallhaven-wqogd6.jpg";
       primary-color = "#000000000000";
       secondary-color = "#000000000000";
     };
@@ -264,8 +272,16 @@ with lib.hm.gvariant;
       maximized = false;
     };
 
+    "org/gnome/portal/filechooser/com/google/Chrome" = {
+      last-folder-path = "/home/vmenge/Downloads";
+    };
+
     "org/gnome/portal/filechooser/google-chrome" = {
       last-folder-path = "/home/vmenge/Screenshots";
+    };
+
+    "org/gnome/portal/filechooser/org/chromium/Chromium" = {
+      last-folder-path = "/home/vmenge/Downloads";
     };
 
     "org/gnome/portal/filechooser/org/gnome/Settings" = {

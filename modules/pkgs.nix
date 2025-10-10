@@ -135,6 +135,7 @@
     cloud-utils
     libguestfs
     guestfs-tools
+    exercism
 
     # dev services
     gh # GitHub cli
