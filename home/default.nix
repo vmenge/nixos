@@ -54,9 +54,6 @@ in
 
     ".config/sunshine/sunshine.conf".source = sl ".config/sunshine/sunshine.conf";
     ".config/sunshine/apps.json".source = sl ".config/sunshine/apps.json";
-
-    ".config/exercism".source = sl ".config/exericsm";
-    ".config/exercism".recursive = true;
   };
 
   home.sessionVariables = {
