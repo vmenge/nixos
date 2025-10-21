@@ -29,14 +29,14 @@
   },
   "tab_bar": { "show": true },
   "scrollbar": { "show": "auto" },
-  "buffer_font_family": "Iosevka Nerd Font Mono",
-  "ui_font_family": "Iosevka Nerd Font Mono",
+  "buffer_font_family": "Berkeley Mono",
+  "ui_font_family": "Berkeley Mono",
   "ui_font_size": 16,
   "buffer_font_size": 16,
   "theme": {
     "mode": "dark",
     "light": "Catppuccin Macchiato (Blur)",
-    "dark": "Ayu Dark"
+    "dark": "Vercel Dark"
   },
   "icon_theme": {
     "mode": "dark",

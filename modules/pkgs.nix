@@ -39,6 +39,7 @@
     neovim
     vim
     zed-editor
+    vscode
 
     # dev tools, lsps, fmts, runtimes and compilers
     git
@@ -164,6 +165,7 @@
     gtk2 # UI toolkit
     gtk3 # UI toolkit
     gtk4 # UI toolkit
+    webkitgtk_4_1
     grim # grab images from wayland compositor
     slurp # select region for wayland compositor
     fuzzel # application launcher
