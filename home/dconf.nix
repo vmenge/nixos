@@ -116,6 +116,10 @@ with lib.hm.gvariant;
       application-children = [ "steam" "gnome-power-panel" "google-chrome" "spotify" "org-gnome-characters" "com-mitchellh-ghostty" "slack" "dev-zed-zed" ];
     };
 
+    "org/gnome/desktop/notifications/application/code" = {
+      application-id = "code.desktop";
+    };
+
     "org/gnome/desktop/notifications/application/com-mitchellh-ghostty" = {
       application-id = "com.mitchellh.ghostty.desktop";
     };
@@ -218,6 +222,21 @@ with lib.hm.gvariant;
       migrated = true;
     };
 
+    "org/gnome/file-roller/dialogs/extract" = {
+      height = 800;
+      recreate-folders = true;
+      skip-newer = false;
+      width = 1000;
+    };
+
+    "org/gnome/file-roller/file-selector" = {
+      show-hidden = false;
+      sidebar-size = 300;
+      sort-method = "name";
+      sort-type = "ascending";
+      window-size = mkTuple [ (-1) (-1) ];
+    };
+
     "org/gnome/file-roller/listing" = {
       list-mode = "as-folder";
       name-column-width = 67;
@@ -292,6 +311,10 @@ with lib.hm.gvariant;
       last-folder-path = "/home/vmenge/Downloads";
     };
 
+    "org/gnome/portal/filechooser/transient" = {
+      last-folder-path = "/home/vmenge/Downloads/systemdtui";
+    };
+
     "org/gnome/settings-daemon/plugins/color" = {
       night-light-schedule-automatic = false;
     };
@@ -316,7 +339,7 @@ with lib.hm.gvariant;
       disabled-extensions = [];
       enabled-extensions = [ "tactile@lundal.io" "focus-changer@heartmire" "Vitals@CoreCoding.com" "blur-my-shell@aunetx" "clipboard-indicator@tudmotu.com" ];
       favorite-apps = [];
-      last-selected-power-profile = "power-saver";
+      last-selected-power-profile = "performance";
       welcome-dialog-last-shown-version = "48.4";
     };
 
