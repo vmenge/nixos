@@ -207,7 +207,7 @@ return {
   {
     "loctvl842/monokai-pro.nvim",
     config = function()
-      -- require("monokai-pro-machine").setup()
+      vim.cmd.colorscheme("monokai-pro-octagon")
     end,
   },
   {
@@ -377,12 +377,6 @@ return {
     end
   },
   {
-    "vague2k/vague.nvim",
-    config = function()
-      -- vim.cmd.colorscheme("vague")
-    end
-  },
-  {
     "pineapplegiant/spaceduck",
     config = function()
       -- vim.cmd.colorscheme("spaceduck")
@@ -428,7 +422,7 @@ return {
     lazy = false,
     priority = 1000,
     init = function()
-      vim.cmd("colorscheme vscode")
+      -- vim.cmd("colorscheme vscode")
     end
   },
   {
@@ -482,7 +476,7 @@ return {
     priority = 1000,
     config = function()
       require("vercel").setup({
-        theme = "dark",     -- String: Sets the theme to light or dark (Default: light
+        theme = "dark",      -- String: Sets the theme to light or dark (Default: light
         transparent = false, -- Boolean: Sets the background to transparent (Default: false)
         italics = {
           comments = true,   -- Boolean: Italicizes comments (Default: true)
@@ -496,7 +490,53 @@ return {
       })
 
       -- This must be called before setting the colorscheme, otherwise it will always default to light mode
-      vim.cmd.colorscheme("vercel")
+      -- vim.cmd.colorscheme("vercel")
     end,
+  },
+  {
+    "eldritch-theme/eldritch.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    config = function()
+      -- vim.cmd.colorscheme("eldritch")
+    end
+  },
+  {
+    "scottmckendry/cyberdream.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("cyberdream").setup({
+        transparent = true
+      })
+
+      -- vim.cmd.colorscheme("cyberdream")
+    end
+  },
+  {
+    "vague-theme/vague.nvim",
+    lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other plugins
+    config = function()
+      -- NOTE: you do not need to call setup if you don't want to.
+      require("vague").setup({
+        -- optional configuration here
+      })
+
+      -- vim.cmd.colorscheme("vague")
+    end
+  },
+  {
+    "webhooked/kanso.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("kanso").setup({
+        italics = false
+      })
+
+      -- vim.cmd.colorscheme("kanso")
+    end
   }
 }
