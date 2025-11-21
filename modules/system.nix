@@ -28,6 +28,8 @@ in
   boot.kernelPackages = pkgs.linuxPackages_latest;
   networking.networkmanager.enable = true;
 
+  boot.kernelModules = [ "hid-wiimote" ];
+
   boot.binfmt = {
     preferStaticEmulators = true;
     emulatedSystems = emuSys;

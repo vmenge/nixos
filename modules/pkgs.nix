@@ -206,6 +206,7 @@
     mangohud
     lsfg-vk
     lsfg-vk-ui
+    xwiimote
 
     # messaging
     slack
