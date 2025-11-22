@@ -48,6 +48,9 @@ in
     ".scripts".source = sl ".scripts";
     ".scripts".recursive = true;
 
+    ".config/wii".source = sl ".config/wii";
+    ".config/wii".recursive = true;
+
     ".config/starship.toml".source = sl ".config/starship.toml";
     ".zshrc".source = sl ".zshrc";
     ".aws/config".source = sl ".aws/config";

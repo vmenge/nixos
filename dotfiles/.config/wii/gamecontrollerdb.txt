@@ -1,0 +1,1 @@
+05008a0d7e0500000603000000060000,Nintendo Wii Remote,crc:0d8a,platform:Linux,a:b0,b:b1,x:b2,y:b3,dpleft:b12,dpright:b13,dpup:b11,dpdown:b14,leftx:a0,lefty:a1~,leftstick:b6,rightx:a2,righty:a3~,rightstick:b7,leftshoulder:b4,lefttrigger:+a5,rightshoulder:b5,righttrigger:+a4,back:b10,start:b9,guide:b8,steam:1,

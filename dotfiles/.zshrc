@@ -55,6 +55,12 @@ if [ -n "${commands[fzf-share]}" ]; then
   source "$(fzf-share)/completion.zsh"
 fi
 
+
+##########################################
+# wii remote                             #
+##########################################
+export SDL_GAMECONTROLLERCONFIG="$(cat ~/.config/wii/gamecontrollerdb.txt)"
+
 ##########################################
 # avahi                                  #
 ##########################################
