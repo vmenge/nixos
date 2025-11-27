@@ -12,7 +12,7 @@ in
 
   home.username = "vmenge";
   home.homeDirectory = "/home/vmenge";
-  home.stateVersion = "26.05";
+  home.stateVersion = "25.11";
 
   home.file = {
     ".config/nvim".source = sl ".config/nvim";
