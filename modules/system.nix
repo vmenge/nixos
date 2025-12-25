@@ -16,6 +16,7 @@ in
     ./pkgs.nix
     ./sway.nix
     ./gnome.nix
+    ./steam.nix
   ];
 
   nix.settings.experimental-features = [

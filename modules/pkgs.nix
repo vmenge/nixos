@@ -9,11 +9,6 @@
   programs.nix-ld.enable = true;
   services.fwupd.enable = true;
 
-  programs.steam.enable = true;
-  programs.steam.gamescopeSession.enable = true;
-  programs.gamemode.enable = true;
-  programs.gamescope.capSysNice = true;
-
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
   programs.starship.enable = true;

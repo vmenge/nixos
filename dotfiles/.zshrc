@@ -81,10 +81,3 @@ rsound() {
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
-
-##########################################
-# auto start sway on tty login          #
-##########################################
-# if [ "$(tty)" = "/dev/tty1" ]; then
-#   exec sway --unsupported-gpu
-# fi
