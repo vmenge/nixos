@@ -27,11 +27,12 @@
 
     nvidiaSettings = true;
     prime = {
-      sync.enable = true;
-      offload.enable = false;
+      # disable bc igpu disabled rn
+      # sync.enable = true;
+      # offload.enable = false;
 
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
+      # intelBusId = "PCI:0:2:0";
+      # nvidiaBusId = "PCI:1:0:0";
     };
   };
 
