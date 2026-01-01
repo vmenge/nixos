@@ -13,6 +13,8 @@
   users.defaultUserShell = pkgs.zsh;
   programs.starship.enable = true;
 
+  programs.adb.enable = true;
+
   programs.light.enable = true;
 
   services.sunshine = {
