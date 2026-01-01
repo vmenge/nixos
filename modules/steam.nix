@@ -1,16 +1,16 @@
 { pkgs, ... }:
 let
   steamosSessionSelect = pkgs.writeShellScriptBin "steamos-session-select" ''
-      #!/usr/bin/env bash
-      set -eu
+    #!/usr/bin/env bash
+    set -eu
 
-      # Steam calls this with an argument (e.g. "desktop"/"gamescope"/"plasma"),
-      # but if you just want “back to login screen”, you can ignore it.
-      if [ -n "''${XDG_SESSION_ID:-}" ]; then
-        exec loginctl terminate-session "''${XDG_SESSION_ID}"
-      else
-        exec loginctl terminate-user "''${USER}"
-      fi
+    # Steam calls this with an argument (e.g. "desktop"/"gamescope"/"plasma"),
+    # but if you just want “back to login screen”, you can ignore it.
+    if [ -n "''${XDG_SESSION_ID:-}" ]; then
+      exec loginctl terminate-session "''${XDG_SESSION_ID}"
+    else
+      exec loginctl terminate-user "''${USER}"
+    fi
   '';
 in
 {
@@ -30,4 +30,8 @@ in
     "DP-1,DP-2,DP-3,HDMI-A-1,*,eDP-1"
   ];
 
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 }

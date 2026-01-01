@@ -100,6 +100,15 @@ in
       47989
       47990
       48010
+      # steam
+      27036
+      27037
+    ];
+    allowedUDPPorts = [
+      # steam
+      3478
+      4379
+      4380
     ];
     allowedUDPPortRanges = [
       # sunshine
@@ -111,6 +120,15 @@ in
       {
         from = 8000;
         to = 8010;
+      }
+      # steam
+      {
+        from = 27000;
+        to = 27031;
+      }
+      {
+        from = 27036;
+        to = 27036;
       }
     ];
   };
