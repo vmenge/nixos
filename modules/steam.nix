@@ -46,25 +46,18 @@ in
   ];
 
   # vr permission shit
-  package = pkgs.steam.override {
-    buildFHSEnv =
-      args:
-      (pkgs.buildFHSEnv.override {
-        # Use a patched bubblewrap that doesn't strip capabilities
-        bubblewrap = pkgs.bubblewrap.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [
-            # You can use a local patch file or a fetchpatch
-            # This patch allows the --cap-add flag to work in the FHS env
-            ./bwrap-cap-fix.patch
-          ];
-        });
-      })
-        (
-          args
-          // {
-            # Add the specific capability SteamVR needs
-            extraBwrapArgs = (args.extraBwrapArgs or [ ]) ++ [ "--cap-add ALL" ];
-          }
-        );
+  programs.steam.package = 
+   let
+  patchedBwrap = pkgs.bubblewrap.overrideAttrs (o: {
+    patches = (o.patches or []) ++ [
+      ./bwrap.patch
+    ];
+  });
+in pkgs.steam.override {
+    buildFHSEnv = (args: ((pkgs.buildFHSEnv.override {
+      bubblewrap = patchedBwrap;
+    }) (args // {
+      extraBwrapArgs = (args.extraBwrapArgs or []) ++ [ "--cap-add ALL" ];
+    })));
   };
-}
+  }
