@@ -50,7 +50,7 @@ in
    let
   patchedBwrap = pkgs.bubblewrap.overrideAttrs (o: {
     patches = (o.patches or []) ++ [
-      ./bwrap.patch
+      ./steam-bwrap.patch
     ];
   });
 in pkgs.steam.override {

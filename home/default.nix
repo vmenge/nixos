@@ -75,11 +75,20 @@ in
     GDK_BACKEND = "wayland";
     QT_QPA_PLATFORM = "wayland";
     SDL_VIDEODRIVER = "wayland,x11,windows";
-    GBM_BACKEND = "nvidia-drm";
+    # GBM_BACKEND = "nvidia-drm";
     LIBVA_DRIVER_NAME = "nvidia";
     __GL_THREADED_OPTIMIZATIONS = "0";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     BROWSER = "google-chrome";
+    # vr shit
+    LD_LIBRARY_PATH = "${
+      pkgs.lib.makeLibraryPath [
+        pkgs.openxr-loader
+        pkgs.vulkan-loader
+      ]
+    }:$LD_LIBRARY_PATH";
+    XR_RUNTIME_JSON = "${config.home.homeDirectory}/.config/openxr/1/active_runtime.json";
+    PROTON_ENABLE_VR = 1;
   };
 
   gtk = {
