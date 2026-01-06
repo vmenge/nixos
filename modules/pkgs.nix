@@ -204,6 +204,7 @@
     lsfg-vk
     lsfg-vk-ui
     xwiimote
+    sidequest
 
     # messaging
     slack
