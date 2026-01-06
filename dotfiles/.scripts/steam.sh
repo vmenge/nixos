@@ -9,5 +9,5 @@ vrstatus() {
 }
 
 vrkill() {
-  killall -9 vrserver vrcompositor steam
+  killall -9 vrserver vrcompositor
 }
