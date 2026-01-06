@@ -3,6 +3,7 @@ source $HOME/.scripts/tfh.sh
 source $HOME/.scripts/safe_env.sh
 source $HOME/.scripts/zed.sh
 source $HOME/.scripts/dconf.sh
+source $HOME/.scripts/steam.sh
 
 ##########################################
 # rust                                   #

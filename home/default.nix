@@ -57,6 +57,10 @@ in
 
     ".config/sunshine/sunshine.conf".source = sl ".config/sunshine/sunshine.conf";
     ".config/sunshine/apps.json".source = sl ".config/sunshine/apps.json";
+
+    # openxr shit
+    ".config/openxr/1/active_runtime.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamVR/steamxr_linux64.json";
   };
 
   home.sessionVariables = {
