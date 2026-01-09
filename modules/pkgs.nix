@@ -134,6 +134,7 @@
     libguestfs
     guestfs-tools
     exercism
+    lz4
 
     # dev services
     gh # GitHub cli
