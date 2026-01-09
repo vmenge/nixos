@@ -206,6 +206,8 @@
     lsfg-vk-ui
     xwiimote
     sidequest
+    openxr-loader
+    vulkan-loader
 
     # messaging
     slack
