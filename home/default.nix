@@ -8,6 +8,7 @@ in
     ./apps.nix
     ./services.nix
     ./dconf.nix
+    ./steam.nix
   ];
 
   home.username = "vmenge";
@@ -59,8 +60,8 @@ in
     ".config/sunshine/apps.json".source = sl ".config/sunshine/apps.json";
 
     # openxr shit
-    ".config/openxr/1/active_runtime.json".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamVR/steamxr_linux64.json";
+    # ".config/openxr/1/active_runtime.json".source =
+    #   config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamVR/steamxr_linux64.json";
   };
 
   home.sessionVariables = {
