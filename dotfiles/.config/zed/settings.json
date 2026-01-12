@@ -9,23 +9,23 @@
 {
   "show_edit_predictions": true,
   "file_types": {
-    "OCaml": ["*.mlx"]
+    "OCaml": ["*.mlx"],
   },
   "features": {
-    "edit_prediction_provider": "zed"
+    "edit_prediction_provider": "zed",
   },
   "agent": {
     "default_profile": "write",
     "default_model": {
       "provider": "anthropic",
-      "model": "claude-3-7-sonnet-latest"
+      "model": "claude-3-7-sonnet-latest",
     },
-    "enabled": true
+    "enabled": true,
   },
   "toolbar": {
     "breadcrumbs": false,
     "quick_actions": false,
-    "selections_menu": false
+    "selections_menu": false,
   },
   "tab_bar": { "show": true },
   "scrollbar": { "show": "auto" },
@@ -36,48 +36,57 @@
   "theme": {
     "mode": "dark",
     "light": "Catppuccin Macchiato (Blur)",
-    "dark": "Gruvbox Dark Hard"
+    "dark": "Catppuccin Mocha - No Italics",
   },
   "icon_theme": {
     "mode": "dark",
     "light": "Monospace Icon Theme - Dark",
-    "dark": "Monospace Icon Theme - Dark"
+    "dark": "Monospace Icon Theme - Dark",
   },
   "vim_mode": true,
   "vim": {
     "toggle_relative_line_numbers": true,
-    "use_system_clipboard": "always"
+    "use_system_clipboard": "always",
   },
   "format_on_save": "off",
   "lsp": {
     "nil": {
       "initialization_options": {
         "formatting": {
-          "command": ["nixfmt"]
-        }
-      }
+          "command": ["nixfmt"],
+        },
+      },
     },
     "rust-analyzer": {
       "initialization_options": {
-        "checkOnSave": true
-      }
+        "checkOnSave": true,
+      },
     },
     "zls": {
       "settings": {
         "enable_build_on_save": true,
         "enable_autofix": true,
         "warn_style": true,
-        "highlight_global_var_declarations": true
-      }
-    }
+        "highlight_global_var_declarations": true,
+      },
+    },
+    "roc_language_server": {
+      "binary": {
+        "path": "/run/wrappers/bin/roc",
+        "arguments": ["experimental-lsp"],
+      },
+    },
   },
   "languages": {
+    "Roc": {
+      "language_servers": ["roc_language_server"],
+    },
     "zig": {
       "formatter": {
         "external": {
-          "command": "zig fmt"
-        }
-      }
+          "command": "zig fmt",
+        },
+      },
     },
     "Rust": {
       "formatter": {
@@ -85,11 +94,11 @@
           "command": "bash",
           "arguments": [
             "-c",
-            "set -o pipefail; dx fmt -f - | rustfmt --edition 2021"
-          ]
-        }
-      }
-    }
+            "set -o pipefail; dx fmt -f - | rustfmt --edition 2021",
+          ],
+        },
+      },
+    },
   },
   "experimental.theme_overrides": {
     // "background.appearance": "transparent",
@@ -206,6 +215,6 @@
     "vue": true,
     "xml": true,
     "zedokai": true,
-    "zig": true
-  }
+    "zig": true,
+  },
 }
