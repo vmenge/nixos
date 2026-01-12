@@ -13,8 +13,6 @@
   users.defaultUserShell = pkgs.zsh;
   programs.starship.enable = true;
 
-  programs.adb.enable = true;
-
   programs.light.enable = true;
 
   services.sunshine = {
@@ -51,7 +49,7 @@
     cmake
     clang
     clang-tools
-    dasm # assembler for 6502
+    # dasm # assembler for 6502 -- disabled temporarily
     bear # gen compilation db for clang tooling
     postman # http API dev env
     atac # postman-like TUI
@@ -106,7 +104,7 @@
     zig
     nixd # nix lsp
     nil # nix lsp
-    nixfmt-rfc-style
+    nixfmt
     rustup
     bacon # rust test watcher
     dioxus-cli # dioxus
@@ -135,6 +133,7 @@
     guestfs-tools
     exercism
     lz4
+    android-tools
 
     # dev services
     gh # GitHub cli
