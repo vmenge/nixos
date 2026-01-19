@@ -134,6 +134,7 @@
     exercism
     lz4
     android-tools
+    wild
 
     # dev services
     gh # GitHub cli

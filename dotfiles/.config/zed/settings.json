@@ -35,8 +35,8 @@
   "buffer_font_size": 16,
   "theme": {
     "mode": "dark",
-    "light": "Catppuccin Macchiato (Blur)",
-    "dark": "Catppuccin Mocha - No Italics",
+    "light": "Ayu Light",
+    "dark": "Everforest Dark Hard (material)",
   },
   "icon_theme": {
     "mode": "dark",
