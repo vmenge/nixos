@@ -59,8 +59,7 @@ in
     ".config/sunshine/sunshine.conf".source = sl ".config/sunshine/sunshine.conf";
     ".config/sunshine/apps.json".source = sl ".config/sunshine/apps.json";
 
-    ".cargo".source = sl ".cargo";
-    ".cargo".recursive = true;
+    ".cargo/config.toml".source = sl ".cargo/config.toml";
 
     # openxr shit
     # ".config/openxr/1/active_runtime.json".source =

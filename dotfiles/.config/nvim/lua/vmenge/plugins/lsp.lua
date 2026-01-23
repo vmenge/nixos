@@ -15,7 +15,6 @@ return {
       "nushell",
       "ocaml",
       "python",
-      -- "rust", use rustacean.nvim instead!
       "terraform",
       "toml",
       "typescript",

@@ -137,7 +137,6 @@
     wild
 
     # dev services
-    gh # GitHub cli
     awscli2 # AWS cli
     ssm-session-manager-plugin # AWS session manager
     cloudflared # CloudFlare tunnel daemon, toolkit and dns-over-https client
