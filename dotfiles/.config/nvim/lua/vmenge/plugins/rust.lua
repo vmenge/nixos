@@ -2,7 +2,7 @@ return {
   'mrcjkb/rustaceanvim',
   version = '^6',
   ft = 'rust',
-  dependencies = { 'hrsh7th/nvim-cmp' },
+  dependencies = { 'saghen/blink.cmp' },
   init = function()
     vim.g.rustaceanvim = {
       server = {
