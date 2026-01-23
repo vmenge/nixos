@@ -1,7 +1,8 @@
 return {
   'mrcjkb/rustaceanvim',
   version = '^6',
-  lazy = false,
+  ft = 'rust',
+  dependencies = { 'hrsh7th/nvim-cmp' },
   init = function()
     vim.g.rustaceanvim = {
       server = {
