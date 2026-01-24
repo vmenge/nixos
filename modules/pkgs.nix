@@ -134,6 +134,7 @@
     exercism
     lz4
     android-tools
+    bottles
 
     # dev services
     gh # GitHub cli
