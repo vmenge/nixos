@@ -271,6 +271,7 @@
     edid-decode
     pciutils
     socat
+    zoxide
   ];
 
   fonts.packages = with pkgs; [
