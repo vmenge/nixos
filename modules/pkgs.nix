@@ -29,6 +29,11 @@
     docker.enable = true;
   };
 
+  programs.zoxide = {
+    enableZshIntegration = true;
+    enable = true;
+  };
+
   environment.systemPackages = with pkgs; [
     # text editors
     neovim
@@ -271,7 +276,6 @@
     edid-decode
     pciutils
     socat
-    zoxide
   ];
 
   fonts.packages = with pkgs; [
