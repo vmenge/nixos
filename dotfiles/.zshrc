@@ -41,7 +41,6 @@ ggl() { git pull origin "$(git branch --show-current)" "$@" }
 alias zed="zeditor"
 alias grep="rg"
 alias yy="yazi"
-alias cat="bat"
 alias ls="lsd"
 alias nxs="sudo nixos-rebuild switch"
 alias nxu="sudo nix flake update && sudo nixos-rebuild switch"
