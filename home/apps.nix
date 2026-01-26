@@ -2,13 +2,6 @@
 { ... }:
 
 {
-  programs.gh = {
-    enable = true;
-    gitCredentialHelper = {
-      enable = true;
-    };
-  };
-
   xdg.desktopEntries = {
     # spotify = {
     #   name = "Spotify";

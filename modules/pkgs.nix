@@ -39,6 +39,7 @@
     # dev tools, lsps, fmts, runtimes and compilers
     git
     git-lfs
+    gh
     strace
     openssh
     openssl
