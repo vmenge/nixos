@@ -142,6 +142,7 @@
     android-tools
     bottles
     wild
+    zenoh
 
     # dev services
     awscli2 # AWS cli

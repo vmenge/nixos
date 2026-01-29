@@ -26,7 +26,6 @@ return {
               experimental = true,
             },
             cargo = {
-              allFeatures = true,
               loadOutDirsFromCheck = true,
               runBuildScripts = true,
             },
@@ -34,7 +33,6 @@ return {
               command = "clippy"
             },
             checkOnSave = {
-              allFeatures = true,
               command = "clippy",
               extraArgs = { "--no-deps" },
             },
