@@ -277,6 +277,7 @@
     edid-decode
     pciutils
     socat
+    presenterm
   ];
 
   fonts.packages = with pkgs; [
