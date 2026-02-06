@@ -24,6 +24,7 @@ in
   themeName ? pname,
   installSubdir ? null,
   stripTopLevel ? true,
+  sourceSubdir ? null, # cd into this subdir before copying (e.g. "look-and-feel")
   mode ? "single", # "single" | "collection"
   includeGlobs ? null, # e.g. [ "*aurorae" ] or [ "*.colors" ]
   excludeGlobs ? [ ], # e.g. [ "*.md" ".git*" ]
@@ -51,6 +52,11 @@ let
         cd "''${entries[0]}"
         shopt -s dotglob nullglob
       fi
+
+      ${lib.optionalString (sourceSubdir != null) ''
+        # Navigate to specified subdirectory
+        cd ${lib.escapeShellArg sourceSubdir}
+      ''}
 
       dst=${dstExpr}
       mkdir -p "$dst"
@@ -108,7 +114,6 @@ stdenvNoCC.mkDerivation {
     meta
     ;
   dontBuild = true;
-  sourceRoot = ".";
 
   installPhase = ''
     runHook preInstall

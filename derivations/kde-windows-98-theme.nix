@@ -8,14 +8,15 @@ let
     owner = "Die4Ever";
     repo = "KDE-Windows-98-Theme";
     rev = "main";
-    hash = lib.fakeHash; # replace after first build
+    hash = "sha256-EpFyiO0L9BtYc5qen/D4YHbJKmg2j8ZLU8FKL0uBvFU=";
   };
 
   lookAndFeel = mkPlasmaTheme {
     kind = "lookAndFeel";
     pname = "kde-windows-98-look-and-feel";
     version = "unstable-2026-02-06";
-    src = "${src}/look-and-feel";
+    src = src;
+    sourceSubdir = "look-and-feel";
     mode = "collection";
     stripTopLevel = false;
   };
