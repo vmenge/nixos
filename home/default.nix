@@ -9,6 +9,7 @@ in
     ./services.nix
     ./dconf.nix
     ./steam.nix
+    # ./kde.nix
   ];
 
   home.username = "vmenge";

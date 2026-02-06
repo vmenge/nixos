@@ -45,6 +45,8 @@ alias ls="lsd"
 alias nxs="sudo nixos-rebuild switch"
 alias nxu="sudo nix flake update && sudo nixos-rebuild switch"
 alias nxg="sudo nix-collect-garbage -d && nix-collect-garbage -d"
+# plasma manager stuff
+alias rc2nix="nix run github:nix-community/plasma-manager" 
 
 
 ##########################################
