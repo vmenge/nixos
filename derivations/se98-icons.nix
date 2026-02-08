@@ -2,24 +2,29 @@
 # Packages SE98 icon theme from https://github.com/nestoris/Win98SE
 { pkgs, lib }:
 
-let
-  mkPlasmaTheme = import ../utils/mk-plasma-theme.nix { inherit pkgs lib; };
-in
-
-mkPlasmaTheme {
-  kind = "icons";
+pkgs.stdenvNoCC.mkDerivation {
   pname = "se98-icons";
   version = "unstable-2026-02-06";
+
   src = pkgs.fetchFromGitHub {
     owner = "nestoris";
     repo = "Win98SE";
     rev = "master";
-    hash = lib.fakeHash;
+    hash = "sha256-ixX7WAMvrw/Rwam6LNV8zz/cClwRLYuxtAMzMmwdXWk=";
   };
-  sourceSubdir = "SE98";
-  themeName = "SE98";
-  mode = "single";
-  stripTopLevel = false;
+
+  dontBuild = true;
+  dontFixup = true;
+
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p "$out/share/icons"
+    cp -R SE98 "$out/share/icons/"
+
+    runHook postInstall
+  '';
+
   meta = with lib; {
     description = "SE98 icon theme - Windows 98 SE style icons";
     homepage = "https://github.com/nestoris/Win98SE";

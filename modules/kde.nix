@@ -4,6 +4,7 @@ let
   reactionary-theme = import ../derivations/reactionary-theme.nix { inherit pkgs lib; };
   se98-icons = import ../derivations/se98-icons.nix { inherit pkgs lib; };
   modernxp-cursor = import ../derivations/modernxp-cursor.nix { inherit pkgs lib; };
+  krohnkite = import ../derivations/krohnkite.nix { inherit pkgs lib; };
 in
 {
   services.desktopManager.plasma6.enable = true;
@@ -12,5 +13,6 @@ in
     reactionary-theme
     se98-icons
     modernxp-cursor
+    krohnkite
   ];
 }

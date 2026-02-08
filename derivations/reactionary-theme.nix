@@ -8,8 +8,8 @@ let
 
   src = pkgs.fetchgit {
     url = "https://www.opencode.net/phob1an/reactionary.git";
-    rev = "master";
-    hash = lib.fakeHash;
+    rev = "4aa2d20f0e93ae4387a90947fcc6c90940c18122";
+    hash = "sha256-obKYi85SEMSvoF9KY8TbU02mag57yr/03TvNNNa67N0=";
   };
 
   desktopTheme = mkPlasmaTheme {

@@ -11,7 +11,7 @@ pkgs.stdenvNoCC.mkDerivation {
     owner = "na0miluv";
     repo = "modernXP-cursor-theme";
     rev = "main";
-    hash = lib.fakeHash;
+    hash = "sha256-1Pv+Ny1Gt7NM3cB038oQXb1cGIgg0VNxuO1IApTWo5U=";
   };
 
   nativeBuildInputs = with pkgs; [
@@ -22,8 +22,7 @@ pkgs.stdenvNoCC.mkDerivation {
   buildPhase = ''
     runHook preBuild
 
-    patchShebangs build.sh
-    ./build.sh
+    bash build.sh
 
     runHook postBuild
   '';
