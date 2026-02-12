@@ -143,6 +143,7 @@
     bottles
     wild
     zenoh
+    mermaid-cli
 
     # dev services
     awscli2 # AWS cli
