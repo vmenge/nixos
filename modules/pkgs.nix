@@ -279,6 +279,8 @@
     pciutils
     socat
     presenterm
+    smartmontools
+    ddrescue
   ];
 
   fonts.packages = with pkgs; [
