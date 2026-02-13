@@ -34,8 +34,13 @@
   "ui_font_size": 15.0,
   "buffer_font_size": 15.0,
   "theme": {
+<<<<<<< HEAD
     "mode": "light",
     "light": "Ayu Light",
+=======
+    "mode": "dark",
+    "light": "Fleet Light",
+>>>>>>> 7584d05 (zed theme)
     "dark": "Ayu Dark",
   },
   "icon_theme": {
