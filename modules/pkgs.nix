@@ -135,7 +135,7 @@
     qemu
     cloud-init
     cloud-utils
-    libguestfs
+    libguestfs-with-appliance
     guestfs-tools
     exercism
     lz4

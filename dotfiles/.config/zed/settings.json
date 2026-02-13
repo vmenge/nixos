@@ -34,9 +34,9 @@
   "ui_font_size": 15.0,
   "buffer_font_size": 15.0,
   "theme": {
-    "mode": "dark",
+    "mode": "light",
     "light": "Ayu Light",
-    "dark": "Everforest Dark Hard (material)",
+    "dark": "Ayu Dark",
   },
   "icon_theme": {
     "mode": "dark",
