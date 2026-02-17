@@ -35,8 +35,8 @@
   "buffer_font_size": 15.0,
   "theme": {
     "mode": "dark",
-    "light": "Everforest Light Soft (regular)",
-    "dark": "Solarized Dark",
+    "light": "Sharp Solarized+",
+    "dark": "Serendipity Midnight",
   },
   "icon_theme": {
     "mode": "dark",

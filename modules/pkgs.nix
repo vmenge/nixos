@@ -281,6 +281,7 @@
     presenterm
     smartmontools
     ddrescue
+    television
   ];
 
   fonts.packages = with pkgs; [
