@@ -1,16 +1,21 @@
-font-family = Berkeley Mono
-window-title-font-family = Berkeley Mono
+theme = Solarized Dark Higher Contrast
+font-family = DepartureMono Nerd Font
+window-title-font-family = DepartureMono Nerd Font
 font-size = 12
 shell-integration-features = sudo,no-title
 cursor-style = block
 mouse-hide-while-typing = true
 window-save-state = always
 window-colorspace = "display-p3"
-window-decoration = true
+window-decoration = auto
+window-theme = ghostty
 confirm-close-surface = false
 adw-toolbar-style = raised-border
-gtk-wide-tabs = true
+gtk-titlebar = false
+gtk-wide-tabs = false
 gtk-tabs-location = top
+gtk-toolbar-style = flat
+gtk-titlebar-style = native
 background-opacity=0.95
 background-blur=true
 

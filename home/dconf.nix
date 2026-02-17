@@ -14,8 +14,21 @@ with lib.hm.gvariant;
       width = 600;
     };
 
+    "ca/desrt/dconf-editor" = {
+      saved-pathbar-path = "/org/gnome/desktop/media-handling/";
+      saved-view = "/org/gnome/desktop/media-handling/";
+      window-height = 500;
+      window-is-maximized = false;
+      window-width = 540;
+    };
+
     "com/github/ryonakano/reco" = {
       autosave-destination = "/home/vmenge/Downloads";
+    };
+
+    "desktop/ibus/general" = {
+      preload-engines = [ "xkb:us::eng" ];
+      version = "1.5.33";
     };
 
     "org/gnome/Characters" = {
@@ -24,6 +37,11 @@ with lib.hm.gvariant;
 
     "org/gnome/Connections" = {
       first-run = false;
+    };
+
+    "org/gnome/Console" = {
+      last-window-maximised = false;
+      last-window-size = mkTuple [ 732 528 ];
     };
 
     "org/gnome/Music" = {
@@ -64,6 +82,10 @@ with lib.hm.gvariant;
       window-state = mkTuple [ 1440 928 true ];
     };
 
+    "org/gnome/desktop/a11y/applications" = {
+      screen-reader-enabled = false;
+    };
+
     "org/gnome/desktop/app-folders" = {
       folder-children = [ "System" "Utilities" "YaST" "Pardus" ];
     };
@@ -95,8 +117,8 @@ with lib.hm.gvariant;
     "org/gnome/desktop/background" = {
       color-shading-type = "solid";
       picture-options = "zoom";
-      picture-uri = "file:///home/vmenge/.local/share/backgrounds/2025-10-10-19-13-24-wallhaven-wqogd6.jpg";
-      picture-uri-dark = "file:///home/vmenge/.local/share/backgrounds/2025-10-10-19-13-24-wallhaven-wqogd6.jpg";
+      picture-uri = "file:///home/vmenge/.local/share/backgrounds/2025-08-30-07-17-09-wallhaven-eowm98.jpg";
+      picture-uri-dark = "file:///home/vmenge/.local/share/backgrounds/2025-08-30-07-17-09-wallhaven-eowm98.jpg";
       primary-color = "#000000000000";
       secondary-color = "#000000000000";
     };
@@ -108,12 +130,29 @@ with lib.hm.gvariant;
 
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
+      cursor-blink = true;
+      cursor-blink-time = 1000;
+      cursor-size = 32;
+      cursor-theme = "ModernXP2";
+      document-font-name = "DepartureMono Nerd Font 10";
+      enable-animations = true;
+      font-name = "DepartureMono Nerd Font 10";
       icon-theme = "Adwaita";
+      monospace-font-name = "DepartureMono Nerd Font 10";
+      scaling-factor = mkUint32 2;
       show-battery-percentage = true;
+      text-scaling-factor = 1.0;
+      toolbar-style = "text";
+    };
+
+    "org/gnome/desktop/media-handling" = {
+      automount = false;
+      automount-open = false;
+      autorun-never = true;
     };
 
     "org/gnome/desktop/notifications" = {
-      application-children = [ "steam" "gnome-power-panel" "google-chrome" "spotify" "org-gnome-characters" "com-mitchellh-ghostty" "slack" "dev-zed-zed" ];
+      application-children = [ "steam" "gnome-power-panel" "google-chrome" "spotify" "org-gnome-characters" "com-mitchellh-ghostty" "slack" "dev-zed-zed" "org-gnome-nautilus" ];
     };
 
     "org/gnome/desktop/notifications/application/code" = {
@@ -126,6 +165,10 @@ with lib.hm.gvariant;
 
     "org/gnome/desktop/notifications/application/dev-zed-zed" = {
       application-id = "dev.zed.Zed.desktop";
+    };
+
+    "org/gnome/desktop/notifications/application/gnome-about-panel" = {
+      application-id = "gnome-about-panel.desktop";
     };
 
     "org/gnome/desktop/notifications/application/gnome-power-panel" = {
@@ -156,10 +199,14 @@ with lib.hm.gvariant;
       application-id = "steam.desktop";
     };
 
+    "org/gnome/desktop/notifications/application/vlc" = {
+      application-id = "vlc.desktop";
+    };
+
     "org/gnome/desktop/screensaver" = {
       color-shading-type = "solid";
       picture-options = "zoom";
-      picture-uri = "file:///home/vmenge/.local/share/backgrounds/2025-10-10-19-13-24-wallhaven-wqogd6.jpg";
+      picture-uri = "file:///home/vmenge/.local/share/backgrounds/2025-08-30-07-17-09-wallhaven-eowm98.jpg";
       primary-color = "#000000000000";
       secondary-color = "#000000000000";
     };
@@ -170,6 +217,10 @@ with lib.hm.gvariant;
 
     "org/gnome/desktop/session" = {
       idle-delay = mkUint32 0;
+    };
+
+    "org/gnome/desktop/sound" = {
+      theme-name = "ocean";
     };
 
     "org/gnome/desktop/wm/keybindings" = {
@@ -215,7 +266,9 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/desktop/wm/preferences" = {
+      button-layout = "icon:minimize,maximize,close";
       num-workspaces = 10;
+      titlebar-font = "DepartureMono Nerd Font 10";
     };
 
     "org/gnome/evolution-data-server" = {
@@ -316,7 +369,12 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/settings-daemon/plugins/color" = {
+      night-light-enabled = false;
       night-light-schedule-automatic = false;
+    };
+
+    "org/gnome/settings-daemon/plugins/housekeeping" = {
+      donation-reminder-last-shown = mkInt64 1763741475580069;
     };
 
     "org/gnome/settings-daemon/plugins/media-keys" = {
@@ -336,6 +394,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/shell" = {
+      disable-user-extensions = false;
       disabled-extensions = [];
       enabled-extensions = [ "tactile@lundal.io" "focus-changer@heartmire" "Vitals@CoreCoding.com" "blur-my-shell@aunetx" "clipboard-indicator@tudmotu.com" ];
       favorite-apps = [];

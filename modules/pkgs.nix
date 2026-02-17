@@ -296,6 +296,10 @@
     nerd-fonts.jetbrains-mono
     nerd-fonts.iosevka
     nerd-fonts.iosevka-term
+    nerd-fonts.commit-mono
+    nerd-fonts.lilex
+    nerd-fonts.departure-mono
+    nerd-fonts.geist-mono
     noto-fonts
     noto-fonts
     noto-fonts-cjk-sans
@@ -303,5 +307,13 @@
     proggyfonts
     source-han-sans
     source-han-serif
+    fixedsys-excelsior
+    # tamsyn-font
+    # tamzen-font
+    gohufont
+    fragment-mono
+    intel-one-mono
+    monocraft
+    dina-font
   ];
 }
