@@ -20,9 +20,6 @@ in
     ".config/nvim".source = sl ".config/nvim";
     ".config/nvim".recursive = true;
 
-    ".config/claude".source = sl ".config/claude";
-    ".config/claude".recursive = true;
-
     ".config/ghostty".source = sl ".config/ghostty";
     ".config/ghostty".recursive = true;
 
@@ -61,6 +58,14 @@ in
     ".config/sunshine/apps.json".source = sl ".config/sunshine/apps.json";
 
     ".cargo/config.toml".source = sl ".cargo/config.toml";
+
+    # AI stuff
+    ".agents".source = sl ".agents";
+    ".agents".recursive = true;
+
+    ".claude/skills".source = sl ".agents/skills";
+    ".claude/skills".recursive = true;
+    ".claude/settings.json".source = sl ".cloud/settings.json";
 
     # openxr shit
     # ".config/openxr/1/active_runtime.json".source =

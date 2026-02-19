@@ -1,0 +1,20 @@
+{
+  "model": "opus",
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true
+  },
+  "permissions": {
+    "additionalDirectories": ["/home/vmenge/.agents"],
+    "allow": [
+      "Read(//home/vmenge/.agents/AGENTS.md)",
+      "WebSearch",
+      "WebFetch(domain:docs.rs)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:crates.io)",
+      "WebFetch(domain:man7.org)",
+      "WebFetch(domain:www.freedesktop.org)"
+    ]
+  }
+}
