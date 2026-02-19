@@ -8,8 +8,8 @@ source $HOME/.scripts/steam.sh
 ##########################################
 # rust                                   #
 ##########################################
-export PATH="$HOME/.rustup/toolchains/$(rustup show active-toolchain | cut -d" " -f1)/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
+# export PATH="$HOME/.rustup/toolchains/$(rustup show active-toolchain | cut -d" " -f1)/bin:$PATH"
+# export PATH="$HOME/.cargo/bin:$PATH"
 
 
 ##########################################
@@ -46,7 +46,8 @@ alias nxs="sudo nixos-rebuild switch"
 alias nxu="sudo nix flake update && sudo nixos-rebuild switch"
 alias nxg="sudo nix-collect-garbage -d && nix-collect-garbage -d"
 # plasma manager stuff
-alias rc2nix="nix run github:nix-community/plasma-manager" 
+alias rc2nix="nix run github:nix-community/plasma-manager"
+alias x="$HOME/nixos/xtask/target/debug/x"
 
 
 ##########################################

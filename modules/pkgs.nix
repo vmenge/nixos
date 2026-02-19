@@ -111,7 +111,11 @@
     nixd # nix lsp
     nil # nix lsp
     nixfmt
-    rustup
+    rustc
+    cargo
+    rustfmt
+    clippy
+    rust-analyzer
     bacon # rust test watcher
     dioxus-cli # dioxus
     jdk
