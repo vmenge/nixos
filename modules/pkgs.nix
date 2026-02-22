@@ -45,6 +45,7 @@
     git
     git-lfs
     gh
+    lazygit
     strace
     openssh
     openssl
