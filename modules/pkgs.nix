@@ -34,6 +34,8 @@
     enable = true;
   };
 
+  programs.direnv.enable = true;
+
   environment.systemPackages = with pkgs; [
     # text editors
     neovim
@@ -46,6 +48,7 @@
     git-lfs
     gh
     lazygit
+    gitui
     strace
     openssh
     openssl

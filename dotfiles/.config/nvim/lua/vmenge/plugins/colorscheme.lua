@@ -66,7 +66,17 @@ return {
     config = function()
       -- vim.o.background = "light" -- or 'dark'
 
-      -- vim.cmd.colorscheme("solarized")
+      vim.cmd.colorscheme("solarized")
+    end,
+  },
+  {
+    "craftzdog/solarized-osaka.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.o.background = "light" -- or 'dark'
+
+      vim.cmd.colorscheme("solarized-osaka")
     end,
   },
   {
@@ -210,7 +220,7 @@ return {
       require("monokai-pro").setup({
         filter = "octagon"
       })
-      vim.cmd.colorscheme("monokai-pro")
+      -- vim.cmd.colorscheme("monokai-pro")
     end,
   },
   {

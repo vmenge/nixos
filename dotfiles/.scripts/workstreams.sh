@@ -7,12 +7,17 @@ wsl() {
     return 1
   fi
 
-  local log_file = "$ws_dir/$1/log"
+  local log_file="$ws_dir/$1/log"
   tail -f "$log_file"
 }
 
 ws() {
   local ws_dir=".workstreams"
+  local show_all=false
+
+  if [[ "$1" == "-a" ]]; then
+    show_all=true
+  fi
 
   # Check if .workstreams directory exists
   if [[ ! -d "$ws_dir" ]]; then
@@ -43,8 +48,6 @@ ws() {
     local ws_status=""
     if [[ -f "$is_running_file" ]]; then
       ws_status="[RUNNING]"
-    else
-      ws_status="[IDLE]"
     fi
 
     # Count tasks and passes
@@ -61,6 +64,20 @@ ws() {
         total_tasks=$(grep -c '"category"' "$tasks_file" 2>/dev/null || echo 0)
         passed_tasks=$(grep -c '"passes": true' "$tasks_file" 2>/dev/null || echo 0)
       fi
+    fi
+
+    # Set status to DONE if all tasks completed and not running
+    if [[ -z "$ws_status" ]]; then
+      if [[ "$total_tasks" -gt 0 && "$passed_tasks" -eq "$total_tasks" ]]; then
+        ws_status="[DONE]"
+      else
+        ws_status="[IDLE]"
+      fi
+    fi
+
+    # Skip DONE workstreams unless -a flag is passed
+    if [[ "$show_all" == false && "$ws_status" == "[DONE]" ]]; then
+      continue
     fi
 
     # Print the workstream info

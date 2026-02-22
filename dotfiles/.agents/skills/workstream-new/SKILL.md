@@ -12,6 +12,7 @@ This should create two files:
 3. .workstreams/<workstream_name>/log
 
 Before writing files, ask for feedback from the user by showing its full contents to them.
+After writing these files, don't ask to code. You are not supposed to go into coding mode.
 
 # PLAN.md
 Create detailed design doc that is clear, actionable, and suitable for deriving implementation tasks.
@@ -92,6 +93,8 @@ The output of tasks.json will be based on the generated PLAN.md. First generate 
   }
 ]
 ```
+
+If the user has given details on how linting and tests work, every test should end with lints and tests passing.
 
 # log
 this is an empty log file, no need to write anything to it. just create the file.
