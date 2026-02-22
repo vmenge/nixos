@@ -4,6 +4,7 @@ source $HOME/.scripts/safe_env.sh
 source $HOME/.scripts/zed.sh
 source $HOME/.scripts/dconf.sh
 source $HOME/.scripts/steam.sh
+source $HOME/.scripts/workstreams.sh
 
 ##########################################
 # rust                                   #

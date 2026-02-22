@@ -9,6 +9,7 @@ user-invocable: true
 This should create two files:
 1. .workstreams/<workstream_name>/PLAN.md
 2. .workstreams/<workstream_name>/tasks.json
+3. .workstreams/<workstream_name>/log
 
 Before writing files, ask for feedback from the user by showing its full contents to them.
 
@@ -91,3 +92,6 @@ The output of tasks.json will be based on the generated PLAN.md. First generate 
   }
 ]
 ```
+
+# log
+this is an empty log file, no need to write anything to it. just create the file.
