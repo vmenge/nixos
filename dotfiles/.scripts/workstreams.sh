@@ -164,7 +164,9 @@ EOF
       fi
 
       local worktree_path="$ws_path/worktree"
-      if ! git worktree add "$worktree_path" -b "$name"; then
+      if [[ -d "$worktree_path" ]]; then
+        echo "Worktree already existed, resuming"
+      elif ! git worktree add "$worktree_path" -b "$name"; then
         echo "Error: Failed to create git worktree"
         rm "$ws_path/is_running"
         return 1
