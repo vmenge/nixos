@@ -33,9 +33,6 @@ ws() {
         return 0
       fi
 
-      echo "Workstreams:"
-      echo "----------------------------------------"
-
       for workstream_path in "$ws_dir"/*; do
         if [[ ! -d "$workstream_path" ]]; then
           continue
@@ -77,8 +74,6 @@ ws() {
 
         printf "  %-30s %s %d/%d tasks completed\n" "$workstream_name" "$ws_status" "$passed_tasks" "$total_tasks"
       done
-
-      echo "----------------------------------------"
       ;;
 
     rm)
@@ -135,6 +130,8 @@ ONLY WORK ON A SINGLE TASK AT A TIME.
 Update that task's passes in plan.md from false to true.
 
 Make one git commit for that task only with a clear message.
+
+After you commit the for that task, stop running.
 
 Do not git init, do not change remotes, do not push.
 
