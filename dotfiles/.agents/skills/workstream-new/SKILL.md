@@ -1,6 +1,6 @@
 ---
 name: workstream new
-description: "Generate a Workstream plan for a new software feature or software implementation. Use when planning a feature, starting a new project, or planning out implementation of workstreams. Triggers on: create a workstream, write new workstream, plan this feature, requirements for, spec out."
+description: "Triggered by 'ws new' or just 'ws' by itself. Generate a Workstream plan for a new software feature or software implementation. Use when planning a feature, starting a new project, or planning out implementation of workstreams. Triggers on: create a workstream, write new workstream, plan this feature, requirements for, spec out."
 user-invocable: true
 ---
 
