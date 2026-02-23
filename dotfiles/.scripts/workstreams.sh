@@ -367,6 +367,15 @@ EOF
       claude ws
       ;;
 
+    review)
+      if [[ -z "$1" ]]; then
+        echo "Usage: ws review <workstream_name>"
+        return 1
+      fi
+
+      claude "ws review $1"
+      ;;
+
     pr)
       if [[ -z "$1" ]]; then
         echo "Usage: ws pr <workstream_name>"
@@ -421,6 +430,10 @@ COMMANDS
   ws prompt <name>
       Print the prompt that "ws run" sends to Claude each iteration.
 
+  ws review <name>
+      Review the work done in a workstream via Claude. Suggests additions
+      to PLAN.md and new tasks based on the diff.
+
   ws clean <name> [-f]
       Remove the worktree for a workstream but keep all other files
       (PLAN.md, tasks.json, etc). Prompts for confirmation unless -f
@@ -454,6 +467,7 @@ EOF
       echo "  clean <name> [-f]  Remove a workstream's worktree (-f to skip prompt)"
       echo "  rm <name>          Remove a workstream entirely"
       echo "  new                Create a new workstream"
+      echo "  review <name>      Review changes and suggest new tasks"
       echo "  pr <name>          Generate a PR description for a workstream"
       echo "  prompt <name>      Generate the prompt for a workstream"
       echo "  run <name> [n]     Run a workstream for n iterations (default: 10)"

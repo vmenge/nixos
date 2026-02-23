@@ -15,6 +15,21 @@ Before writing files, ask for feedback from the user by showing its full content
 After writing these files, don't ask to code. You are not supposed to go into coding mode.
 Make sure folder .workstreams is in gitignore if there is one.
 
+# Workstream folder structure
+
+Workstreams are managed by the `ws` CLI tool. `ws run <name>` creates a git worktree and branch, then loops Claude in headless mode — each iteration picks the next incomplete task, implements it, tests, and commits.
+
+Each workstream lives under `.workstreams/<name>/` with these files:
+
+| File / Dir      | Purpose |
+|-----------------|---------|
+| `PLAN.md`       | Design doc with context, approach, and success criteria. |
+| `tasks.json`    | Task list with `passes` booleans tracking completion. |
+| `ACTIVITY.md`   | Dated progress log (created during runs). |
+| `log`           | Real-time agent thought log. |
+| `worktree/`     | Git worktree (created by `ws run`). |
+| `is_running`    | Marker file present while running. |
+
 # PLAN.md
 Create detailed design doc that is clear, actionable, and suitable for deriving implementation tasks.
 
