@@ -367,6 +367,15 @@ EOF
       claude ws
       ;;
 
+    pr)
+      if [[ -z "$1" ]]; then
+        echo "Usage: ws pr <workstream_name>"
+        return 1
+      fi
+
+      claude "workstream pr for $1"
+      ;;
+
     man)
       cat << 'EOF'
 ws - workstream manager
@@ -445,6 +454,7 @@ EOF
       echo "  clean <name> [-f]  Remove a workstream's worktree (-f to skip prompt)"
       echo "  rm <name>          Remove a workstream entirely"
       echo "  new                Create a new workstream"
+      echo "  pr <name>          Generate a PR description for a workstream"
       echo "  prompt <name>      Generate the prompt for a workstream"
       echo "  run <name> [n]     Run a workstream for n iterations (default: 10)"
       echo "  man                Show detailed manual"
