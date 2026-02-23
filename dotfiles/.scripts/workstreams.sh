@@ -94,6 +94,34 @@ ws() {
       echo "Removed worktree for workstream '$1'"
       ;;
 
+    clean)
+      if [[ -z "$1" ]]; then
+        echo "Usage: ws clean <workstream_name> [-f]"
+        return 1
+      fi
+
+      local name="$1"
+      local force="$2"
+      local worktree_path="$ws_dir/$name/worktree"
+
+      if [[ ! -d "$worktree_path" ]]; then
+        echo "No worktree found for workstream '$name'"
+        return 1
+      fi
+
+      if [[ "$force" != "-f" ]]; then
+        read -p "Remove worktree for '$name'? [y/N] " confirm
+        if [[ "$confirm" != [yY] ]]; then
+          echo "Aborted"
+          return 0
+        fi
+      fi
+
+      rm -rf "$worktree_path"
+      git worktree prune
+      echo "Removed worktree for workstream '$name'"
+      ;;
+
     prompt)
       if [[ -z "$1" ]]; then
         echo "Usage: ws prompt <workstream_name>"
@@ -262,8 +290,13 @@ COMMANDS
   ws prompt <name>
       Print the prompt that "ws run" sends to Claude each iteration.
 
+  ws clean <name> [-f]
+      Remove the worktree for a workstream but keep all other files
+      (PLAN.md, tasks.json, etc). Prompts for confirmation unless -f
+      is passed.
+
   ws rm <name>
-      Remove a workstream directory and prune its git worktree.
+      Remove a workstream directory entirely and prune its git worktree.
 
 HOOKS
 
@@ -285,7 +318,8 @@ EOF
       echo "Commands:"
       echo "  ls [-a]            List workstreams (-a to include completed)"
       echo "  logs <name>        Tail the log for a workstream"
-      echo "  rm <name>          Remove a workstream's worktree"
+      echo "  clean <name> [-f]  Remove a workstream's worktree (-f to skip prompt)"
+      echo "  rm <name>          Remove a workstream entirely"
       echo "  new                Create a new workstream"
       echo "  prompt <name>      Generate the prompt for a workstream"
       echo "  run <name> [n]     Run a workstream for n iterations (default: 10)"
