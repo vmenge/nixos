@@ -304,11 +304,9 @@ Open PLAN.md for context, then open tasks.json and choose the single highest pri
 
 Implement integration tests where appropriate.
 
-Remember to call a fake claude inside the container.
-
-After implementing
-1. call the workspace's main linting function if there is one
-2. call the workspace's main testing function to test relevant code if there is one
+After implementing, consider if it's worth:
+1. calling the workspace's main linting function if there is one
+2. calling the workspace's main testing function to test relevant code if there is one
 
 Append a dated progress entry to activity.md describing what you changed.
 
@@ -324,11 +322,22 @@ ONLY WORK ON A SINGLE TASK AT A TIME.
 
 If you are stuck for too long on something, DO A WEB SEARCH ABOUT IT!
 
+When ALL tasks have passes true, output <promise>COMPLETE</promise>
+
 Throughout this process, append log your thoughts using newlines to separate them to this file: @$(realpath "$ws_path/log")
 If you get stuck on something for a long time, or something takes too long, make sure to append that to the log file as well.
 Be moderately verbose. Don't spend more then 30s without appending anything to the log file.
+Log format should follow something similar to this: 
+Task 1: App root redesign
+- Replaced root div: removed flex items-center justify-center bg-gray-950, added min-h-screen bg-bg-base
+- Added sticky nav bar with h-14, bg-bg-1/80, backdrop-blur-md, border-b border-border-0
+- Task 1 complete. Moving to task 2: RepoList redesign.
 
-When ALL tasks have passes true, output <promise>COMPLETE</promise>
+Task 2: RepoList redesign
+- Replaced loading state: centered spinner with py-16 container
+- Replaced error state: bg-surface-0 border-danger/30 card
+- Replaced empty state: canonical empty state from 9.9
+// etc
 EOF
       ;;
 
