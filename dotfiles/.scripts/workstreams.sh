@@ -135,11 +135,12 @@ Do not git init, do not change remotes, do not push.
 
 ONLY WORK ON A SINGLE TASK AT A TIME.
 
+If you are stuck for too long on something, DO A WEB SEARCH ABOUT IT!
+
 Throughout this process, append log your thoughts using newlines to separate them to this file: @$(realpath "$ws_path/log")
 If you get stuck on something for a long time, or something takes too long, make sure to append that to the log file as well.
 Be moderately verbose. Don't spend more then 30s without appending anything to the log file.
 
-Everytime you mark a task as passed, output <promise>INCOMPLETE</promise>
 When ALL tasks have passes true, output <promise>COMPLETE</promise>
 EOF
       ;;
@@ -184,7 +185,7 @@ EOF
         local prompt
         prompt=$(ws prompt "$name")
         local result
-        result=$(cd "$worktree_path" && claude -p "$prompt" --dangerously-skip-permissions --model opus --output-format text 2>&1) || true
+        result=$(env -C "$worktree_path" claude -p "$prompt" --dangerously-skip-permissions --model opus --output-format text 2>&1) || true
 
         echo "$result"
 
