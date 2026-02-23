@@ -9,15 +9,16 @@ allowed-tools: Read, Glob, Grep, Bash(git diff *), Bash(git log *), Bash(git bra
 
 Generate a concise pull request description for a workstream's branch.
 
+**IMPORTANT: This skill is invoked via `claude -p`. Do NOT ask questions or use interactive tools. Gather all context, then immediately output ONLY the raw PR markdown and exit. No preamble, no explanation, no code fences, no commentary—just the PR markdown itself. Your entire output must be valid markdown that can be pasted directly into a PR description.**
+
 ## Steps
 
-1. Ask the user which workstream they want a PR for (or accept it as an argument).
+1. Determine the workstream name from the argument.
 2. Find the workstream at `.workstreams/<name>/`.
 3. Read `.workstreams/<name>/PLAN.md` for high-level context.
 4. Read `.workstreams/<name>/tasks.json` to understand what was done.
 5. Diff the workstream branch against the main branch (`git diff main...<branch>` and `git log main...<branch> --oneline`).
-6. Only ask clarifying questions if something is genuinely ambiguous. Otherwise just write the PR.
-7. Output the PR description in markdown.
+6. Immediately output the PR description as raw markdown. No questions, no commentary.
 
 ## PR Format
 
@@ -47,5 +48,5 @@ You may add extra sections if the changes warrant it (e.g. "# Breaking Changes",
 - Focus on what matters to a reviewer.
 - Don't list every file touched; describe the logical changes.
 - Omit empty sections entirely.
-- Don't wrap the output in a code block; output raw markdown.
-- Avoid using so many code types name directly. People can ready the pr itself. Be slightly more high level.
+- Do NOT wrap the output in a code block. Output raw markdown directly.
+- Avoid using so many code types name directly. People can read the PR itself. Be slightly more high level.

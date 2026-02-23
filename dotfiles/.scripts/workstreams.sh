@@ -425,7 +425,7 @@ EOF
         return 1
       fi
 
-      claude "workstream pr for $1"
+      claude -p "workstream pr for $1" --model opus --output-format text
       ;;
 
     man)
