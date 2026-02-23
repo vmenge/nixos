@@ -172,6 +172,14 @@ EOF
         echo "Error: Failed to create git worktree"
         rm "$ws_path/is_running"
         return 1
+      else
+        local post_worktree_hook="$ws_dir/.hooks/post-worktree"
+        if [[ -x "$post_worktree_hook" ]]; then
+          echo "Running post-worktree hook..."
+          "$post_worktree_hook" "$worktree_path"
+        else
+          echo "No post-worktree hook found at $post_worktree_hook"
+        fi
       fi
 
       if command -v direnv &> /dev/null && [[ -f "$worktree_path/.envrc" ]]; then
@@ -209,6 +217,68 @@ EOF
       claude ws
       ;;
 
+    man)
+      cat << 'EOF'
+ws - workstream manager
+
+Workstreams are isolated units of work, each with their own git worktree,
+plan, task list, and activity log. They live under .workstreams/ in the
+current directory.
+
+DIRECTORY STRUCTURE
+
+  .workstreams/
+    .hooks/
+      post-worktree    Executable hook run after a new worktree is created.
+                       Receives the worktree path as its first argument.
+                       Useful for copying config files, installing deps, etc.
+    <name>/
+      PLAN.md          High-level plan and context for the workstream.
+      tasks.json       Task list with "passes" booleans tracking completion.
+      ACTIVITY.md      Dated log of progress and changes.
+      log              Real-time log of agent thoughts during execution.
+      worktree/        Git worktree (created by "ws run").
+      is_running       Marker file present while a run is in progress.
+
+COMMANDS
+
+  ws new
+      Create a new workstream interactively via Claude.
+
+  ws ls [-a]
+      List workstreams and their status. By default hides completed ones.
+      Pass -a to show all, including completed workstreams.
+
+  ws run <name> [iterations]
+      Run a workstream. Creates a git worktree (and branch) if one doesn't
+      exist, then invokes Claude in headless mode for up to <iterations>
+      iterations (default: 10). Each iteration picks the next incomplete
+      task, implements it, tests it, and commits. Stops early if all tasks
+      pass.
+
+  ws logs <name>
+      Tail the real-time log file for a workstream.
+
+  ws prompt <name>
+      Print the prompt that "ws run" sends to Claude each iteration.
+
+  ws rm <name>
+      Remove a workstream directory and prune its git worktree.
+
+HOOKS
+
+  .workstreams/.hooks/post-worktree
+      If this file exists and is executable, it is run once after a new
+      worktree is created by "ws run". It receives the worktree path as
+      its only argument. It is NOT run when resuming an existing worktree.
+
+      Example:
+        #!/usr/bin/env bash
+        cp .env "$1/.env"
+        cd "$1" && npm install
+EOF
+      ;;
+
     *)
       echo "Usage: ws <command>"
       echo ""
@@ -219,6 +289,7 @@ EOF
       echo "  new                Create a new workstream"
       echo "  prompt <name>      Generate the prompt for a workstream"
       echo "  run <name> [n]     Run a workstream for n iterations (default: 10)"
+      echo "  man                Show detailed manual"
       ;;
   esac
 }
