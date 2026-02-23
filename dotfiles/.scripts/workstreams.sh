@@ -502,6 +502,22 @@ HOOKS
 EOF
       ;;
 
+    agent)
+      if [[ -z "$1" ]]; then
+        echo "Usage: ws agent <workstream_name>"
+        return 1
+      fi
+
+      local worktree_path="$ws_dir/$1/worktree"
+
+      if [[ ! -d "$worktree_path" ]]; then
+        echo "No worktree found for workstream '$1'"
+        return 1
+      fi
+
+      env -C "$worktree_path" claude
+      ;;
+
     *)
       echo "Usage: ws <command>"
       echo ""
@@ -518,6 +534,7 @@ EOF
       echo "  pr <name>          Generate a PR description for a workstream"
       echo "  prompt <name>      Generate the prompt for a workstream"
       echo "  run <name> [n]     Run a workstream for n iterations (default: 10)"
+      echo "  agent <name>       Open claude in a workstream's worktree"
       echo "  man                Show detailed manual"
       ;;
   esac
@@ -531,8 +548,8 @@ fi
 if [[ -n "$ZSH_VERSION" ]]; then
   _ws_completion() {
     local ws_dir=".workstreams"
-    local subcommands=(status path cd ls logs clean rm new review pr prompt run man)
-    local needs_name=(status path cd logs clean rm review pr prompt run)
+    local subcommands=(status path cd ls logs clean rm new review pr prompt run agent man)
+    local needs_name=(status path cd logs clean rm review pr prompt run agent)
     if (( CURRENT == 2 )); then
       _describe 'subcommand' subcommands
     elif (( CURRENT == 3 )) && (( ${needs_name[(Ie)${words[2]}]} )); then
@@ -551,8 +568,8 @@ elif [[ -n "$BASH_VERSION" ]]; then
     local ws_dir=".workstreams"
     local cur="${COMP_WORDS[COMP_CWORD]}"
     local subcmd="${COMP_WORDS[1]}"
-    local subcommands="status path cd ls logs clean rm new review pr prompt run man"
-    local needs_name="status path cd logs clean rm review pr prompt run"
+    local subcommands="status path cd ls logs clean rm new review pr prompt run agent man"
+    local needs_name="status path cd logs clean rm review pr prompt run agent"
     if (( COMP_CWORD == 1 )); then
       COMPREPLY=($(compgen -W "$subcommands" -- "$cur"))
     elif (( COMP_CWORD == 2 )) && [[ " $needs_name " == *" $subcmd "* ]] && [[ -d "$ws_dir" ]]; then
