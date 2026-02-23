@@ -526,4 +526,40 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   ws "$@"
 fi
 
-
+if [[ -n "$ZSH_VERSION" ]]; then
+  _ws_completion() {
+    local ws_dir=".workstreams"
+    local subcommands=(status path cd ls logs clean rm new review pr prompt run man)
+    local needs_name=(status path cd logs clean rm review pr prompt run)
+    if (( CURRENT == 2 )); then
+      _describe 'subcommand' subcommands
+    elif (( CURRENT == 3 )) && (( ${needs_name[(Ie)${words[2]}]} )); then
+      local names=()
+      if [[ -d "$ws_dir" ]]; then
+        for d in "$ws_dir"/*/; do
+          names+=("$(basename "$d")")
+        done
+      fi
+      _describe 'workstream' names
+    fi
+  }
+  compdef _ws_completion ws
+elif [[ -n "$BASH_VERSION" ]]; then
+  _ws_completion_bash() {
+    local ws_dir=".workstreams"
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local subcmd="${COMP_WORDS[1]}"
+    local subcommands="status path cd ls logs clean rm new review pr prompt run man"
+    local needs_name="status path cd logs clean rm review pr prompt run"
+    if (( COMP_CWORD == 1 )); then
+      COMPREPLY=($(compgen -W "$subcommands" -- "$cur"))
+    elif (( COMP_CWORD == 2 )) && [[ " $needs_name " == *" $subcmd "* ]] && [[ -d "$ws_dir" ]]; then
+      local names=""
+      for d in "$ws_dir"/*/; do
+        [[ -d "$d" ]] && names+="$(basename "$d") "
+      done
+      COMPREPLY=($(compgen -W "$names" -- "$cur"))
+    fi
+  }
+  complete -F _ws_completion_bash ws
+fi
