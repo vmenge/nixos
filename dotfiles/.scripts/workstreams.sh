@@ -6,6 +6,22 @@ ws() {
   shift 2>/dev/null
 
   case "$subcmd" in
+    cd)
+      if [[ -z "$1" ]]; then
+        echo "Usage: ws cd <workstream_name>"
+        return 1
+      fi
+
+      local worktree_path="$ws_dir/$1/worktree"
+
+      if [[ ! -d "$worktree_path" ]]; then
+        echo "No worktree found for workstream '$1'"
+        return 1
+      fi
+
+      pushd "$worktree_path"
+      ;;
+
     logs)
       if [[ ! -d "$ws_dir" ]]; then
         echo "No workstreams directory found in current workspace"
@@ -191,6 +207,11 @@ EOF
         return 1
       fi
 
+      if [[ -f "$ws_path/is_running" ]]; then
+        echo "Error: Workstream '$name' is already running. Use 'ws clean $name' to reset."
+        return 1
+      fi
+
       if ! touch "$ws_path/is_running"; then
         echo "Error: Failed to create is_running file"
         return 1
@@ -319,6 +340,7 @@ EOF
       echo "Usage: ws <command>"
       echo ""
       echo "Commands:"
+      echo "  cd <name>          pushd into a workstream's worktree"
       echo "  ls [-a]            List workstreams (-a to include completed)"
       echo "  logs <name>        Tail the log for a workstream"
       echo "  clean <name> [-f]  Remove a workstream's worktree (-f to skip prompt)"
