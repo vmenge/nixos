@@ -11,6 +11,8 @@ _ws_elapsed() {
   local mins=$(( (diff % 3600) / 60 ))
   if (( hours > 0 )); then
     printf "%dh %dm" "$hours" "$mins"
+  elif (( diff < 120 )); then
+    printf "%ds" "$diff"
   else
     printf "%dm" "$mins"
   fi

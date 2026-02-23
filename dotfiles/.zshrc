@@ -34,8 +34,10 @@ alias glog="git log --oneline --decorate --graph"
 alias gloga="git log --oneline --decorate --graph --all"
 alias gco="git checkout"
 alias gb="git branch"
-alias gd="git -c delta.side-by-side=false diff"
-alias gds="git -c delta.side-by-side=true diff"
+gd() { git -c delta.side-by-side=false diff "$(git branch --show-current)" "$@" }
+gds() { git -c delta.side-by-side=true diff "$(git branch --show-current)" "$@" }
+compdef _git gd=git-diff
+compdef _git gds=git-diff
 alias ga="git add"
 alias gaa="git add --all"
 alias gp="git push"
