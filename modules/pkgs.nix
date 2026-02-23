@@ -49,6 +49,7 @@
     gh
     lazygit
     gitui
+    delta
     strace
     openssh
     openssl

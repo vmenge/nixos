@@ -58,6 +58,7 @@ in
     ".config/sunshine/apps.json".source = sl ".config/sunshine/apps.json";
 
     ".cargo/config.toml".source = sl ".cargo/config.toml";
+    ".gitconfig".source = sl ".gitconfig";
 
     # AI stuff
     ".agents".source = sl ".agents";
