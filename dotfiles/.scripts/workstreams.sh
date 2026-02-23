@@ -195,13 +195,8 @@ ws() {
       local force="$2"
       local worktree_path="$ws_dir/$name/worktree"
 
-      if [[ ! -d "$worktree_path" ]]; then
-        echo "No worktree found for workstream '$name'"
-        return 1
-      fi
-
       if [[ "$force" != "-f" ]]; then
-        printf "Remove worktree for '%s'? [y/N] " "$name"
+        printf "Clean workstream '%s'? [y/N] " "$name"
         read confirm
         if [[ "$confirm" != [yY] ]]; then
           echo "Aborted"
@@ -209,11 +204,39 @@ ws() {
         fi
       fi
 
-      rm -rf "$worktree_path"
+      if [[ -d "$worktree_path" ]]; then
+        rm -rf "$worktree_path"
+        echo "Removed worktree at $worktree_path"
+      else
+        echo "No worktree found, skipping"
+      fi
+
+      echo "Pruning worktrees..."
       git worktree prune
-      git branch -D "$name" 2>/dev/null
-      rm -f "$ws_dir/$name/is_running"
-      echo "Cleaned workstream '$name'"
+
+      if git branch --list "$name" | grep -q .; then
+        git branch -D "$name" 2>/dev/null
+        echo "Deleted branch '$name'"
+      else
+        echo "No branch '$name' found, skipping"
+      fi
+
+      if [[ -f "$ws_dir/$name/is_running" ]]; then
+        rm -f "$ws_dir/$name/is_running"
+        echo "Removed is_running marker"
+      else
+        echo "No is_running marker, skipping"
+      fi
+
+      local tasks_file="$ws_dir/$name/tasks.json"
+      if [[ -f "$tasks_file" ]] && command -v jq &> /dev/null; then
+        jq '[.[] | .passes = false]' "$tasks_file" > "$tasks_file.tmp" && mv "$tasks_file.tmp" "$tasks_file"
+        echo "Reset all tasks to passes=false"
+      else
+        echo "No tasks.json found, skipping"
+      fi
+
+      echo "Done cleaning workstream '$name'"
       ;;
 
     prompt)
