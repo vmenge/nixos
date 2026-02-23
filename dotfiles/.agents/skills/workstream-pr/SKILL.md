@@ -48,3 +48,4 @@ You may add extra sections if the changes warrant it (e.g. "# Breaking Changes",
 - Don't list every file touched; describe the logical changes.
 - Omit empty sections entirely.
 - Don't wrap the output in a code block; output raw markdown.
+- Avoid using so many code types name directly. People can ready the pr itself. Be slightly more high level.
