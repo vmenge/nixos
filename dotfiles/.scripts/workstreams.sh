@@ -110,7 +110,8 @@ ws() {
       fi
 
       if [[ "$force" != "-f" ]]; then
-        read -p "Remove worktree for '$name'? [y/N] " confirm
+        printf "Remove worktree for '%s'? [y/N] " "$name"
+        read confirm
         if [[ "$confirm" != [yY] ]]; then
           echo "Aborted"
           return 0
@@ -119,7 +120,9 @@ ws() {
 
       rm -rf "$worktree_path"
       git worktree prune
-      echo "Removed worktree for workstream '$name'"
+      git branch -D "$name" 2>/dev/null
+      rm -f "$ws_dir/$name/is_running"
+      echo "Cleaned workstream '$name'"
       ;;
 
     prompt)
