@@ -22,6 +22,82 @@ ws() {
       pushd "$worktree_path"
       ;;
 
+    status)
+      if [[ -z "$1" ]]; then
+        echo "Usage: ws status <workstream_name>"
+        return 1
+      fi
+
+      local name="$1"
+      local ws_path="$ws_dir/$name"
+
+      if [[ ! -d "$ws_path" ]]; then
+        echo "Workstream '$name' not found"
+        return 1
+      fi
+
+      local tasks_file="$ws_path/tasks.json"
+      local total_tasks=0
+      local passed_tasks=0
+
+      if [[ -f "$tasks_file" ]] && command -v jq &> /dev/null; then
+        total_tasks=$(jq '. | length' "$tasks_file" 2>/dev/null || echo 0)
+        passed_tasks=$(jq '[.[] | select(.passes == true)] | length' "$tasks_file" 2>/dev/null || echo 0)
+      fi
+
+      local bold='\033[1m'
+      local dim='\033[2m'
+      local green='\033[32m'
+      local yellow='\033[33m'
+      local red='\033[31m'
+      local cyan='\033[36m'
+      local reset='\033[0m'
+
+      local ws_status_color ws_status
+      if [[ -f "$ws_path/is_running" ]]; then
+        ws_status="RUNNING"
+        ws_status_color="$yellow"
+      elif [[ "$total_tasks" -gt 0 && "$passed_tasks" -eq "$total_tasks" ]]; then
+        ws_status="DONE"
+        ws_status_color="$green"
+      else
+        ws_status="IDLE"
+        ws_status_color="$dim"
+      fi
+
+      printf "\n${bold}%s${reset}  ${ws_status_color}%s${reset}  %d/%d tasks\n" "$name" "$ws_status" "$passed_tasks" "$total_tasks"
+
+      if [[ -f "$tasks_file" ]] && command -v jq &> /dev/null; then
+        printf "\n${bold}${cyan}Tasks${reset}\n"
+        local count
+        count=$(jq '. | length' "$tasks_file")
+        local desc passes mark mark_color
+        for ((j=0; j<count; j++)); do
+          desc=$(jq -r ".[$j].description" "$tasks_file")
+          passes=$(jq -r ".[$j].passes" "$tasks_file")
+          if [[ "$passes" == "true" ]]; then
+            mark="✓"
+            mark_color="$green"
+          else
+            mark="○"
+            mark_color="$dim"
+          fi
+          printf "  ${mark_color}%s${reset} ${bold}%d${reset}  %s\n" "$mark" "$((j+1))" "$desc"
+        done
+      fi
+
+      local log_file="$ws_path/log"
+      printf "\n${bold}${cyan}Recent logs${reset}\n"
+      if [[ -f "$log_file" ]]; then
+        tail -5 "$log_file" | while IFS= read -r line; do
+          printf "  ${dim}%s${reset}\n" "$line"
+        done
+      else
+        printf "  ${dim}(no log file)${reset}\n"
+      fi
+      echo ""
+      ;;
+
     logs)
       if [[ ! -d "$ws_dir" ]]; then
         echo "No workstreams directory found in current workspace"
@@ -58,11 +134,6 @@ ws() {
         local tasks_file="$workstream_path/tasks.json"
         local is_running_file="$workstream_path/is_running"
 
-        local ws_status=""
-        if [[ -f "$is_running_file" ]]; then
-          ws_status="[RUNNING]"
-        fi
-
         local total_tasks=0
         local passed_tasks=0
 
@@ -76,19 +147,23 @@ ws() {
           fi
         fi
 
-        if [[ -z "$ws_status" ]]; then
-          if [[ "$total_tasks" -gt 0 && "$passed_tasks" -eq "$total_tasks" ]]; then
-            ws_status="[DONE]"
-          else
-            ws_status="[IDLE]"
-          fi
+        local ws_status ws_status_color
+        if [[ -f "$is_running_file" ]]; then
+          ws_status="RUNNING"
+          ws_status_color='\033[33m'
+        elif [[ "$total_tasks" -gt 0 && "$passed_tasks" -eq "$total_tasks" ]]; then
+          ws_status="DONE"
+          ws_status_color='\033[32m'
+        else
+          ws_status="IDLE"
+          ws_status_color='\033[2m'
         fi
 
-        if [[ "$show_all" == false && "$ws_status" == "[DONE]" ]]; then
+        if [[ "$show_all" == false && "$ws_status" == "DONE" ]]; then
           continue
         fi
 
-        printf "  %-30s %s %d/%d tasks completed\n" "$workstream_name" "$ws_status" "$passed_tasks" "$total_tasks"
+        printf "  \033[1m%-30s\033[0m ${ws_status_color}%-10s\033[0m %d/%d tasks\n" "$workstream_name" "$ws_status" "$passed_tasks" "$total_tasks"
       done
       ;;
 
@@ -340,6 +415,7 @@ EOF
       echo "Usage: ws <command>"
       echo ""
       echo "Commands:"
+      echo "  status <name>      Show detailed status for a workstream"
       echo "  cd <name>          pushd into a workstream's worktree"
       echo "  ls [-a]            List workstreams (-a to include completed)"
       echo "  logs <name>        Tail the log for a workstream"
