@@ -1,11 +1,43 @@
 #!/usr/bin/env bash
 
+_ws_elapsed() {
+  local file="$1"
+  local start_epoch
+  start_epoch=$(stat -c %Y "$file" 2>/dev/null || stat -f %m "$file" 2>/dev/null) || return
+  local now_epoch
+  now_epoch=$(date +%s)
+  local diff=$(( now_epoch - start_epoch ))
+  local hours=$(( diff / 3600 ))
+  local mins=$(( (diff % 3600) / 60 ))
+  if (( hours > 0 )); then
+    printf "%dh %dm" "$hours" "$mins"
+  else
+    printf "%dm" "$mins"
+  fi
+}
+
 ws() {
   local ws_dir=".workstreams"
   local subcmd="$1"
   shift 2>/dev/null
 
   case "$subcmd" in
+    path)
+      if [[ -z "$1" ]]; then
+        echo "Usage: ws path <workstream_name>"
+        return 1
+      fi
+
+      local worktree_path="$ws_dir/$1/worktree"
+
+      if [[ ! -d "$worktree_path" ]]; then
+        echo "No worktree found for workstream '$1'" >&2
+        return 1
+      fi
+
+      realpath "$worktree_path"
+      ;;
+
     cd)
       if [[ -z "$1" ]]; then
         echo "Usage: ws cd <workstream_name>"
@@ -53,19 +85,23 @@ ws() {
       local cyan='\033[36m'
       local reset='\033[0m'
 
-      local ws_status_color ws_status
+      local ws_status_color ws_status ws_extra=""
       if [[ -f "$ws_path/is_running" ]]; then
         ws_status="RUNNING"
         ws_status_color="$yellow"
+        ws_extra="  ${dim}$(_ws_elapsed "$ws_path/is_running")${reset}"
       elif [[ "$total_tasks" -gt 0 && "$passed_tasks" -eq "$total_tasks" ]]; then
         ws_status="DONE"
         ws_status_color="$green"
+        if [[ -f "$ws_path/completed_at" ]]; then
+          ws_extra="  ${dim}$(cat "$ws_path/completed_at")${reset}"
+        fi
       else
         ws_status="IDLE"
         ws_status_color="$dim"
       fi
 
-      printf "\n${bold}%s${reset}  ${ws_status_color}%s${reset}  %d/%d tasks\n" "$name" "$ws_status" "$passed_tasks" "$total_tasks"
+      printf "\n${bold}%s${reset}  ${ws_status_color}%s${reset}  %d/%d tasks${ws_extra}\n" "$name" "$ws_status" "$passed_tasks" "$total_tasks"
 
       if [[ -f "$tasks_file" ]] && command -v jq &> /dev/null; then
         printf "\n${bold}${cyan}Tasks${reset}\n"
@@ -109,10 +145,10 @@ ws() {
       ;;
 
     ls)
-      local show_all=false
+      local active_only=false
 
       if [[ "$1" == "-a" ]]; then
-        show_all=true
+        active_only=true
       fi
 
       if [[ ! -d "$ws_dir" ]]; then
@@ -147,23 +183,27 @@ ws() {
           fi
         fi
 
-        local ws_status="" ws_status_color=""
+        local ws_status="" ws_status_color="" ws_extra=""
         if [[ -f "$is_running_file" ]]; then
           ws_status="RUNNING"
           ws_status_color='\033[33m'
+          ws_extra="  \033[2m$(_ws_elapsed "$is_running_file")\033[0m"
         elif [[ "$total_tasks" -gt 0 && "$passed_tasks" -eq "$total_tasks" ]]; then
           ws_status="DONE"
           ws_status_color='\033[32m'
+          if [[ -f "$workstream_path/completed_at" ]]; then
+            ws_extra="  \033[2m$(cat "$workstream_path/completed_at")\033[0m"
+          fi
         else
           ws_status="IDLE"
           ws_status_color='\033[2m'
         fi
 
-        if [[ "$show_all" == false && "$ws_status" == "DONE" ]]; then
+        if [[ "$active_only" == true && "$ws_status" == "DONE" ]]; then
           continue
         fi
 
-        printf "  \033[1m%-30s\033[0m ${ws_status_color}%-10s\033[0m %d/%d tasks\n" "$workstream_name" "$ws_status" "$passed_tasks" "$total_tasks"
+        printf "  \033[1m%-30s\033[0m ${ws_status_color}%-10s\033[0m %d/%d tasks${ws_extra}\n" "$workstream_name" "$ws_status" "$passed_tasks" "$total_tasks"
       done
       ;;
 
@@ -349,6 +389,7 @@ EOF
 
         if [[ "$result" == *"<promise>COMPLETE</promise>"* ]]; then
           echo "All tasks complete after $i iterations."
+          date '+%Y-%m-%d %H:%M' > "$ws_path/completed_at"
           rm "$ws_path/is_running"
           return 0
         fi
@@ -414,8 +455,8 @@ COMMANDS
       Create a new workstream interactively via Claude.
 
   ws ls [-a]
-      List workstreams and their status. By default hides completed ones.
-      Pass -a to show all, including completed workstreams.
+      List workstreams and their status. Shows all by default.
+      Pass -a to show only active (idle/running) workstreams.
 
   ws run <name> [iterations]
       Run a workstream. Creates a git worktree (and branch) if one doesn't
@@ -423,6 +464,9 @@ COMMANDS
       iterations (default: 10). Each iteration picks the next incomplete
       task, implements it, tests it, and commits. Stops early if all tasks
       pass.
+
+  ws path <name>
+      Print the absolute path to a workstream's worktree.
 
   ws logs <name>
       Tail the real-time log file for a workstream.
@@ -461,8 +505,9 @@ EOF
       echo ""
       echo "Commands:"
       echo "  status <name>      Show detailed status for a workstream"
+      echo "  path <name>        Print the worktree path"
       echo "  cd <name>          pushd into a workstream's worktree"
-      echo "  ls [-a]            List workstreams (-a to include completed)"
+      echo "  ls [-a]            List workstreams (-a for active only)"
       echo "  logs <name>        Tail the log for a workstream"
       echo "  clean <name> [-f]  Remove a workstream's worktree (-f to skip prompt)"
       echo "  rm <name>          Remove a workstream entirely"
