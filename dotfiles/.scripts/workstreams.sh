@@ -173,6 +173,10 @@ EOF
         return 1
       fi
 
+      if command -v direnv &> /dev/null && [[ -f "$worktree_path/.envrc" ]]; then
+        direnv allow "$worktree_path"
+      fi
+
       for ((i=1; i<=iterations; i++)); do
         echo "[$name] Iteration $i"
         echo "--------------------------------"
