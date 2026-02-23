@@ -138,6 +138,7 @@ Do not git init, do not change remotes, do not push.
 ONLY WORK ON A SINGLE TASK AT A TIME.
 
 Throughout this process, append log your thoughts using newlines to separate them to this file: @$(realpath "$ws_path/log")
+If you get stuck on something for a long time, or something takes too long, make sure to append that to the log file as well.
 
 When ALL tasks have passes true, output <promise>COMPLETE</promise>
 EOF
