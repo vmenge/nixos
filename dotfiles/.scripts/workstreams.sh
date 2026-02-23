@@ -131,8 +131,6 @@ Update that task's passes in plan.md from false to true.
 
 Make one git commit for that task only with a clear message.
 
-After you commit the for that task, stop running.
-
 Do not git init, do not change remotes, do not push.
 
 ONLY WORK ON A SINGLE TASK AT A TIME.
@@ -141,18 +139,19 @@ Throughout this process, append log your thoughts using newlines to separate the
 If you get stuck on something for a long time, or something takes too long, make sure to append that to the log file as well.
 Be moderately verbose. Don't spend more then 30s without appending anything to the log file.
 
+Everytime you mark a task as passed, output <promise>INCOMPLETE</promise>
 When ALL tasks have passes true, output <promise>COMPLETE</promise>
 EOF
       ;;
 
     run)
-      if [[ -z "$1" || -z "$2" ]]; then
-        echo "Usage: ws run <workstream_name> <iterations>"
+      if [[ -z "$1" ]]; then
+        echo "Usage: ws run <workstream_name> [iterations]"
         return 1
       fi
 
       local name="$1"
-      local iterations="$2"
+      local iterations="${2:-10}"
       local ws_path="$ws_dir/$name"
 
       if [[ ! -d "$ws_path" ]] || [[ ! -f "$ws_path/PLAN.md" ]] || [[ ! -f "$ws_path/tasks.json" ]]; then
@@ -214,7 +213,7 @@ EOF
       echo "  rm <name>          Remove a workstream's worktree"
       echo "  new                Create a new workstream"
       echo "  prompt <name>      Generate the prompt for a workstream"
-      echo "  run <name> <n>     Run a workstream for n iterations"
+      echo "  run <name> [n]     Run a workstream for n iterations (default: 10)"
       ;;
   esac
 }
