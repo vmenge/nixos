@@ -391,7 +391,7 @@ EOF
 
         if [[ "$result" == *"<promise>COMPLETE</promise>"* ]]; then
           echo "All tasks complete after $i iterations."
-          date '+%Y-%m-%d %H:%M' > "$ws_path/completed_at"
+          printf "%s (%s)" "$(date '+%Y-%m-%d %H:%M')" "$(_ws_elapsed "$ws_path/is_running")" > "$ws_path/completed_at"
           rm "$ws_path/is_running"
           return 0
         fi
