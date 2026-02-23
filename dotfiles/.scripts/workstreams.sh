@@ -147,7 +147,7 @@ ws() {
           fi
         fi
 
-        local ws_status ws_status_color
+        local ws_status="" ws_status_color=""
         if [[ -f "$is_running_file" ]]; then
           ws_status="RUNNING"
           ws_status_color='\033[33m'
