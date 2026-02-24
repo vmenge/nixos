@@ -16,7 +16,7 @@
   programs.light.enable = true;
 
   services.sunshine = {
-    enable = true;
+    enable = false; # enable later, broken rn
     autoStart = true;
     capSysAdmin = true;
     openFirewall = true;
@@ -298,7 +298,6 @@
     fira-code
     fira-code-symbols
     font-awesome
-    jetbrains-mono
     liberation_ttf
     mplus-outline-fonts.githubRelease
     nerd-fonts.droid-sans-mono
