@@ -59,6 +59,7 @@ in
 
     ".cargo/config.toml".source = sl ".cargo/config.toml";
     ".gitconfig".source = sl ".gitconfig";
+    ".config/git/ignore".source = sl ".config/git/ignore";
 
     # AI stuff
     ".agents".source = sl ".agents";
