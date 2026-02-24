@@ -57,8 +57,15 @@ ws() {
       ;;
 
     status)
+      local follow=false
+
+      if [[ "$1" == "-f" ]]; then
+        follow=true
+        shift
+      fi
+
       if [[ -z "$1" ]]; then
-        echo "Usage: ws status <workstream_name>"
+        echo "Usage: ws status [-f] <workstream_name>"
         return 1
       fi
 
@@ -70,70 +77,91 @@ ws() {
         return 1
       fi
 
-      local tasks_file="$ws_path/tasks.json"
-      local total_tasks=0
-      local passed_tasks=0
+      _ws_render_status() {
+        local tasks_file="$ws_path/tasks.json"
+        local total_tasks=0
+        local passed_tasks=0
 
-      if [[ -f "$tasks_file" ]] && command -v jq &> /dev/null; then
-        total_tasks=$(jq '. | length' "$tasks_file" 2>/dev/null || echo 0)
-        passed_tasks=$(jq '[.[] | select(.passes == true)] | length' "$tasks_file" 2>/dev/null || echo 0)
-      fi
-
-      local bold='\033[1m'
-      local dim='\033[2m'
-      local green='\033[32m'
-      local yellow='\033[33m'
-      local red='\033[31m'
-      local cyan='\033[36m'
-      local reset='\033[0m'
-
-      local ws_status_color ws_status ws_extra=""
-      if [[ -f "$ws_path/is_running" ]]; then
-        ws_status="RUNNING"
-        ws_status_color="$yellow"
-        ws_extra="  ${dim}$(_ws_elapsed "$ws_path/is_running")${reset}"
-      elif [[ "$total_tasks" -gt 0 && "$passed_tasks" -eq "$total_tasks" ]]; then
-        ws_status="DONE"
-        ws_status_color="$green"
-        if [[ -f "$ws_path/completed_at" ]]; then
-          ws_extra="  ${dim}$(cat "$ws_path/completed_at")${reset}"
+        if [[ -f "$tasks_file" ]] && command -v jq &> /dev/null; then
+          total_tasks=$(jq '. | length' "$tasks_file" 2>/dev/null || echo 0)
+          passed_tasks=$(jq '[.[] | select(.passes == true)] | length' "$tasks_file" 2>/dev/null || echo 0)
         fi
-      else
-        ws_status="IDLE"
-        ws_status_color="$dim"
-      fi
 
-      printf "\n${bold}%s${reset}  ${ws_status_color}%s${reset}  %d/%d tasks${ws_extra}\n" "$name" "$ws_status" "$passed_tasks" "$total_tasks"
+        local bold='\033[1m'
+        local dim='\033[2m'
+        local green='\033[32m'
+        local yellow='\033[33m'
+        local red='\033[31m'
+        local cyan='\033[36m'
+        local reset='\033[0m'
 
-      if [[ -f "$tasks_file" ]] && command -v jq &> /dev/null; then
-        printf "\n${bold}${cyan}Tasks${reset}\n"
-        local count
-        count=$(jq '. | length' "$tasks_file")
-        local desc passes mark mark_color
-        for ((j=0; j<count; j++)); do
-          desc=$(jq -r ".[$j].description" "$tasks_file")
-          passes=$(jq -r ".[$j].passes" "$tasks_file")
-          if [[ "$passes" == "true" ]]; then
-            mark="✓"
-            mark_color="$green"
-          else
-            mark="○"
-            mark_color="$dim"
+        local ws_status_color ws_status ws_extra=""
+        if [[ -f "$ws_path/is_running" ]]; then
+          ws_status="RUNNING"
+          ws_status_color="$yellow"
+          ws_extra="  ${dim}$(_ws_elapsed "$ws_path/is_running")${reset}"
+        elif [[ "$total_tasks" -gt 0 && "$passed_tasks" -eq "$total_tasks" ]]; then
+          ws_status="DONE"
+          ws_status_color="$green"
+          if [[ -f "$ws_path/completed_at" ]]; then
+            ws_extra="  ${dim}$(cat "$ws_path/completed_at")${reset}"
           fi
-          printf "  ${mark_color}%s${reset} ${bold}%d${reset}  %s\n" "$mark" "$((j+1))" "$desc"
-        done
-      fi
+        else
+          ws_status="IDLE"
+          ws_status_color="$dim"
+        fi
 
-      local log_file="$ws_path/log"
-      printf "\n${bold}${cyan}Recent logs${reset}\n"
-      if [[ -f "$log_file" ]]; then
-        tail -5 "$log_file" | while IFS= read -r line; do
-          printf "  ${dim}%s${reset}\n" "$line"
+        printf "\n${bold}%s${reset}  ${ws_status_color}%s${reset}  %d/%d tasks${ws_extra}\n" "$name" "$ws_status" "$passed_tasks" "$total_tasks"
+
+        if [[ -f "$tasks_file" ]] && command -v jq &> /dev/null; then
+          printf "\n${bold}${cyan}Tasks${reset}\n"
+          local count
+          count=$(jq '. | length' "$tasks_file")
+          local desc passes mark mark_color
+          for ((j=0; j<count; j++)); do
+            desc=$(jq -r ".[$j].description" "$tasks_file")
+            passes=$(jq -r ".[$j].passes" "$tasks_file")
+            if [[ "$passes" == "true" ]]; then
+              mark="✓"
+              mark_color="$green"
+            else
+              mark="○"
+              mark_color="$dim"
+            fi
+            printf "  ${mark_color}%s${reset} ${bold}%d${reset}  %s\n" "$mark" "$((j+1))" "$desc"
+          done
+        fi
+
+        local log_file="$ws_path/log"
+        printf "\n${bold}${cyan}Recent logs${reset}\n"
+        if [[ -f "$log_file" ]]; then
+          tail -5 "$log_file" | while IFS= read -r line; do
+            printf "  ${dim}%s${reset}\n" "$line"
+          done
+        else
+          printf "  ${dim}(no log file)${reset}\n"
+        fi
+        echo ""
+      }
+
+      if [[ "$follow" == true ]]; then
+        # Hide cursor and setup cleanup
+        tput civis
+        trap 'tput cnorm; exit' INT TERM EXIT
+
+        # Initial render
+        _ws_render_status
+
+        while true; do
+          sleep 5
+          # Move to home and clear from cursor down
+          tput home
+          tput ed
+          _ws_render_status
         done
       else
-        printf "  ${dim}(no log file)${reset}\n"
+        _ws_render_status
       fi
-      echo ""
       ;;
 
     logs)
@@ -531,7 +559,7 @@ EOF
       echo "Usage: ws <command>"
       echo ""
       echo "Commands:"
-      echo "  status <name>      Show detailed status for a workstream"
+      echo "  status [-f] <name> Show detailed status for a workstream (-f to follow/refresh)"
       echo "  path <name>        Print the worktree path"
       echo "  cd <name>          pushd into a workstream's worktree"
       echo "  ls [-a]            List workstreams (-a for active only)"
@@ -561,7 +589,27 @@ if [[ -n "$ZSH_VERSION" ]]; then
     local needs_name=(status path cd logs clean rm review pr prompt run agent)
     if (( CURRENT == 2 )); then
       _describe 'subcommand' subcommands
-    elif (( CURRENT == 3 )) && (( ${needs_name[(Ie)${words[2]}]} )); then
+    elif (( CURRENT == 3 )); then
+      if [[ "${words[2]}" == "status" ]]; then
+        local options=(-f)
+        local names=()
+        if [[ -d "$ws_dir" ]]; then
+          for d in "$ws_dir"/*/; do
+            names+=("$(basename "$d")")
+          done
+        fi
+        _describe 'flag' options
+        _describe 'workstream' names
+      elif (( ${needs_name[(Ie)${words[2]}]} )); then
+        local names=()
+        if [[ -d "$ws_dir" ]]; then
+          for d in "$ws_dir"/*/; do
+            names+=("$(basename "$d")")
+          done
+        fi
+        _describe 'workstream' names
+      fi
+    elif (( CURRENT == 4 )) && [[ "${words[2]}" == "status" ]] && [[ "${words[3]}" == "-f" ]]; then
       local names=()
       if [[ -d "$ws_dir" ]]; then
         for d in "$ws_dir"/*/; do
@@ -581,7 +629,21 @@ elif [[ -n "$BASH_VERSION" ]]; then
     local needs_name="status path cd logs clean rm review pr prompt run agent"
     if (( COMP_CWORD == 1 )); then
       COMPREPLY=($(compgen -W "$subcommands" -- "$cur"))
-    elif (( COMP_CWORD == 2 )) && [[ " $needs_name " == *" $subcmd "* ]] && [[ -d "$ws_dir" ]]; then
+    elif (( COMP_CWORD == 2 )); then
+      if [[ "$subcmd" == "status" ]] && [[ -d "$ws_dir" ]]; then
+        local names="-f"
+        for d in "$ws_dir"/*/; do
+          [[ -d "$d" ]] && names+=" $(basename "$d")"
+        done
+        COMPREPLY=($(compgen -W "$names" -- "$cur"))
+      elif [[ " $needs_name " == *" $subcmd "* ]] && [[ -d "$ws_dir" ]]; then
+        local names=""
+        for d in "$ws_dir"/*/; do
+          [[ -d "$d" ]] && names+="$(basename "$d") "
+        done
+        COMPREPLY=($(compgen -W "$names" -- "$cur"))
+      fi
+    elif (( COMP_CWORD == 3 )) && [[ "$subcmd" == "status" ]] && [[ "${COMP_WORDS[2]}" == "-f" ]] && [[ -d "$ws_dir" ]]; then
       local names=""
       for d in "$ws_dir"/*/; do
         [[ -d "$d" ]] && names+="$(basename "$d") "
