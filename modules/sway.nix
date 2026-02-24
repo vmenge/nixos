@@ -14,13 +14,6 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    config.sway = {
-      default = [
-        "wlr"
-        "kde"
-        "gtk"
-      ];
-    };
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
       kdePackages.xdg-desktop-portal-kde
