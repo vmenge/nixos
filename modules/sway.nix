@@ -1,8 +1,12 @@
 { pkgs, ... }:
 {
 
+  programs.sway = {
+    enable = true;
+    package = pkgs.swayfx;
+  };
+
   environment.systemPackages = with pkgs; [
-    swayfx
     swaylock-effects
     waybar
   ];
