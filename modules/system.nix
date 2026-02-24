@@ -15,6 +15,7 @@ in
   imports = [
     ./pkgs.nix
     ./sway.nix
+    ./hyprland.nix
     ./gnome.nix
     # ./kde.nix
     ./steam.nix
@@ -82,6 +83,25 @@ in
   services.pipewire = {
     enable = true;
     wireplumber.enable = true;
+    wireplumber.extraConfig."50-bluetooth-policy" = {
+      "monitor.bluez.properties" = {
+        "bluez5.roles" = [ "a2dp_sink" "a2dp_source" "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
+        "bluez5.codecs" = [ "sbc" "sbc_xq" "aac" "ldac" "aptx" "aptx_hd" ];
+        "bluez5.autoswitch-profile" = false;
+      };
+    };
+    wireplumber.extraConfig."51-bluetooth-priority" = {
+      "monitor.bluez.rules" = [
+        {
+          matches = [{ "node.name" = "~bluez_output.*"; }];
+          actions = {
+            "update-props" = {
+              "priority.session" = 2000;
+            };
+          };
+        }
+      ];
+    };
 
     # support alsa and pulseaudio
     alsa.enable = true;
@@ -92,6 +112,8 @@ in
   services.devmon.enable = true;
   services.dbus.enable = true;
   services.avahi.enable = true;
+  services.avahi.nssmdns4 = true;
+  services.avahi.openFirewall = true;
 
   networking.firewall = {
     enable = true;

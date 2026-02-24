@@ -1,5 +1,5 @@
 teleport_login() {
-  tsh login --proxy=teleport-cluster.orb.internal-tools.worldcoin.dev --auth=okta
+  tsh login --user=victor.ferreira.menge@toolsforhumanity.com --auth=okta --proxy=teleport-orb.worldcoin.dev
 }
 
 teleport_mongo() {

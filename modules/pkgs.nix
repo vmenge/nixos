@@ -292,6 +292,7 @@
     smartmontools
     ddrescue
     television
+    teleport
   ];
 
   fonts.packages = with pkgs; [

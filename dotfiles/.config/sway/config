@@ -23,7 +23,7 @@ exec_always killall kanshi; kanshi
 
 # keyboard
 input * xkb_layout us
-input * xkb_variant alt-intl
+input * xkb_variant altgr-intl
 
 # cursor
 seat seat0 xcursor_theme ModernXP2 32
@@ -261,9 +261,9 @@ bindsym XF86MonBrightnessDown exec light -U 10
 bindsym XF86MonBrightnessUp exec light -A 10
 
 # Volume
-bindsym XF86AudioRaiseVolume exec pamixer -i 5
-bindsym XF86AudioLowerVolume exec pamixer -d 5
-bindsym XF86AudioMute exec pamixer -t
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 # audio control
 bindsym XF86AudioPlay exec playerctl play

@@ -26,6 +26,9 @@ in
     ".config/sway".source = sl ".config/sway";
     ".config/sway".recursive = true;
 
+    ".config/hypr".source = sl ".config/hypr";
+    ".config/hypr".recursive = true;
+
     ".config/waybar".source = sl ".config/waybar";
     ".config/waybar".recursive = true;
 
