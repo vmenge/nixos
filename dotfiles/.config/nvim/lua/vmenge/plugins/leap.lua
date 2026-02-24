@@ -1,5 +1,5 @@
 return {
-  "ggandor/leap.nvim",
+  url = "https://codeberg.org/andyg/leap.nvim",
   enabled = true,
   keys = {
     { "s", mode = { "n", "x", "o" }, desc = "Leap forward to" },

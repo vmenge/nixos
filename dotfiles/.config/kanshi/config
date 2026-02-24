@@ -22,6 +22,11 @@ profile MunichTfhNotebook2 {
   output "Dell Inc. DELL U2723QE 4VYDBH3"       mode 3840x2160@59.997Hz position 0,0
 }
 
+profile DellU2723QE_5SJYD34 {
+  output "Dell Inc. DELL U2723QE 5SJYD34"  mode 3840x2160@59.997Hz position 0,0   scale 2.0
+  output "BOE NE135A1M-NY1 Unknown"        mode 2880x1920@120Hz     position 905,1080 scale 2.0
+}
+
 profile MunichTfh3ScreenAlekseiDesk {
   output "Dell Inc. DELL U2723QE DQJYD34"           mode 3840x2160@59.997Hz position 1440,802  scale 1.5
   output "LG Electronics LG ULTRAFINE 111NTABEY592" mode 3840x2160@59.997Hz position 0,0       scale 1.5 transform 90

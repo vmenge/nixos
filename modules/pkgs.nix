@@ -195,6 +195,7 @@
     emote # emoji picker
     pavucontrol # volume control
     pamixer # pulseaudio command line mixer
+    playerctl # media player control
     yazi # terminal file manager
     zathura # pdf viewer
     wl-clipboard # clipboard for wayland

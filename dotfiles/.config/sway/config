@@ -25,6 +25,9 @@ exec_always killall kanshi; kanshi
 input * xkb_layout us
 input * xkb_variant alt-intl
 
+# cursor
+seat seat0 xcursor_theme ModernXP2 32
+
 #######################
 # config starts here: #
 #######################
@@ -328,4 +331,5 @@ bindsym $mod+d exec fuzzel
 
 input * {
   tap enabled
+  natural_scroll enabled
 }
