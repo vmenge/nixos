@@ -9,6 +9,7 @@
   environment.systemPackages = with pkgs; [
     hyprlock
     hypridle
+    hyprpaper
   ];
 
   security.pam.services.hyprlock = { };

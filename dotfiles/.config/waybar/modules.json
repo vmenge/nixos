@@ -1,57 +1,57 @@
 {
-  "sway/workspaces": {
+  "hyprland/workspaces": {
     "disable-scroll": true,
     "all-outputs": true,
     "warp-on-scroll": false,
-    "format": "{name}",
-    "format-icons": {
-      "urgent": "",
-      "active": "",
-      "default": ""
+    "format": "{id}",
+    "persistent-workspaces": {
+      "*": 5
     }
   },
 
   "idle_inhibitor": {
     "format": "{icon}",
     "format-icons": {
-      "activated": "",
-      "deactivated": ""
+      "activated": "󰅶",
+      "deactivated": "󰾪"
     }
   },
+
+  "tray": {
+    "spacing": 8
+  },
+
   "pulseaudio": {
-    "format": "{icon}  {volume}%",
-    "format-bluetooth": "{icon} {volume}%  {format_source}",
-    "format-bluetooth-muted": " {icon} {format_source}",
-    "format-muted": " {format_source}",
-    "format-source": " {volume}%",
-    "format-source-muted": "",
+    "format": "{icon} {volume}%",
+    "format-bluetooth": "󰂯 {volume}%",
+    "format-bluetooth-muted": "󰂲",
+    "format-muted": "󰝟",
     "format-icons": {
-      "headphone": "",
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": ["", "", ""]
+      "headphone": "󰋋",
+      "headset": "󰋎",
+      "default": ["󰕿", "󰖀", "󰕾"]
     },
     "on-click": "pavucontrol"
   },
+
   "network": {
-    "format-wifi": "   {essid} ({signalStrength}%)",
-    "format-ethernet": "{ipaddr}/{cidr} ",
-    "tooltip-format": "{ifname} via {gwaddr} ",
-    "format-linked": "{ifname} (No IP) ",
-    "format-disconnected": "Disconnected ⚠"
+    "format-wifi": "󰤨 {essid}",
+    "format-ethernet": "󰈀 {ipaddr}",
+    "format-linked": "󰈂 {ifname}",
+    "format-disconnected": "󰤭",
+    "tooltip-format": "{ifname} via {gwaddr}\n{ipaddr}/{cidr}\nStrength: {signalStrength}%"
   },
+
   "cpu": {
-    "format": "  {usage}%",
+    "format": "󰻠 {usage}%",
     "tooltip": true
   },
 
   "memory": {
-    "format": "  {}%",
-    "tooltip": true
+    "format": "󰍛 {percentage}%",
+    "tooltip-format": "{used:0.1f}G / {total:0.1f}G"
   },
+
   "temperature": {
     "interval": 10,
     "hwmon-path": [
@@ -62,33 +62,26 @@
       "/sys/devices/platform/coretemp.0/hwmon/hwmon4/temp1_input",
       "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input"
     ],
-    "critical-threshold": 100,
-    "format-critical": " {temperatureC}",
-    "format": " {temperatureC}°C"
+    "critical-threshold": 90,
+    "format": "󰔏 {temperatureC}°C",
+    "format-critical": "󱃂 {temperatureC}°C"
   },
-  "hyprland/language": {
-    "format": "  {}",
-    "format-en": "EN",
-    "format-ru": "RU"
-  },
+
   "battery": {
     "states": {
       "warning": 30,
       "critical": 15
     },
-    "format": "{icon}  {capacity}%",
-    "format-full": "{icon}  {capacity}%",
-    "format-charging": "  {capacity}%",
-    "format-plugged": "  {capacity}%",
-    "format-alt": "{time}  {icon}",
-    "format-icons": ["", "", "", "", ""]
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰚥 {capacity}%",
+    "format-alt": "{icon} {time}",
+    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
   },
-  "battery#bat2": {
-    "bat": "BAT2"
-  },
+
   "clock": {
-    "format": "{:%H:%M | %e %B} ",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format": "󰃮 {:%a %d %b  󰅐 %H:%M}",
+    "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
     "format-alt": "{:%Y-%m-%d}"
   }
 }

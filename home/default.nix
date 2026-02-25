@@ -38,8 +38,8 @@ in
     ".config/i3".source = sl ".config/i3";
     ".config/i3".recursive = true;
 
-    ".config/mako".source = sl ".config/mako";
-    ".config/mako".recursive = true;
+    ".config/dunst".source = sl ".config/dunst";
+    ".config/dunst".recursive = true;
 
     ".config/kanshi".source = sl ".config/kanshi";
     ".config/kanshi".recursive = true;

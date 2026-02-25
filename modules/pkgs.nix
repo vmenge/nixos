@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "quickjs-2025-09-13-2"
+  ];
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
@@ -183,8 +186,8 @@
     webkitgtk_4_1
     grim # grab images from wayland compositor
     slurp # select region for wayland compositor
-    fuzzel # application launcher
-    mako # noficiations
+    vicinae # application launcher
+    dunst # notifications
     kanshi # display configuration
     wallrizz # wallpaper manager
     acpi # battery status and other ACPI info

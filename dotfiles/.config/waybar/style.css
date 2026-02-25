@@ -1,101 +1,108 @@
 * {
-  /* `otf-font-awesome` and SpaceMono Nerd Font are required to be installed for icons */
-  font-family: "DepartureMono Nerd Font", "JetBrainsMono Nerd Font Mono", FontAwesome, Roboto, Helvetica,
-    Arial, sans-serif;
-  font-size: 11px;
-  transition: background-color 0.3s ease-out;
+  font-family: "DepartureMono Nerd Font";
+  font-size: 12px;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
 }
 
 window#waybar {
-  background: rgba(26, 27, 38, 0);
+  background: transparent;
   color: #ffffff;
-  font-family:
-    DepartureMono Nerd Font,
-    JetBrainsMono Nerd Font Mono,
-    SpaceMono Nerd Font,
-    feather;
-  transition: background-color 0.5s;
 }
 
+/* ── Islands ─────────────────────────────────────────────── */
+
 .modules-left,
+.modules-center,
 .modules-right {
-  background: rgba(0, 0, 0, 0.9);
-  /* backdrop-filter: blur(2); */
-  margin: 0px 8px 4px;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 12px;
   padding: 0 6px;
-  border-radius: 10px;
 }
-.modules-left {
-  padding: 0;
+
+/* ── Workspaces ───────────────────────────────────────────── */
+
+#workspaces {
+  padding: 0 2px;
 }
+
+#workspaces button {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 0 10px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+#workspaces button.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+#workspaces button.urgent {
+  color: #ff5555;
+}
+
+#workspaces button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+#workspaces button.empty {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* ── Modules ──────────────────────────────────────────────── */
 
 #clock,
 #battery,
 #cpu,
 #memory,
-#disk,
 #temperature,
-#backlight,
 #network,
 #pulseaudio,
-#wireplumber,
-#custom-media,
-#tray,
-#mode,
 #idle_inhibitor,
-#scratchpad,
-#power-profiles-daemon,
-#language,
-#mpd {
-  padding: 0 6px;
-  border-radius: 10px;
+#tray {
+  padding: 0 10px;
+  color: #ffffff;
+  transition: all 0.15s ease;
 }
 
-#clock:hover,
+#clock {
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+/* ── Hover ────────────────────────────────────────────────── */
+
 #battery:hover,
 #cpu:hover,
 #memory:hover,
-#disk:hover,
 #temperature:hover,
-#backlight:hover,
 #network:hover,
 #pulseaudio:hover,
-#wireplumber:hover,
-#custom-media:hover,
-#tray:hover,
-#mode:hover,
-#idle_inhibitor:hover,
-#scratchpad:hover,
-#power-profiles-daemon:hover,
-#language:hover,
-#mpd:hover {
-  background: rgba(26, 27, 38, 0.9);
+#idle_inhibitor:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
 }
 
-#workspaces button {
-  background: transparent;
-  font-family:
-    DepartureMono Nerd Font,
-    JetBrainsMono Nerd Font Mono,
-    SpaceMono Nerd Font,
-    feather;
-  font-weight: 900;
-  font-size: 11pt;
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-}
+/* ── State colours ────────────────────────────────────────── */
 
-#workspaces button.active {
-  background: #11111b;
-}
+#battery.warning                { color: #f1c40f; }
+#battery.critical               { color: #ff5555; }
+#battery.charging,
+#battery.plugged                { color: #a6e22e; }
 
-#workspaces button:hover {
-  background: #11111b;
-  color: #ffffff;
-  box-shadow: none;
-}
+#temperature.critical           { color: #ff5555; }
 
-#battery.warning   { color: #f1c40f; } /* yellow  */
-#battery.critical  { color: #ff5555; } /* red     */
-#battery.charging  { color: #a6e22e; }
+#idle_inhibitor.activated       { color: #f1c40f; }
+
+#network.disconnected           { color: #ff5555; }
+
+/* ── Tray ─────────────────────────────────────────────────── */
+
+#tray > .passive                { -gtk-icon-effect: dim; }
+#tray > .needs-attention        { -gtk-icon-effect: highlight; color: #ff5555; }
