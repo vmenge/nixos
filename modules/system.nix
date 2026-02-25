@@ -14,10 +14,8 @@ in
 {
   imports = [
     ./pkgs.nix
-    ./sway.nix
     ./hyprland.nix
     ./gnome.nix
-    # ./kde.nix
     ./steam.nix
   ];
 

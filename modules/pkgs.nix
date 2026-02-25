@@ -186,7 +186,7 @@
     fuzzel # application launcher
     mako # noficiations
     kanshi # display configuration
-    swww # wallpaper daemon
+    wallrizz # wallpaper manager
     acpi # battery status and other ACPI info
     acpilight # backlight control
     bluez # bluetooth

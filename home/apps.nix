@@ -3,6 +3,13 @@
 
 {
   xdg.desktopEntries = {
+    hyprlock = {
+      name = "Lock";
+      exec = "hyprlock";
+      icon = "system-lock-screen";
+      terminal = false;
+      categories = [ "System" ];
+    };
     # spotify = {
     #   name = "Spotify";
     #   genericName = "Music Player";
