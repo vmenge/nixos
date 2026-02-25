@@ -187,6 +187,7 @@
     grim # grab images from wayland compositor
     slurp # select region for wayland compositor
     vicinae # application launcher
+    waybar # status bar
     dunst # notifications
     kanshi # display configuration
     wallrizz # wallpaper manager
@@ -257,6 +258,7 @@
     cava # visualizer for alsa
     alsa-utils
     imagemagick # create, edit, compose or convert bitmap images
+    timg # terminal image viewer (required by wallrizz list view)
     ffmpeg
     shotcut
     libcamera

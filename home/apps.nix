@@ -3,6 +3,14 @@
 
 {
   xdg.desktopEntries = {
+    wallpaper = {
+      name = "Wallpaper";
+      exec = "ghostty -e sh -c \"wallrizz -z list -d ~/.wallpaper\"";
+      icon = "preferences-desktop-wallpaper";
+      terminal = false;
+      categories = [ "Settings" ];
+    };
+
     hyprlock = {
       name = "Lock";
       exec = "hyprlock";
