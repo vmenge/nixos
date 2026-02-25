@@ -4,6 +4,18 @@
   nixpkgs.config.permittedInsecurePackages = [
     "quickjs-2025-09-13-2"
   ];
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      # wallrizz hardcodes /usr/bin/bash which doesn't exist on NixOS
+      wallrizz = prev.wallrizz.overrideAttrs (old: {
+        postPatch = (old.postPatch or "") + ''
+          substituteInPlace userInterface.js extensionDownloadManager.js \
+            --replace-fail "'/usr/bin/bash -c'" "'${prev.bash}/bin/bash -c'"
+        '';
+      });
+    })
+  ];
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"

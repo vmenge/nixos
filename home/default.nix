@@ -50,6 +50,9 @@ in
     ".scripts".source = sl ".scripts";
     ".scripts".recursive = true;
 
+    ".config/WallRizz".source = sl ".config/WallRizz";
+    ".config/WallRizz".recursive = true;
+
     ".config/wii".source = sl ".config/wii";
     ".config/wii".recursive = true;
 

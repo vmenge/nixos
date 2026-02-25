@@ -1,12 +1,20 @@
 # xdg desktop entries file
-{ ... }:
+{ config, ... }:
 
 {
   xdg.desktopEntries = {
     wallpaper = {
       name = "Wallpaper";
-      exec = "ghostty -e sh -c \"wallrizz -z list -d ~/.wallpaper\"";
+      exec = "ghostty -e bash ${config.home.homeDirectory}/.scripts/wallpaper.sh";
       icon = "preferences-desktop-wallpaper";
+      terminal = false;
+      categories = [ "Settings" ];
+    };
+
+    "network.cycles.wdisplays" = {
+      name = "Displays";
+      exec = "bash ${config.home.homeDirectory}/.scripts/display-settings.sh";
+      icon = "video-display";
       terminal = false;
       categories = [ "Settings" ];
     };

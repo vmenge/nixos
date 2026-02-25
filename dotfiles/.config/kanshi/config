@@ -32,3 +32,25 @@ profile MunichTfh3ScreenAlekseiDesk {
   output "LG Electronics LG ULTRAFINE 111NTABEY592" mode 3840x2160@59.997Hz position 0,0       scale 1.5 transform 90
   output "Samsung Display Corp. 0x4193 Unknown"     mode 2880x1800@90Hz     position 1849,2242 scale 2
 }
+
+
+
+
+
+
+
+
+
+
+
+
+profile BOENE135A1MNY1 {
+  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 0,0 scale 2.00
+}
+
+
+
+profile BOENE135A1MNY1_DellIncDELLU3425WE {
+  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 1061,1440 scale 2.00
+  output "Dell Inc. DELL U3425WE 6FLL3Z3" mode 3440x1440@59.973Hz position 0,0 scale 1.00
+}
