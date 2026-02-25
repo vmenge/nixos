@@ -13,7 +13,6 @@ This should create two files:
 
 Before writing files, ask for feedback from the user by showing its full contents to them.
 After writing these files, don't ask to code. You are not supposed to go into coding mode.
-Make sure folder .workstreams is in gitignore if there is one.
 
 # Workstream folder structure
 

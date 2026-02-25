@@ -73,7 +73,7 @@ in
 
     ".claude/skills".source = sl ".agents/skills";
     ".claude/skills".recursive = true;
-    ".claude/settings.json".source = sl ".cloud/settings.json";
+    ".claude/settings.json".source = sl ".claude/settings.json";
     ".claude/settings.json".force = true;
 
     # openxr shit
