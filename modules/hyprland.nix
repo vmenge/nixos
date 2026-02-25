@@ -10,6 +10,8 @@
     hyprlock
     hypridle
     hyprpaper
+    swayosd
+    brightnessctl
   ];
 
   security.pam.services.hyprlock = { };
