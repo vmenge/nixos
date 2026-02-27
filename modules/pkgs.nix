@@ -263,6 +263,9 @@
     firefox
     google-chrome
 
+    # voice
+    voxtype
+
     # images / video / audio
     vlc
     mpv

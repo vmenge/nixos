@@ -11,6 +11,7 @@
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["clock"],
   "modules-right": [
+    "custom/voxtype",
     "tray",
     "idle_inhibitor",
     "pulseaudio",

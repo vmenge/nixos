@@ -57,6 +57,7 @@ window#waybar {
 
 /* ── Modules ──────────────────────────────────────────────── */
 
+#custom-voxtype,
 #clock,
 #battery,
 #cpu,
@@ -78,6 +79,7 @@ window#waybar {
 
 /* ── Hover ────────────────────────────────────────────────── */
 
+#custom-voxtype:hover,
 #battery:hover,
 #cpu:hover,
 #memory:hover,
@@ -101,6 +103,11 @@ window#waybar {
 #idle_inhibitor.activated       { color: #f1c40f; }
 
 #network.disconnected           { color: #ff5555; }
+
+#custom-voxtype.recording       { color: #ff5555; }
+#custom-voxtype.transcribing    { color: #f1c40f; }
+#custom-voxtype.idle            { color: #a6e22e; }
+#custom-voxtype.stopped         { color: rgba(255, 255, 255, 0.35); }
 
 /* ── Tray ─────────────────────────────────────────────────── */
 

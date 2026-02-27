@@ -12,16 +12,25 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    voxtype = {
+      url = "github:peteonrails/voxtype";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
-    { nixpkgs, home-manager, plasma-manager, ... }:
+    { nixpkgs, home-manager, plasma-manager, voxtype, ... }:
     let
       cfg =
         system: hostName:
         nixpkgs.lib.nixosSystem {
           system = system;
           modules = [
+            {
+              nixpkgs.overlays = [
+                (_: _: { voxtype = voxtype.packages.${system}.default; })
+              ];
+            }
             ./hosts/${hostName}
             home-manager.nixosModules.home-manager
             {
