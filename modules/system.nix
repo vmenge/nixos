@@ -76,6 +76,12 @@ in
 
   security.polkit.enable = true;
 
+  # Firmware needed for AMD ACP/DMIC + SOF DSP
+  hardware.firmware = [
+    pkgs.linux-firmware
+    pkgs.sof-firmware
+  ];
+
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -83,15 +89,29 @@ in
     wireplumber.enable = true;
     wireplumber.extraConfig."50-bluetooth-policy" = {
       "monitor.bluez.properties" = {
-        "bluez5.roles" = [ "a2dp_sink" "a2dp_source" "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
-        "bluez5.codecs" = [ "sbc" "sbc_xq" "aac" "ldac" "aptx" "aptx_hd" ];
+        "bluez5.roles" = [
+          "a2dp_sink"
+          "a2dp_source"
+          "hsp_hs"
+          "hsp_ag"
+          "hfp_hf"
+          "hfp_ag"
+        ];
+        "bluez5.codecs" = [
+          "sbc"
+          "sbc_xq"
+          "aac"
+          "ldac"
+          "aptx"
+          "aptx_hd"
+        ];
         "bluez5.autoswitch-profile" = false;
       };
     };
     wireplumber.extraConfig."51-bluetooth-priority" = {
       "monitor.bluez.rules" = [
         {
-          matches = [{ "node.name" = "~bluez_output.*"; }];
+          matches = [ { "node.name" = "~bluez_output.*"; } ];
           actions = {
             "update-props" = {
               "priority.session" = 2000;
