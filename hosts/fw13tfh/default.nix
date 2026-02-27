@@ -23,7 +23,7 @@
     script = ''
       amixer -c 1 set 'Headset Mic' nocap
       amixer -c 1 set 'Internal Mic' cap
-      amixer -c 1 set 'Internal Mic Boost' 2
+      amixer -c 1 set 'Internal Mic Boost' 0
     '';
   };
 }
