@@ -66,7 +66,7 @@ return {
     config = function()
       -- vim.o.background = "light" -- or 'dark'
 
-      vim.cmd.colorscheme("solarized")
+      -- vim.cmd.colorscheme("solarized")
     end,
   },
   {
@@ -76,7 +76,31 @@ return {
     config = function()
       -- vim.o.background = "light" -- or 'dark'
 
-      vim.cmd.colorscheme("solarized-osaka")
+      -- vim.cmd.colorscheme("solarized-osaka")
+    end,
+  },
+  {
+    dir = "~/dev/belafonte.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd("colorscheme belafonte")
+    end,
+  },
+  {
+    dir = "~/dev/calamity.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd("colorscheme calamity")
+    end,
+  },
+  {
+    dir = "~/dev/jubi.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd("colorscheme jubi")
     end,
   },
   {

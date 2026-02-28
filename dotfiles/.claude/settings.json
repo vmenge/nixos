@@ -18,7 +18,8 @@
   "model": "opus",
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true
+    "lua-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
   },
   "skipDangerousModePermissionPrompt": true
 }
