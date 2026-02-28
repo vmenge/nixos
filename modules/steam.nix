@@ -21,6 +21,8 @@ in
     "L+ /usr/bin/steamos-session-select - - - - /run/current-system/sw/bin/steamos-session-select"
   ];
 
+  environment.sessionVariables.STEAM_FORCE_DESKTOPUI_SCALING = "1.0";
+
   programs.gamemode.enable = true;
   programs.gamescope.capSysNice = true;
   programs.steam.enable = true;

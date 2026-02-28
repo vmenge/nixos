@@ -96,7 +96,7 @@ return {
     end,
   },
   {
-    dir = "~/dev/jubi.nvim",
+    "vmenge/jubi.nvim",
     lazy = false,
     priority = 1000,
     config = function()
