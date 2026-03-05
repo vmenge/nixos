@@ -76,9 +76,19 @@ in
     ".claude/settings.json".source = sl ".claude/settings.json";
     ".claude/settings.json".force = true;
 
+    ".codex/config.toml".source = sl ".codex/config.toml";
+    ".codex/config.toml".force = true;
+
     # openxr shit
     # ".config/openxr/1/active_runtime.json".source =
     #   config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamVR/steamxr_linux64.json";
+  };
+
+  home.pointerCursor = {
+    name = "Adwaita";
+    size = 24;
+    package = pkgs.adwaita-icon-theme;
+    gtk.enable = true;
   };
 
   home.sessionVariables = {
