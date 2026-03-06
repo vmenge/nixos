@@ -132,8 +132,6 @@ with lib.hm.gvariant;
       color-scheme = "prefer-dark";
       cursor-blink = true;
       cursor-blink-time = 1000;
-      cursor-size = 32;
-      cursor-theme = "ModernXP2";
       document-font-name = "DepartureMono Nerd Font 10";
       enable-animations = true;
       font-name = "DepartureMono Nerd Font 10";

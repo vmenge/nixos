@@ -1,5 +1,5 @@
-model = "gpt-5.3-codex"
-model_reasoning_effort = "medium"
+model = "gpt-5.4"
+model_reasoning_effort = "high"
 [projects."/home/vmenge/dev/tfh/orb-software"]
 trust_level = "untrusted"
 
