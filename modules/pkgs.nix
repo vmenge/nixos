@@ -28,8 +28,6 @@
   users.defaultUserShell = pkgs.zsh;
   programs.starship.enable = true;
 
-  programs.light.enable = true;
-
   services.sunshine = {
     enable = false; # enable later, broken rn
     autoStart = true;
@@ -227,6 +225,7 @@
     gnomeExtensions.blur-my-shell
     gnomeExtensions.vitals
     gnomeExtensions.clipboard-indicator
+    brightnessctl
 
     # gaming
     game-devices-udev-rules # udev rules to make supported controlles available
@@ -247,7 +246,7 @@
     slack
 
     # fun
-    neofetch
+    fastfetch
     cmatrix # simulates falling characters theme from matrix movie
     cowsay
 
@@ -331,6 +330,7 @@
     nerd-fonts.lilex
     nerd-fonts.departure-mono
     nerd-fonts.geist-mono
+    nerd-fonts.meslo-lg
     noto-fonts
     noto-fonts
     noto-fonts-cjk-sans
@@ -346,5 +346,6 @@
     intel-one-mono
     monocraft
     dina-font
+    vista-fonts
   ];
 }

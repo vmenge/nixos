@@ -1,6 +1,6 @@
-theme = Jubi
-font-family = DepartureMono Nerd Font
-window-title-font-family = DepartureMono Nerd Font
+theme = Material Design Colors
+font-family = Consolas
+window-title-font-family = Consolas
 font-size = 12
 shell-integration-features = sudo,no-title
 cursor-style = block
