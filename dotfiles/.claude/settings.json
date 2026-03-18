@@ -15,13 +15,7 @@
       "/home/vmenge/.agents"
     ]
   },
-  "model": "opus",
-  "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
-  },
-  "skipDangerousModePermissionPrompt": true,
+  "model": "opus[1m]",
   "hooks": {
     "SessionStart": [
       {
@@ -47,5 +41,11 @@
   "statusLine": {
     "type": "command",
     "command": "node \"/home/vmenge/.claude/hooks/gsd-statusline.js\""
-  }
+  },
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "skipDangerousModePermissionPrompt": true
 }

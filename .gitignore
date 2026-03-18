@@ -5,3 +5,6 @@
 **/target
 
 docs/
+
+# bin
+dotfiles/.bin/

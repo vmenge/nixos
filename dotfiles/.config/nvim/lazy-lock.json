@@ -79,6 +79,7 @@
   "poimandres.nvim": { "branch": "main", "commit": "a488957d803943a4201ac3b774913fcafa9e6b3a" },
   "preto": { "branch": "master", "commit": "d7f5205ab63dcbfa80abbc18badd51aa0d9965b1" },
   "quantum.vim": { "branch": "lua", "commit": "32c3eee862eb3d607ec74d7e3e776079d702f8a9" },
+  "rider.nvim": { "branch": "main", "commit": "81214a64d18b82e93e2f894f377c8f944420faa8" },
   "rustaceanvim": { "branch": "master", "commit": "88575b98bb9937fb9983ddec5e532b67e75ce677" },
   "solarized-osaka.nvim": { "branch": "main", "commit": "f0c2f0ba0bd56108d53c9bfae4bb28ff6c67bbdb" },
   "solarized.nvim": { "branch": "main", "commit": "c0dfe1cbfabd93b546baf5f1408f5df7e02e2050" },

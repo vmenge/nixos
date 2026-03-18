@@ -50,6 +50,9 @@ in
     ".scripts".source = sl ".scripts";
     ".scripts".recursive = true;
 
+    ".bin".source = sl ".bin";
+    ".bin".recursive = true;
+
     ".config/WallRizz".source = sl ".config/WallRizz";
     ".config/WallRizz".recursive = true;
 
@@ -90,6 +93,10 @@ in
     package = pkgs.adwaita-icon-theme;
     gtk.enable = true;
   };
+
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.bin"
+  ];
 
   home.sessionVariables = {
     EDITOR = "nvim";
