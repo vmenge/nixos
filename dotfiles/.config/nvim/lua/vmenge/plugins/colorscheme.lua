@@ -96,7 +96,7 @@ return {
     end,
   },
   {
-    dir = "~/dev/rider.nvim",
+    "vmenge/rider.nvim",
     lazy = false,
     priority = 1000,
     config = function()
