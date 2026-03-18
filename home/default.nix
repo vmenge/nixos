@@ -79,6 +79,11 @@ in
     ".claude/settings.json".source = sl ".claude/settings.json";
     ".claude/settings.json".force = true;
 
+    ".claude.json".source = sl ".claude.json";
+
+    ".config/AGENTS.md".source = sl ".agents/AGENTS.md";
+    ".config/CLAUDE.md".source = sl ".agents/AGENTS.md";
+
     ".codex/config.toml".source = sl ".codex/config.toml";
     ".codex/config.toml".force = true;
 
