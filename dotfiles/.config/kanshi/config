@@ -59,3 +59,8 @@ profile BOENE135A1MNY1_DellIncDELLU3425WE {
 profile TechnicalConceptsLtdBeyondTV {
   output "Technical Concepts Ltd Beyond TV 0x00010000" mode 3840x2160@60Hz position 0,0 scale 2.00
 }
+
+profile BOENE135A1MNY1_DellIncDELLU2723QE {
+  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 605,1440 scale 2.00
+  output "Dell Inc. DELL U2723QE 1TQG8H3" mode 3840x2160@59.997Hz position 0,0 scale 1.50
+}

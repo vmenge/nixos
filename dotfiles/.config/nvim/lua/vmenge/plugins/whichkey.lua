@@ -43,6 +43,20 @@ return {
       vim.api.nvim_buf_delete(cur_buf, { force = true })
     end
 
+    local notify_enabled = true
+    local original_notify = vim.notify
+    function ToggleNotifications()
+      if notify_enabled then
+        vim.notify = function() end
+        notify_enabled = false
+        print("Notifications silenced")
+      else
+        vim.notify = original_notify
+        notify_enabled = true
+        vim.notify("Notifications enabled")
+      end
+    end
+
     function Format()
       local file = vim.api.nvim_buf_get_name(0)
 
@@ -103,6 +117,7 @@ return {
       { "<leader>n", group = "Notify" },
       { "<leader>nx", '<cmd>lua require("notify").dismiss()<CR>', desc = "Dismiss" },
       { "<leader>nh", '<cmd>Telescope notify<CR>', desc = "History" },
+      { "<leader>ns", "<cmd>lua ToggleNotifications()<CR>", desc = "Silence Toggle" },
       { "<leader>o", group = "Org-mode", icon = "" },
       { "<leader>q", group = "Quit" },
       { "<leader>qQ", "<cmd>qa!<CR>", desc = "Quit (force)" },

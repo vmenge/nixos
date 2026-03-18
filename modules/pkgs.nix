@@ -166,6 +166,7 @@
     wild
     zenoh
     mermaid-cli
+    worktrunk
 
     # dev services
     awscli2 # AWS cli

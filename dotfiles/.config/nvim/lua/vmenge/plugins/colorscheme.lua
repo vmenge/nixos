@@ -96,11 +96,27 @@ return {
     end,
   },
   {
+    dir = "~/dev/rider.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd("colorscheme rider")
+    end,
+  },
+  {
+    dir = "~/dev/materialdesigncolors.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd("colorscheme materialdesigncolors")
+    end,
+  },
+  {
     "vmenge/jubi.nvim",
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd("colorscheme jubi")
+      -- vim.cmd("colorscheme jubi")
     end,
   },
   {
@@ -575,5 +591,5 @@ return {
 
       -- vim.cmd.colorscheme("kanso")
     end
-  }
+  },
 }

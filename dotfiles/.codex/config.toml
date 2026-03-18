@@ -15,6 +15,12 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/tfh/priv-orb-core"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/dev/speare"]
+trust_level = "untrusted"
+
+[projects."/home/vmenge/dev/jorius"]
+trust_level = "trusted"
+
 # GSD Agent Configuration — managed by get-shit-done installer
 [features]
 multi_agent = true
