@@ -1,6 +1,8 @@
 return {
   "folke/which-key.nvim",
-  event = "VeryLazy",
+  lazy = false,
+  priority = 20000,
+
 
   init = function()
     vim.o.timeout = true
@@ -12,12 +14,22 @@ return {
       local cur_buf = vim.api.nvim_get_current_buf()
       local buffers = vim.api.nvim_list_bufs()
       local replacement_buf = nil
+      local alternate_buf = vim.fn.bufnr("#")
+
+      if alternate_buf > 0
+          and alternate_buf ~= cur_buf
+          and vim.api.nvim_buf_is_valid(alternate_buf)
+          and vim.fn.buflisted(alternate_buf) == 1 then
+        replacement_buf = alternate_buf
+      end
 
       -- Attempt to find an alternative buffer that is not the current one and is loaded
-      for _, buf in ipairs(buffers) do
-        if buf ~= cur_buf and vim.api.nvim_buf_is_loaded(buf) and vim.fn.buflisted(buf) == 1 then
-          replacement_buf = buf
-          break
+      if replacement_buf == nil then
+        for _, buf in ipairs(buffers) do
+          if buf ~= cur_buf and vim.api.nvim_buf_is_loaded(buf) and vim.fn.buflisted(buf) == 1 then
+            replacement_buf = buf
+            break
+          end
         end
       end
 
