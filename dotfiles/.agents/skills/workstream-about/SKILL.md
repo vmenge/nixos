@@ -20,6 +20,10 @@ Each workstream has two core files:
 
 Treat the workstream folder as the durable planning surface for that unit of work.
 
+Workstreams are the primary planning surface for this unit of work.
+
+Derived artifacts in `docs/plans/` or elsewhere may be used for lower-level brainstorming, design, or implementation support, but they do not override `research.md` or `track.md`.
+
 ## What the Files Mean
 
 `research.md` captures discovery work:
@@ -71,5 +75,8 @@ Do not use this skill when:
 ## Rules
 
 - Keep all workstream-specific context inside the matching workstream folder.
+- Agents may create `.workstreams/<name>/` when starting a new workstream.
+- If the intended workstream name or path is ambiguous, resolve it with the user before writing.
+- Treat `docs/plans/` and similar plan files as derived artifacts, not competing sources of truth.
 - Do not treat ad hoc notes outside `.workstreams/<name>/` as the source of truth over `research.md` or `track.md`.
 - If another workstream skill applies, use this skill first or alongside it when the workstream model needs clarification.

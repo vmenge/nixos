@@ -9,6 +9,8 @@ description: Use when creating or updating a workstream track in `.workstreams/<
 
 Use this skill to create workstream track pages in `.workstreams/<name>/track.md` that turn a workstream into ordered phases with wave-structured tasks, explicit behavioral expectations, and meaningful completion criteria.
 
+`track.md` is the primary planning artifact for the workstream. Derived artifacts in `docs/plans/` may support lower-level brainstorming, design, or implementation, but they must be derived from and stay aligned with the track.
+
 Use `workstream-about` when needed to understand the workstream model itself.
 
 Each phase must:
@@ -42,6 +44,8 @@ Do not use this skill for:
 
 ## Required Inputs
 
+First resolve the exact workstream folder. If the target is ambiguous, confirm it with the user. If the workstream does not exist yet and the user is starting one, create `.workstreams/<name>/` before writing.
+
 Before writing the track, read:
 
 - `.workstreams/<name>/research.md`
@@ -62,6 +66,14 @@ Create the track in:
 - `.workstreams/<name>/track.md`
 
 ## Core Rules
+
+### 0. Resolve the Workstream and Keep the Track Authoritative
+
+- Resolve the exact workstream folder before writing.
+- If the target is ambiguous, confirm it with the user.
+- If the workstream does not exist yet and the user is starting one, create `.workstreams/<name>/`.
+- `track.md` is the primary planning artifact for the workstream.
+- If you create lower-level plan docs in `docs/plans/`, derive them from `track.md` and keep them aligned with it.
 
 ### 1. Phases Are Sequential
 
@@ -180,6 +192,7 @@ Include:
 - artifacts
 - phase gates
 - module or package alignment
+- out-of-scope boundaries
 - unchecked checkboxes for phases, tasks, and acceptance criteria in the generated track
 
 Do not include:
@@ -214,6 +227,11 @@ Use this structure:
 - <criterion>
 - <criterion>
 - <criterion>
+
+## Out of Scope
+
+- <boundary>
+- <boundary>
 
 ## Task Wave Model
 

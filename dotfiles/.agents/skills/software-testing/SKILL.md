@@ -1,5 +1,5 @@
 ---
-name: testing
+name: software-testing
 description: Testing approach for this project. Important for when implementing tests.
 ---
 

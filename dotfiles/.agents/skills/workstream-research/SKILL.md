@@ -11,6 +11,8 @@ Use this skill when the agent needs to be inquisitive about a workstream and und
 
 The goal is to ask the user what is being worked on, research the surrounding problem, and write useful planning context into `.workstreams/<workstream-name>/research.md`.
 
+If the target workstream does not exist yet and the user is starting a new workstream, create `.workstreams/<workstream-name>/`.
+
 Use `workstream-about` when needed to understand the workstream model itself.
 
 ## When to Use
@@ -37,6 +39,8 @@ Ask what is being built, why it matters, what constraints exist, and what succes
 
 Identify the likely risks and blast radius of the workstream yourself, explain concisely how you reached those conclusions, and confirm them with the user before treating them as settled.
 
+Identify the plausible implementation approaches, explain the main tradeoffs concisely, and note which approach currently looks strongest.
+
 Research any relevant code, architecture, docs, or external constraints that help define the workstream.
 
 Then write down the information that will help plan `track.md`.
@@ -57,21 +61,27 @@ Capture:
 - architectural notes
 - risks
 - blast radius
+- possible approaches
+- tradeoffs
+- recommended approach
 - assumptions
 - rough implementation directions if they help later planning
 
 Do not turn `research.md` into an execution checklist. Its purpose is to make track-building easier and better informed.
 
+`research.md` is the primary research artifact for the workstream. Derived notes in `docs/plans/` may support later work, but they should not replace it.
+
 ## Suggested Flow
 
-1. Identify the target workstream folder.
+1. Resolve the exact target workstream folder. If it is ambiguous, confirm it with the user. If it does not exist yet and the user is starting a new workstream, create it.
 2. Use `workstream-about` if the workstream structure needs clarification.
 3. Ask the user focused questions about what is being built.
 4. Read only the most relevant local files and docs.
 5. Identify the likely risks and blast radius of the workstream.
 6. Explain those conclusions concisely and confirm them with the user.
-7. Summarize the findings into `research.md`.
-8. Highlight open questions or decisions that still affect `track.md`.
+7. Identify plausible implementation approaches and the main tradeoffs between them.
+8. Summarize the findings into `research.md`.
+9. Highlight open questions or decisions that still affect `track.md`.
 
 ## Quality Bar
 
@@ -81,6 +91,6 @@ Bad research is vague, generic, or missing the constraints that will shape the w
 
 Good research should make the likely risks and blast radius clear, with concise reasoning and explicit user confirmation before later planning depends on them.
 
-Good research should also help clarify the plausible implementation approaches and the main tradeoffs between them.
+Good research should also help clarify the plausible implementation approaches, the main tradeoffs between them, and which approach currently seems strongest.
 
 Before finishing, make sure `research.md` gives enough context to break the work into meaningful phases and tasks later.

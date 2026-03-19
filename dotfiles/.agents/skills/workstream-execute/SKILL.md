@@ -23,6 +23,10 @@ This skill treats the workstream track as the source of truth for:
 
 Do not treat workstream tracks as loose guidance. They define what must be built and what counts as done.
 
+`track.md` remains the source of truth throughout execution.
+
+Derived artifacts in `docs/plans/` may be created for lower-level brainstorming, design, or implementation, but they are supporting artifacts only and must not override the workstream.
+
 ## When to Use
 
 Use this skill when:
@@ -39,6 +43,8 @@ Do not use this skill when:
 - the track is missing per-task specs or phase gates
 
 ## Required Inputs
+
+First resolve the exact workstream folder. If the target is ambiguous, confirm it with the user. If the folder does not exist yet and the user is starting a new workstream, create `.workstreams/<name>/`. If `track.md` is missing, do not improvise execution; switch to `workstream-track` first.
 
 Before executing, read:
 
@@ -108,14 +114,17 @@ You MUST follow this sequence:
 
 1. Use `brainstorming`
 2. Use `software architecture and domain modeling`
-3. Confirm the testing strategy with the user
-4. Show a small tree view of the modules or files you expect to change
-5. Use `writing-plans`
-6. Use `executing-plans`
+3. Use `software-testing`
+4. Confirm the testing strategy with the user
+5. Show a small tree view of the modules or files you expect to change
+6. Use `writing-plans`
+7. Use `executing-plans`
 
 Use `dispatching-parallel-agents` during implementation when the current task wave contains 2 or more truly independent tasks that can proceed concurrently without shared-state conflicts.
 
-Use `test-driven-development` during implementation for every task.
+Use `software-testing` to shape the testing strategy for the phase, confirm that strategy with the user, and then use `test-driven-development` during implementation for every task.
+
+Any plan written in `docs/plans/` is a derived artifact from `track.md` and must stay aligned with it.
 
 ## Human Approval Boundaries
 
@@ -172,7 +181,7 @@ Stop and require explicit human approval before continuing.
 
 ### 4. Confirm the Testing Strategy
 
-Before planning or implementation, confirm the testing strategy with the user.
+Before planning or implementation, use `software-testing` to develop the testing strategy, then confirm it with the user.
 
 Do not assume one default testing style fits the project.
 
@@ -184,6 +193,8 @@ Review the current codebase and phase scope, then propose a concise testing stra
 - major test tools or frameworks
 - where tests should live
 - what verification evidence will be required per task and per phase
+
+Use the project's `software-testing` skill to ground this recommendation in the repository's preferred testing approach.
 
 Require explicit human approval before continuing.
 
@@ -209,7 +220,13 @@ tests/
 
 Require explicit human approval before continuing.
 
-### 6. Write the Plan
+### 6. Sync the Track Before Planning
+
+If the approved testing strategy or planned change surface materially changes the workstream's verification, artifacts, out-of-scope boundaries, or sequencing assumptions, update `track.md` before writing any derived plan.
+
+Do not let a `docs/plans/` artifact carry execution assumptions that are missing from or inconsistent with the track.
+
+### 7. Write the Plan
 
 Use `writing-plans` to create an implementation plan for the approved phase.
 
@@ -221,7 +238,13 @@ The plan must:
 - reflect TDD
 - derive implementation work from the task specs
 
-### 7. Execute the Plan
+Any plan created in `docs/plans/` is a derived artifact only.
+
+It must be derived from the approved `track.md`.
+
+If planning reveals that scope, sequencing, verification, or touched surfaces need to change, update `track.md` first and obtain any necessary user approval before continuing.
+
+### 8. Execute the Plan
 
 Use `executing-plans` to implement the written plan.
 
@@ -239,17 +262,19 @@ Across phases:
 
 - satisfy the phase gate before starting the next phase
 
-### 8. Mark Completion Checkboxes
+### 9. Mark Completion Checkboxes
 
 As work completes, update the track directly.
 
-- mark each completed acceptance criterion checkbox as `[x]`
+- mark each completed acceptance criterion checkbox as `[x]` as soon as that acceptance criterion is truly satisfied
 - mark each completed task checkbox as `[x]` only after the task truly satisfies its spec, criteria, scenarios, verification, and reviewer loop
 - mark the phase checkbox as `[x]` only after every task in the phase is complete and the phase gate is satisfied
 
 Do not leave track checkboxes stale.
 
-### 9. Run a Reviewer Loop After Every Task
+Do not wait until the end of the task to mark an acceptance criterion that is already truly complete.
+
+### 10. Run a Reviewer Loop After Every Task
 
 After finishing a task, but before continuing to the next task or wave:
 
