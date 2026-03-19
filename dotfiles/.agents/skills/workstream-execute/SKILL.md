@@ -252,6 +252,7 @@ Within a wave:
 
 - independent tasks may proceed in parallel
 - use `dispatching-parallel-agents` when parallel execution is real and safe
+- reviewer loops for completed tasks do not block other still-running tasks in the same wave
 - do not invent parallelism where tasks depend on each other
 
 Across waves:
@@ -274,18 +275,25 @@ Do not leave track checkboxes stale.
 
 Do not wait until the end of the task to mark an acceptance criterion that is already truly complete.
 
-### 10. Run a Reviewer Loop After Every Task
+### 10. Run a Reviewer Loop Per Completed Task
 
-After finishing a task, but before continuing to the next task or wave:
+A reviewer loop gates task completion, not the concurrent execution of other still-running tasks in the same wave.
 
-1. spawn a reviewer subagent to review the completed task against the track, affected code, tests, and task verification
-2. wait for the reviewer result before proceeding
+After a task's implementation and verification are complete:
+
+1. spawn a reviewer subagent to review that task against the track, affected code, tests, and task verification
+2. wait for that reviewer result before marking that task complete
 3. for every issue the reviewer raises, add or extend tests so the issue is covered, then fix the implementation
 4. rerun the relevant verification
 5. spawn another reviewer subagent
-6. repeat until the reviewer explicitly says it is ok to continue
+6. repeat until the reviewer explicitly says it is ok to mark that task complete
 
-Do not continue to the next task, the next wave, or the phase gate while the latest reviewer subagent still has unresolved issues.
+Rules:
+
+- other independent tasks in the same wave may continue running in parallel
+- a task is not complete while its latest reviewer subagent still has unresolved issues
+- do not start the next wave until every task in the current wave is complete, including its reviewer loop
+- do not proceed to the phase gate until every task in the phase is complete
 
 ## TDD From Scenarios
 
