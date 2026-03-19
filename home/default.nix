@@ -79,8 +79,6 @@ in
     ".claude/settings.json".source = sl ".claude/settings.json";
     ".claude/settings.json".force = true;
 
-    ".claude.json".source = sl ".claude.json";
-
     ".config/AGENTS.md".source = sl ".agents/AGENTS.md";
     ".config/CLAUDE.md".source = sl ".agents/AGENTS.md";
 
