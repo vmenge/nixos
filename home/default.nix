@@ -45,6 +45,7 @@ in
     ".config/kanshi".recursive = true;
 
     ".config/voxtype/config.toml".source = sl ".config/voxtype/config.toml";
+    ".config/worktrunk/config.toml".source = sl ".config/worktrunk/config.toml";
 
     ".config/zed".source = sl ".config/zed";
     ".config/zed".recursive = true;
