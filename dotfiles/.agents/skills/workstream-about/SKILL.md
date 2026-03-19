@@ -21,6 +21,7 @@ Each workstream has two core files:
 Treat the workstream folder as the durable planning surface for that unit of work.
 
 Workstreams are the primary planning surface for this unit of work.
+`.workstreams` folder is usually gitignored in projects.
 
 Derived artifacts in `docs/plans/` or elsewhere may be used for lower-level brainstorming, design, or implementation support, but they do not override `research.md` or `track.md`.
 
