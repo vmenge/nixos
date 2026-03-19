@@ -7,6 +7,7 @@
 
   nixpkgs.overlays = [
     (final: prev: {
+      fff-mcp = final.callPackage ../derivations/fff-mcp.nix { };
       # wallrizz hardcodes /usr/bin/bash which doesn't exist on NixOS
       wallrizz = prev.wallrizz.overrideAttrs (old: {
         postPatch = (old.postPatch or "") + ''
@@ -138,6 +139,7 @@
     dioxus-cli # dioxus
     jdk
     claude-code
+    fff-mcp
     codex
     amp-cli
     probe-rs-tools
