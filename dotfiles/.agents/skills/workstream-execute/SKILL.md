@@ -116,7 +116,7 @@ You MUST follow this sequence:
 2. Use `software architecture and domain modeling`
 3. Use `software-testing`
 4. Confirm the testing strategy with the user
-5. Show a small tree view of the modules or files you expect to change
+5. Confirm the software architecture intended with the user, and show a small tree view of the modules or files you expect to change
 6. Use `writing-plans`
 7. Use `executing-plans`
 
