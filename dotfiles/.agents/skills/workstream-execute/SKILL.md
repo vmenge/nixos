@@ -95,6 +95,14 @@ Acceptance criteria define what must be true.
 
 Scenarios provide evidence that those things are true.
 
+Verification evidence may include automated tests, a manual verification pass, or both.
+
+Do not assume every acceptance criterion or behavior statement should become a code-level test.
+
+Also do not use "manual verification" as an escape hatch.
+
+For each criterion and scenario, make an explicit judgment about whether it is meaningfully testable through code in this repository and whether that test is worth having.
+
 Do not mark a task done because:
 
 - code exists
@@ -192,6 +200,7 @@ Review the current codebase and phase scope, then propose a concise testing stra
 - primary test level or levels
 - major test tools or frameworks
 - where tests should live
+- which criteria and scenarios should be automated, manually verified, or both
 - what verification evidence will be required per task and per phase
 
 Use the project's `software-testing` skill to ground this recommendation in the repository's preferred testing approach.
@@ -295,11 +304,19 @@ Rules:
 - do not start the next wave until every task in the current wave is complete, including its reviewer loop
 - do not proceed to the phase gate until every task in the phase is complete
 
-## TDD From Scenarios
+## Testability Judgment and TDD From Scenarios
 
-Use the task scenarios to drive TDD.
+Use the task scenarios to drive TDD whenever the underlying behavior is meaningfully testable through code.
 
-For each scenario:
+For each acceptance criterion and scenario:
+
+- decide whether it should be covered by automated tests, manual verification, or both
+- prefer automated tests when the behavior is stable, repeatable, and worth guarding against regression
+- do not skip tests merely because the requirement is phrased narratively or awkwardly; first reason about the underlying behavior it is trying to specify
+- use manual verification only when the behavior is not meaningfully automatable in this repository or when a code test would provide poor value relative to its cost
+- when manual verification is required, define a concrete manual verification pass and capture the evidence in the task verification
+
+When automated coverage is appropriate:
 
 - write one or more failing tests that prove the scenario is not yet satisfied
 - run the tests and verify they fail for the expected reason
@@ -319,7 +336,7 @@ Use as many tests per scenario as necessary.
 
 A scenario is not complete merely because one nominal example passes if the acceptance criteria still lack evidence.
 
-Reviewer findings must also become test coverage. If a reviewer identifies a missing case, regression risk, or spec gap, add tests that capture it before claiming the task is complete.
+Reviewer findings must also become verification coverage. If a reviewer identifies a missing case, regression risk, or spec gap, add tests when the behavior is meaningfully automatable; otherwise extend the manual verification pass before claiming the task is complete.
 
 ## Parallel Execution Rules
 

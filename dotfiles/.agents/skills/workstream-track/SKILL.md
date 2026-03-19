@@ -136,6 +136,21 @@ Every task must include:
 
 There must be at least one scenario for every acceptance criterion. Always. A task is incomplete if any acceptance criterion lacks its own supporting scenario coverage.
 
+Acceptance criteria must describe concrete task-local outcomes, behaviors, or observable constraints.
+
+Do not write acceptance criteria that are only bookkeeping, planning hygiene, or references to other tracks or prior tasks.
+
+Bad acceptance criteria include things like:
+
+- "previous tracks were checked"
+- "prior tasks were reviewed"
+- "implementation aligns with earlier work"
+- "the agent verified context"
+
+Those may be planning steps or review checks, but they are not acceptance criteria.
+
+If something matters for execution order, dependency readiness, or planning context, express it in phase structure, task dependencies, artifacts, or phase gates instead of pretending it is a task acceptance criterion.
+
 When the agent creates or rewrites a task, it must show that task individually to the user. Its proposed acceptance criteria and proposed scenarios are suggestions until the user approves them. The agent must ask for approval of that task, including the suggested acceptance criteria and suggested scenarios, before moving on to the next task or finalizing the track.
 
 Every phase ends with a phase gate.
@@ -176,6 +191,7 @@ Weak evidence:
 - main happy path exists
 - most tests pass
 - manual confidence only
+- previous tracks or earlier tasks were "checked"
 
 ### 5. Workstream Track, Not Internal Plan
 
