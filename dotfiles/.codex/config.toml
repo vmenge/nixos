@@ -1,6 +1,7 @@
 model = "gpt-5.4"
 model_reasoning_effort = "high"
 personality = "pragmatic"
+service_tier = "fast"
 [projects."/home/vmenge/dev/tfh/orb-software"]
 trust_level = "untrusted"
 

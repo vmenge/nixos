@@ -8,3 +8,5 @@ docs/
 
 # bin
 dotfiles/.bin/
+
+.nvimlog
