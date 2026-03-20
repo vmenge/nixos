@@ -30,12 +30,10 @@ return {
               runBuildScripts = true,
             },
             check = {
-              command = "clippy"
-            },
-            checkOnSave = {
               command = "clippy",
               extraArgs = { "--no-deps" },
             },
+            checkOnSave = true,
             procMacro = {
               enable = true,
               attributes = {
