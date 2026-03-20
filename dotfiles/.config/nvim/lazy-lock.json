@@ -6,6 +6,7 @@
   "accent.vim": { "branch": "master", "commit": "54e0b255cb2c93555014197c8adc59d631c25696" },
   "actions-preview.nvim": { "branch": "master", "commit": "cb938c25edaac38d362555f19244a9cb85d561e8" },
   "adwaita.nvim": { "branch": "main", "commit": "93f3bed009f7fc4c57f8d710880b6cab9e0b0d15" },
+  "agentic.nvim": { "branch": "main", "commit": "4813e54e8310b3a917d4b094d016b200b27e6d3a" },
   "ante_vim": { "branch": "master", "commit": "91629211b22e450f1b34b759bb971070853eb822" },
   "apprentice.nvim": { "branch": "main", "commit": "807256b5e16c255359fe09f04d954e8ea19e03fa" },
   "blink-cmp-avante": { "branch": "master", "commit": "4f494c6e124acbe31a8f5d58effa0c14aa38a6d5" },

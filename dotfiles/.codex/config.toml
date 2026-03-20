@@ -25,6 +25,12 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/rider.nvim"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/dev"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/clangler"]
+trust_level = "trusted"
+
 # GSD Agent Configuration — managed by get-shit-done installer
 [features]
 multi_agent = true

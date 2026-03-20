@@ -94,6 +94,25 @@ return {
 
     local wk = require("which-key")
     wk.add({
+      { "<leader>a", group = "Agent" },
+      { "<leader>aa", function() require("agentic").toggle() end, desc = "Toggle Chat" },
+      {
+        "<leader>af",
+        function() require("agentic").add_selection_or_file_to_context() end,
+        desc = "Add File or Selection",
+      },
+      { "<leader>an", function() require("agentic").new_session() end, desc = "New Session" },
+      { "<leader>ar", function() require("agentic").restore_session() end, desc = "Restore Session" },
+      {
+        "<leader>ad",
+        function() require("agentic").add_current_line_diagnostics() end,
+        desc = "Add Line Diagnostics",
+      },
+      {
+        "<leader>aD",
+        function() require("agentic").add_buffer_diagnostics() end,
+        desc = "Add Buffer Diagnostics",
+      },
       { "<leader>g", group = "Git" },
       { "<leader>gb", "<cmd>GitBlameToggle<CR>", desc = "Toggle Git Blame" },
       { "<leader>L", "<cmd>Lazy<CR>", desc = "Lazy" },

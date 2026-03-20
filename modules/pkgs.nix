@@ -139,8 +139,10 @@
     dioxus-cli # dioxus
     jdk
     claude-code
+    claude-code-acp
     fff-mcp
     codex
+    codex-acp
     amp-cli
     probe-rs-tools
     man-pages
