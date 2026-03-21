@@ -1,7 +1,6 @@
 ---
 name: workstream-tdd
-description: Usually invoked manually by full name or by the command 'ws tdd'
-user-invocable: true
+description: Use when implementing any workstream task that changes behavior, fixes a bug, or adds functionality and must be executed with test-first discipline. Trigger phrases: "ws tdd", "workstream tdd".
 ---
 
 # Test-Driven Development (TDD)

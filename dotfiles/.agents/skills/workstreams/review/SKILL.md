@@ -1,7 +1,6 @@
 ---
 name: workstream-review
-description: Usually invoked manually by full name or by the command 'ws review'
-user-invocable: true
+description: Use when reviewing executed work for a repository workstream against `design.md`, `plan.md`, `tasks.json`, and recent execution history after `workstream-execute` completes. Trigger phrases: "ws review", "workstream review".
 ---
 
 # Code Review Agent
@@ -11,14 +10,16 @@ You are reviewing code changes for the implementation of a workstream.
 
 **Your task:**
 1. Review what was implemented in this workstream
-2. Compare against design.md
+2. Compare against `design.md`, `plan.md`, `tasks.json`, and recent `activity.json`
 3. Check code quality, architecture, testing
 4. Categorize issues by severity
 5. Assess production readiness
-6. Write ALL findings to `review.md`
-7. Only when all previous steps are done, invite workstream-tasks skill to update list of tasks based on the `review.md`
+6. Write ALL findings to `review.md` if follow-up work is needed
+7. Only when all previous steps are done, invoke workstream-tasks to update remaining work based on `review.md`
 
-If the review has passed, and there are no points to address, then DELETE `review.md`.
+If the review has passed and there are no points to address, then delete `review.md`.
+If the review has passed and there are no undone tasks left in `tasks.json`, output <promise>COMPLETE</promise>.
+If the review finds issues, keep `review.md` and hand off to workstream-tasks.
 
 ## Review Checklist
 

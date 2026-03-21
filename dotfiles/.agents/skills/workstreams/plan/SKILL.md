@@ -1,39 +1,37 @@
 ---
 name: workstream-plan
-description: Use when creating or updating a workstream plan in `.workstreams/<name>/plan.md` that must break the workstream into sequential phases, parallel task waves, per-task behavioral specs, and meaningful phase gates. Usuall invocable by "ws plan"
-user-invocable: true
+description: Use when creating or updating a workstream plan in `.workstreams/<name>/plan.md` that must break the workstream into ordered execution waves, parallel tasks within a wave, per-task behavioral specs, and meaningful review gates between waves. Trigger phrases: "ws plan", "workstream plan".
 ---
 
-# Building Workstream Tracks
+# Building Workstream Wave Plans
 
 ## Overview
 
-Use this skill to create workstream track pages in `.workstreams/<name>/plan.md` that turn a workstream into ordered phases with wave-structured tasks, explicit behavioral expectations, and meaningful completion criteria.
+Use this skill to create workstream planning pages in `.workstreams/<name>/plan.md` that turn a workstream into ordered waves with explicit behavioral expectations and meaningful completion criteria.
 
 Use `workstream-about` when needed to understand the workstream model itself.
 
-Each phase must:
+Each wave must:
 - have a clear goal
-- assign each task a distinct workstream-scoped tag and short name
-- explain parallel work through task-wave naming
-- contain only tasks that are parallelizable within the same wave
+- have a stable wave-scoped tag
+- contain only tasks that are parallelizable within that wave
 - give every task a behavioral spec, acceptance criteria, scenarios, and verification evidence
-- end with a real gate
-- use gates that matter for TDD-heavy development
+- end with a real review gate that must be satisfied before the next wave begins
+- use review gates that matter for TDD-heavy development
 
 This skill is for workstream planning, not internal scratch notes.
 
-Once `plan.md` is completely one, we **MUST** invoke the workstream-tasks skill to build `tasks.json`
+Once `plan.md` is complete, invoke workstream-tasks to build or refresh `tasks.json`.
 
 ## When to Use
 
 Use this skill when:
 
 - a workstream in `.workstreams/<name>/` needs its own `plan.md`
-- the workstream needs to be broken into phases
-- each phase needs tagged tasks, per-task specs, and a completion gate
-- phase boundaries must reflect real dependency edges
-- tasks inside a phase should be parallelizable
+- the workstream needs to be broken into ordered waves
+- each wave needs tagged tasks, per-task specs, and a review gate
+- wave boundaries must reflect real dependency edges
+- tasks inside a wave should be parallelizable
 - the document should be suitable for humans planning work, not just for an internal agent
 
 Do not use this skill for:
@@ -74,40 +72,41 @@ Create the plan in:
 - If the workstream does not exist yet and the user is starting one, create `.workstreams/<name>/`.
 - `plan.md` is the primary planning artifact for the workstream.
 
-### 1. Phases Are Sequential
+### 1. Waves Are Sequential
 
-Phases are ordered. Later phases may depend on earlier phases.
+Waves are ordered. Later waves may depend on earlier waves.
 
-A phase should exist only when it represents a real capability boundary or dependency boundary.
+A wave should exist only when it represents a real dependency boundary or a meaningful review boundary.
 
-### 2. Tasks Need Stable Tags, Must Be Parallelizable, and Must Use Task Waves
+### 2. Waves Need Stable Tags, and Tasks Must Be Parallelizable Within a Wave
 
-Every task must start with a unique workstream-scoped tag and short name, similar to a Jira issue key.
+Every wave must have a unique workstream-scoped id. Every task must have a unique task id under that wave.
 
 Recommended format:
 
-- `WS-P2-T1A` Task Name
+- `WS-W2` Wave Name
+- `WS-W2-TA` Task Name
 
-Tags must be unique within the workstream and stable enough to reference in reviews, status updates, and follow-on planning.
+Tags must be unique within the workstream and stable enough to reference in reviews, status updates, follow-on planning, and `tasks.json`.
 
 Interpret the tag as:
 
 - `WS` = workstream
-- `P2` = phase
-- `T1A` = task wave 1, lane A
+- `W2` = wave 2
+- `TA` = task A inside that wave
 
-Tasks that share the same wave number can be worked in parallel.
+Tasks in the same wave can be worked in parallel.
 
-- `T1A`, `T1B`, and `T1C` may run in parallel
-- `T2A` and `T2B` must wait until all `T1x` tasks in that phase are complete
+- `WS-W2-TA`, `WS-W2-TB`, and `WS-W2-TC` may run in parallel
+- `WS-W3-*` must wait until wave `WS-W2` is complete and its review gate is satisfied
 
 Generated tracks should explain this rule near the beginning so readers can immediately understand the execution model.
 
-Within a phase:
+Within a wave:
 
 - tasks in the same wave must be able to proceed in parallel without blocking each other on unfinished work from the same wave
-- later waves should exist only when there is a real dependency edge between task groups
-- if all work is truly parallel, keep it in one wave rather than inventing fake sequencing
+- later waves should exist only when there is a real dependency edge or a meaningful review gate
+- if all work is truly parallel and shares the same gate, keep it in one wave rather than inventing fake sequencing
 
 Good task splits:
 
@@ -122,9 +121,9 @@ Bad task splits:
 - one task is "implement everything" and the others are cleanup
 - a task is listed without a concrete behavioral contract
 
-If tasks are not truly parallelizable, split the phase differently or introduce another wave.
+If tasks are not truly parallelizable, split the wave differently or introduce another wave.
 
-### 3. Every Task Must Be Specified, and Phase Gates Must Matter
+### 3. Every Task Must Be Specified, and Wave Review Gates Must Matter
 
 Every task must include:
 
@@ -148,15 +147,15 @@ Bad acceptance criteria include things like:
 
 Those may be planning steps or review checks, but they are not acceptance criteria.
 
-If something matters for execution order, dependency readiness, or planning context, express it in phase structure, task dependencies, artifacts, or phase gates instead of pretending it is a task acceptance criterion.
+If something matters for execution order, dependency readiness, or planning context, express it in wave structure, task dependencies, artifacts, or review gates instead of pretending it is a task acceptance criterion.
 
-When the agent creates or rewrites a task, it must show that task individually to the user. Its proposed acceptance criteria and proposed scenarios are suggestions until the user approves them. The agent must ask for approval of that task, including the suggested acceptance criteria and suggested scenarios, before moving on to the next task or finalizing the track.
+When the agent creates or rewrites a task, it must show that task individually to the user. Its proposed acceptance criteria and proposed scenarios are suggestions until the user approves them. The agent must ask for approval of that task, including the suggested acceptance criteria and suggested scenarios, before moving on to the next task or finalizing the plan.
 
-Every phase ends with a phase gate.
+Every wave ends with a review gate.
 
-A gate is not "docs written" or "code exists."
+A review gate is not "docs written" or "code exists."
 
-A phase gate must prove that the integrated phase output is ready for the next phase.
+A review gate must prove that the integrated wave output is ready for the next wave.
 
 Default per-task verification style is:
 
@@ -165,24 +164,24 @@ Default per-task verification style is:
 - the relevant tests or checks are identified
 - the verification named for that task surface is green
 
-Default phase gate style is:
+Default review gate style is:
 
 - contract or spec updated where needed
-- tests exist for the phase capability
+- tests exist for the wave capability
 - verification is green
-- outputs are stable enough for downstream phases
+- outputs are stable enough for downstream waves
 
-### 4. TDD Changes What Verification and Gates Mean
+### 4. TDD Changes What Verification and Review Gates Mean
 
-Because the project intends to use TDD broadly, per-task verification and phase gates should explicitly reflect evidence, not progress theater.
+Because the project intends to use TDD broadly, per-task verification and review gates should explicitly reflect evidence, not progress theater.
 
 Good evidence:
 
 - failing tests existed and now pass
 - task-scoped verification is green
-- phase verification suite is green
+- wave verification suite is green
 - invalid cases are covered
-- downstream modules can now rely on the phase contract
+- downstream modules can now rely on the wave contract
 
 Weak evidence:
 
@@ -192,23 +191,22 @@ Weak evidence:
 - manual confidence only
 - previous tracks or earlier tasks were "checked"
 
-### 5. Workstream Track, Not Internal Plan
+### 5. Workstream Plan, Not Internal Scratch Notes
 
 Keep tracks readable and strategic.
 
 Include:
 
-- phase goals
-- task waves
+- wave goals
+- ordered waves
 - per-task behavioral specs
 - per-task acceptance criteria
 - per-task scenarios
 - per-task verification
 - artifacts
-- phase gates
+- review gates
 - module or package alignment
 - out-of-scope boundaries
-- unchecked checkboxes for phases, tasks, and acceptance criteria in the generated track
 
 Do not include:
 
@@ -216,6 +214,7 @@ Do not include:
 - commit-by-commit instructions
 - private execution notes
 - agent-only workflow details
+- checkboxes for execution tracking; `tasks.json` is the execution checklist
 
 ## Recommended Page Structure
 
@@ -250,28 +249,29 @@ Use this structure:
 
 ## Task Wave Model
 
-Tasks use the form `WS-P<phase>-T<wave><lane>`.
+Waves use the form `WS-W<number>`.
+Tasks use the form `WS-W<number>-T<lane>`.
 
-- tasks sharing the same wave number can be worked in parallel
-- later waves start only after all tasks in earlier waves in that phase are complete
+- tasks in the same wave can be worked in parallel
+- later waves start only after all tasks in earlier waves are complete and the earlier wave's review gate is satisfied
 
-## Phase 1: [ ] <Name>
+## Wave 1: <Name>
 
 ### Goal
 
-<What this phase enables.>
+<What this wave enables.>
 
 ### Tasks
 
-#### [ ] `WS-P1-T1A` <task name>
+#### `WS-W1-TA` <task name>
 
 Behavioral spec:
 <What behavior or contract this task must establish.>
 
 Acceptance criteria:
-- [ ] <criterion>
-- [ ] <criterion>
-- [ ] <criterion>
+- <criterion>
+- <criterion>
+- <criterion>
 
 Scenarios:
 Scenario: <name>
@@ -290,11 +290,17 @@ Verification:
 Artifacts:
 - <files, modules, docs, or interfaces touched by this task>
 
-#### [ ] `WS-P1-T1B` <task name>
+#### `WS-W1-TB` <task name>
 
 ...
 
-### Phase Gate
+### Review Gate
 
-- [ ] <integrated condition proving this phase is complete and safe for the next phase>
+- <integrated condition proving this wave is complete and safe for the next wave>
 ```
+
+## Handoff To `tasks.json`
+
+When this skill finishes, each wave id and task id must be carried into `tasks.json` unchanged.
+`plan.md` is authoritative for planning intent.
+`tasks.json` is the durable execution ledger derived from the approved plan.

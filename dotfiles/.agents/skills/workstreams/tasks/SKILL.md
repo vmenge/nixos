@@ -1,7 +1,6 @@
 ---
 name: workstream-tasks
-description: "Used to build a task.json. Usually invoked by the workstream-design or the workstream-review skill"
-user-invocable: true
+description: Use when building or refreshing `.workstreams/<name>/tasks.json` from `plan.md` and optional `review.md` while preserving execution state across the review loop. Trigger phrases: "ws tasks", "workstream tasks".
 ---
 
 # Writing a `tasks.json` for guided workstream execution
@@ -11,8 +10,19 @@ Your goal is to read the workstream `design.md` and `plan.md`, and if there exis
 These files you just read are of EXTREME importance and will drive the writing of `tasks.json`.
 `plan.md` in particular is your north star.
 
-Then you will create a `tasks.json` in the workstream's directory with the format that is specified in the workstream-about skill.
+Then create or update `tasks.json` in the workstream's directory with the format specified in workstream-about.
 
-Each item inside a wave in `task.json` should be parallelizable with each other. The waves themselves SHOULD be ordered as they will be executed sequentially later on.
+Each item inside a wave in `tasks.json` must be parallelizable with the others in that wave. The waves themselves must be ordered as they will be executed serially later on.
+
+You must preserve stable `wave.id` and `task.id` values from `plan.md`.
+
+If `tasks.json` already exists:
+- preserve every completed task by matching on stable `id`
+- never reset `done: true` to `false` unless the user explicitly asks
+- keep unfinished planned tasks unless they are intentionally replaced
+- add follow-up work from `review.md` as new undone tasks or new undone waves
+- keep completed history intact even if remaining work is regrouped
+
+If `review.md` does not exist, build `tasks.json` only from `design.md` and `plan.md`.
 
 Do NOT invoke any skill to execute anything.

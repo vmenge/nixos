@@ -1,6 +1,6 @@
 ---
 name: workstream-design
-description: "Use this when user wants to design a workstream. Can also be triggered when user types ws-design"
+description: Use when defining or refining a repository workstream in `.workstreams/<name>/design.md` before planning ordered execution waves. Trigger phrases: "ws design", "ws-design", "workstream design".
 ---
 
 # Brainstorming Ideas Into Designs
@@ -32,7 +32,7 @@ You MUST create a task for each of these items and complete them in order:
 3. **Propose 2-3 approaches** — with trade-offs and your recommendation
 4. **Present design** — in sections scaled to their complexity, get user approval after each section
 5. **Write design doc** — save to `.workstreams/<workstream-name>/design.md`.
-6. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+6. **Transition to planning** — invoke workstream-plan to create `plan.md`
 
 ## Process Flow
 
@@ -44,7 +44,7 @@ digraph brainstorming {
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
     "Write design doc" [shape=box];
-    "Invoke writing-plans skill" [shape=doublecircle];
+    "Invoke workstream-plan" [shape=doublecircle];
 
     "Explore project context" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Propose 2-3 approaches";
@@ -52,11 +52,11 @@ digraph brainstorming {
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
     "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Invoke writing-plans skill";
+    "Write design doc" -> "Invoke workstream-plan";
 }
 ```
 
-**The terminal state is invoking thet skill workstream-plan.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is workstream-plan.
+**The terminal state is invoking workstream-plan.** Do NOT invoke execution skills here. The ONLY next skill is workstream-plan.
 
 ## The Process
 
@@ -88,7 +88,7 @@ This design doc should always contain at least:
 2. Scope / Boundaries
    What are should we NOT do?
 3. Approach
-   How will we approach the implementation?
+   How will we approach the implementation and wave structure?
 4. Key Design Decisions
    Guiding principles and decisions that led to chosen approach.
 5. Critical Files

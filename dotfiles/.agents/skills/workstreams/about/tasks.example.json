@@ -8,12 +8,24 @@
   ],
   "waves": [
     {
+      "id": "NAV-W1",
       "name": "foundation",
+      "review_gate": [
+        "All must-read files were reviewed and constraints were captured for downstream waves"
+      ],
       "checklist": [
         {
+          "id": "NAV-W1-TA",
           "name": "audit app shell entrypoints",
           "category": "setup",
           "description": "Review the main application entrypoints and shared layout constraints before implementation begins",
+          "acceptance_criteria": [
+            "The main app shell entrypoints have been identified",
+            "Shared layout constraints are documented for later waves"
+          ],
+          "verification": [
+            "Notes reference App.tsx and routes.tsx with the relevant layout constraints"
+          ],
           "steps": [
             "Read App.tsx",
             "Read routes.tsx",
@@ -23,9 +35,17 @@
           "done": false
         },
         {
+          "id": "NAV-W1-TB",
           "name": "audit global styling setup",
           "category": "setup",
           "description": "Review the global styling system and existing conventions used across the app",
+          "acceptance_criteria": [
+            "Global styling conventions are identified",
+            "Responsive breakpoints and reusable utilities are documented"
+          ],
+          "verification": [
+            "Notes reference global.css and summarize the relevant styling conventions"
+          ],
           "steps": [
             "Read global.css",
             "Identify typography and spacing conventions",
@@ -37,12 +57,25 @@
       ]
     },
     {
+      "id": "NAV-W2",
       "name": "independent feature implementation",
+      "review_gate": [
+        "Each feature task has passing task-local verification",
+        "The completed feature outputs are ready for integration in the next wave"
+      ],
       "checklist": [
         {
+          "id": "NAV-W2-TA",
           "name": "implement navigation component",
           "category": "feature",
           "description": "Build the navigation component without depending on hero section implementation",
+          "acceptance_criteria": [
+            "The navigation component renders the expected structure",
+            "The mobile menu toggle behavior is implemented"
+          ],
+          "verification": [
+            "Component-level tests for navigation pass"
+          ],
           "steps": [
             "Create Navigation component",
             "Add desktop layout",
@@ -52,9 +85,17 @@
           "done": false
         },
         {
+          "id": "NAV-W2-TB",
           "name": "implement hero component",
           "category": "feature",
           "description": "Build the hero section independently from navigation work",
+          "acceptance_criteria": [
+            "The hero component renders the headline, supporting text, and CTA",
+            "The hero layout behaves correctly at target breakpoints"
+          ],
+          "verification": [
+            "Component-level tests for the hero pass"
+          ],
           "steps": [
             "Create Hero component",
             "Add headline and supporting text",
@@ -64,9 +105,17 @@
           "done": false
         },
         {
+          "id": "NAV-W2-TC",
           "name": "implement footer component",
           "category": "feature",
           "description": "Build the footer independently from navigation and hero work",
+          "acceptance_criteria": [
+            "The footer component renders the required links and copyright text",
+            "The footer component is ready for integration"
+          ],
+          "verification": [
+            "Component-level tests for the footer pass"
+          ],
           "steps": [
             "Create Footer component",
             "Add navigation links",
@@ -78,12 +127,25 @@
       ]
     },
     {
+      "id": "NAV-W3",
       "name": "integration",
+      "review_gate": [
+        "All integrated components work together in the app shell",
+        "Integration verification is green before the final verification wave begins"
+      ],
       "checklist": [
         {
+          "id": "NAV-W3-TA",
           "name": "wire navigation into app shell",
           "category": "feature",
           "description": "Integrate the completed navigation component into the main app layout",
+          "acceptance_criteria": [
+            "Navigation is rendered in the app shell",
+            "Responsive behavior still works after integration"
+          ],
+          "verification": [
+            "Integration checks covering navigation in context pass"
+          ],
           "steps": [
             "Import Navigation into App.tsx",
             "Place component in layout",
@@ -92,9 +154,17 @@
           "done": false
         },
         {
+          "id": "NAV-W3-TB",
           "name": "wire hero into landing page",
           "category": "feature",
           "description": "Integrate the completed hero component into the landing page layout",
+          "acceptance_criteria": [
+            "Hero is placed in the correct section order",
+            "Spacing remains correct in the integrated page"
+          ],
+          "verification": [
+            "Integration checks covering hero placement pass"
+          ],
           "steps": [
             "Import Hero into the landing page",
             "Place component in correct section order",
@@ -103,9 +173,17 @@
           "done": false
         },
         {
+          "id": "NAV-W3-TC",
           "name": "wire footer into app shell",
           "category": "feature",
           "description": "Integrate the completed footer component into the main app layout",
+          "acceptance_criteria": [
+            "Footer is rendered at the bottom of the integrated layout",
+            "Spacing remains correct after integration"
+          ],
+          "verification": [
+            "Integration checks covering footer placement pass"
+          ],
           "steps": [
             "Import Footer into App.tsx",
             "Place component at bottom of layout",
@@ -116,12 +194,26 @@
       ]
     },
     {
+      "id": "NAV-W4",
       "name": "verification",
+      "review_gate": [
+        "All final verification checks pass",
+        "The feature is ready for a fresh review session"
+      ],
       "checklist": [
         {
+          "id": "NAV-W4-TA",
           "name": "test navigation behavior",
           "category": "testing",
           "description": "Verify navigation works correctly after integration",
+          "acceptance_criteria": [
+            "Desktop navigation works",
+            "Mobile menu toggle works",
+            "Navigation links behave correctly"
+          ],
+          "verification": [
+            "Navigation verification suite is green"
+          ],
           "steps": [
             "Test desktop navigation",
             "Test mobile menu toggle",
@@ -130,9 +222,18 @@
           "done": false
         },
         {
+          "id": "NAV-W4-TB",
           "name": "test hero rendering",
           "category": "testing",
           "description": "Verify hero content renders correctly after integration",
+          "acceptance_criteria": [
+            "Headline and subhead render correctly",
+            "CTA visibility and alignment are correct",
+            "Responsive layout works"
+          ],
+          "verification": [
+            "Hero verification suite is green"
+          ],
           "steps": [
             "Check headline and subhead rendering",
             "Verify CTA visibility and alignment",
@@ -141,9 +242,18 @@
           "done": false
         },
         {
+          "id": "NAV-W4-TC",
           "name": "test footer rendering",
           "category": "testing",
           "description": "Verify footer content renders correctly after integration",
+          "acceptance_criteria": [
+            "Footer links render correctly",
+            "Layout works at multiple breakpoints",
+            "No console errors are introduced"
+          ],
+          "verification": [
+            "Footer verification suite is green"
+          ],
           "steps": [
             "Check footer links",
             "Verify layout at multiple breakpoints",

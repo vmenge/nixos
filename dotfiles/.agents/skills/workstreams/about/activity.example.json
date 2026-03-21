@@ -2,21 +2,21 @@
   {
     "agent": "agent-1",
     "at": "2026-03-21T09:00:00Z",
-    "task": "implement navigation component",
+    "task": "NAV-W2-TA",
     "message": "Started task and created component skeleton.",
     "next_step": "Add responsive styling"
   },
   {
     "agent": "agent-2",
     "at": "2026-03-21T09:02:00Z",
-    "task": "implement hero component",
+    "task": "NAV-W2-TB",
     "message": "Started task and added headline, subhead, and CTA.",
     "next_step": "Center content and style button"
   },
   {
     "agent": "agent-3",
     "at": "2026-03-21T09:03:00Z",
-    "task": "implement footer component",
+    "task": "NAV-W2-TC",
     "message": "Started task and added footer links.",
     "next_step": "Adjust spacing and export component"
   }

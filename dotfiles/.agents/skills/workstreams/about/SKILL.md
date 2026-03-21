@@ -1,6 +1,6 @@
 ---
 name: workstream-about
-description: Use when working with repository workstreams stored under `.workstreams/` and you need to understand their structure, files, and lifecycle.
+description: Use when working with repository workstreams stored under `.workstreams/` and you need to understand their structure, files, lifecycle, and execution loop. Trigger phrases: "workstream about".
 ---
 
 # Workstream About
@@ -36,30 +36,34 @@ Workstreams are the primary planning surface for this unit of work.
 - relevant architecture notes
 - research findings that will help execute tasks
 
-`plan.md` captures discovery work:
+`plan.md` captures the approved execution design:
 
-- phases
-- task waves
+- ordered waves
 - behavioral specs
 - acceptance criteria
 - scenarios
 - verification
-- completion gates
+- per-wave review gates
 
-`tasks.json` captures the execution structure:
+`tasks.json` captures the durable execution ledger:
 
 They strictly follow this type definition:
 ```typescript
 type Task = {
+  id: string; // stable task id carried from plan.md, e.g. WS-W2-TA
   name: string;
   category: "setup" | "feature" | "testing";
   description: string;
+  acceptance_criteria: string[];
+  verification: string[];
   steps: string[];
   done: boolean;
 };
 
 type Wave = {
+  id: string; // stable wave id, e.g. WS-W2
   name: string;
+  review_gate: string[];
   checklist: Task[];
 };
 
@@ -82,6 +86,7 @@ There is a task example in `tasks.example.json`
 `activity.json` captures the execution's history:
 - used by the agent as a memory of accomplished things during a workstream execution
 - updated whenever agent does something meaningful or has an important thought or important finding
+- initialize it to `[]` if it does not exist yet
 
 ```typescript
 type ActivityFile = ActivityEntry[];
@@ -103,13 +108,20 @@ Workstreams usually move through this sequence:
 
 1. understand the workstream concept
 2. brainstorm the workstream and write findings into `design.md`
-3. build or refine the execution track in `tasks.json` taking into acount `design.md` and `review.md` if review exists
-4. execute the tasks phase by phase
-5. review, if review wants changes, user will most likely start a new agent session to rebuild `tasks.json` based on `review.md`
+3. build the ordered wave plan in `plan.md`
+4. build or refresh `tasks.json` from `plan.md` and `review.md` if it exists
+5. execute all waves serially from `tasks.json`, while completing tasks inside each wave in parallel
+6. after each wave, satisfy that wave's review gate before starting the next wave
+7. run a fresh `workstream-review` session after execution completes
+8. if review finds follow-up work, refresh `tasks.json` and repeat the loop
 
-The design file informs the tasks.
+Execution and review are both manually triggered by the user, typically in separate headless agent sessions.
+Do not assume `workstream-execute` automatically invokes `workstream-review`.
+Do not assume `workstream-review` automatically follows execution unless the user starts that session.
 
-`tasks.json` is the source of truth for execution.
+`design.md` informs `plan.md`.
+`plan.md` is the source of truth for planning intent.
+`tasks.json` is the source of truth for execution state.
 
 ## When to Use
 
@@ -132,3 +144,4 @@ Do not use this skill when:
 - If the intended workstream name or path is ambiguous, resolve it with the user before writing.
 - Do not treat ad hoc notes outside `.workstreams/<name>/` as the source of truth over `design.md`, `tasks.json`, `activity.json` or `review.md`.
 - If another workstream skill applies, use this skill first or alongside it when the workstream model needs clarification.
+- Treat `workstream-execute` and `workstream-review` as user-invoked headless-session steps in the loop, not as automatic nested handoffs.
