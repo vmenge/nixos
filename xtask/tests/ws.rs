@@ -18,7 +18,7 @@ const RUN_EXAMPLE: &str = r#"{
   "pid": 4242,
   "started_at": "2026-03-21T09:15:00Z",
   "updated_at": "2026-03-21T09:18:30Z",
-  "phase": "executing",
+  "phase": "execute",
   "iteration": 3,
   "stall_count": 1,
   "completed_tasks": 4,
@@ -39,7 +39,7 @@ fn loads_workstream_files_and_builds_a_task_snapshot() -> Result<()> {
     assert_eq!(workstream.run.pid, 4242);
     assert_eq!(workstream.run.started_at, "2026-03-21T09:15:00Z");
     assert_eq!(workstream.run.updated_at, "2026-03-21T09:18:30Z");
-    assert_eq!(workstream.run.phase, "executing");
+    assert_eq!(workstream.run.phase, "execute");
     assert_eq!(workstream.run.iteration, 3);
     assert_eq!(workstream.run.stall_count, 1);
     assert_eq!(workstream.run.completed_tasks, 4);

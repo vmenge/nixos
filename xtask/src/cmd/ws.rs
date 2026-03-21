@@ -99,9 +99,9 @@ fn latest_activity_message(activity: &[crate::workstream::model::ActivityEntry])
 
 fn classify_status(phase: &str, pid: u32, process_probe: &dyn ProcessProbe) -> &'static str {
     match phase {
-        "executing" if pid != 0 && process_probe.is_alive(pid) => "running:execute",
-        "reviewing" if pid != 0 && process_probe.is_alive(pid) => "running:review",
-        "executing" | "reviewing" if pid != 0 => "stale:lock",
+        "execute" if pid != 0 && process_probe.is_alive(pid) => "running:execute",
+        "review" if pid != 0 && process_probe.is_alive(pid) => "running:review",
+        "execute" | "review" if pid != 0 => "stale-lock",
         _ => "idle",
     }
 }
@@ -149,7 +149,7 @@ mod tests {
     #[test]
     fn classifies_execute_phase_as_running_when_pid_is_alive() {
         assert_eq!(
-            classify_status("executing", 4242, &FakeProcessProbe::alive()),
+            classify_status("execute", 4242, &FakeProcessProbe::alive()),
             "running:execute"
         );
     }
@@ -157,7 +157,7 @@ mod tests {
     #[test]
     fn classifies_review_phase_as_running_when_pid_is_alive() {
         assert_eq!(
-            classify_status("reviewing", 4242, &FakeProcessProbe::alive()),
+            classify_status("review", 4242, &FakeProcessProbe::alive()),
             "running:review"
         );
     }
@@ -165,8 +165,8 @@ mod tests {
     #[test]
     fn classifies_dead_in_progress_pid_as_stale_lock() {
         assert_eq!(
-            classify_status("executing", 4242, &FakeProcessProbe::dead()),
-            "stale:lock"
+            classify_status("execute", 4242, &FakeProcessProbe::dead()),
+            "stale-lock"
         );
     }
 
