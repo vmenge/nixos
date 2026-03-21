@@ -42,6 +42,7 @@ fn run_ls(process_probe: &dyn ProcessProbe) -> Result<()> {
     let repo_root = std::env::current_dir()?;
     let mut rows = Vec::new();
     let workstreams_dir = repo_root.join(".workstreams");
+    println!("🔎 scanning workstreams in {}", workstreams_dir.display());
     if workstreams_dir.exists() {
         for entry in fs::read_dir(&workstreams_dir)? {
             let entry = entry?;
@@ -75,6 +76,11 @@ fn run_ls(process_probe: &dyn ProcessProbe) -> Result<()> {
     }
 
     rows.sort_by(|left, right| left.name.cmp(&right.name));
+    println!(
+        "📚 found {} workstream{}",
+        rows.len(),
+        if rows.len() == 1 { "" } else { "s" }
+    );
 
     println!("NAME\tSTATUS\tDONE\tLAST ACTIVITY");
     for row in rows {
@@ -89,9 +95,14 @@ fn run_ls(process_probe: &dyn ProcessProbe) -> Result<()> {
 
 fn run_rm(process_probe: &dyn ProcessProbe, workstream_name: &str) -> Result<()> {
     let repo_root = std::env::current_dir()?;
+    println!("🗑️ removing workstream `{workstream_name}`");
     let workstream = load_from_repo_root(&repo_root, workstream_name)?;
 
     if has_live_run_lock(&workstream.run.phase, workstream.run.pid, process_probe) {
+        println!(
+            "🚫 refusing to remove `{workstream_name}` because pid {} is still live",
+            workstream.run.pid
+        );
         return Err(eyre!(
             "refusing to remove workstream `{workstream_name}` because workstream `{workstream_name}` is running with live pid {}",
             workstream.run.pid
@@ -99,13 +110,19 @@ fn run_rm(process_probe: &dyn ProcessProbe, workstream_name: &str) -> Result<()>
     }
 
     fs::remove_dir_all(&workstream.dir)?;
+    println!("✅ removed workstream `{workstream_name}`");
     Ok(())
 }
 
 fn run_exec(workstream_name: &str) -> Result<()> {
     let repo_root = std::env::current_dir()?;
+    println!("🚀 starting workstream `{workstream_name}`");
     let workstream = load_from_repo_root(&repo_root, workstream_name)?;
     if has_live_run_lock(&workstream.run.phase, workstream.run.pid, &ProcFsProbe) {
+        println!(
+            "🚫 refusing to start `{workstream_name}` because pid {} already holds the lock",
+            workstream.run.pid
+        );
         return Err(eyre!(
             "refusing to start workstream `{workstream_name}` because it already has a live run.json lock for pid {}",
             workstream.run.pid

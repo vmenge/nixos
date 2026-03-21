@@ -162,9 +162,23 @@ pub fn run_workstream_loop(
         &snapshot,
     )?;
     let mut clear_on_drop = RunFileCleaner::new(workstream.dir.clone());
+    writeln!(
+        output,
+        "🧭 phase={} iteration={} done={}/{}",
+        phase.as_str(),
+        run.iteration,
+        snapshot.completed_count,
+        snapshot.total_count
+    )?;
 
     loop {
         let before = snapshot.clone();
+        writeln!(
+            output,
+            "🤖 launching {} agent for `{}`",
+            phase.as_str(),
+            workstream_name
+        )?;
         runner.run_step(StepRequest {
             repo_root,
             workstream_name,
@@ -190,7 +204,7 @@ pub fn run_workstream_loop(
                 if !snapshot.undone_task_ids.is_empty() {
                     writeln!(
                         output,
-                        "remaining undone tasks after execute: {}",
+                        "📊 remaining undone tasks after execute: {}",
                         join_task_ids(&snapshot)
                     )?;
                 }
@@ -203,8 +217,17 @@ pub fn run_workstream_loop(
                 }
 
                 if snapshot.undone_task_ids.is_empty() {
+                    writeln!(output, "🧪 all tasks are done; starting review")?;
                     phase = StepPhase::Review;
                     run = transition_phase(&workstream.dir, &run, phase, clock, &snapshot)?;
+                    writeln!(
+                        output,
+                        "🧭 phase={} iteration={} done={}/{}",
+                        phase.as_str(),
+                        run.iteration,
+                        snapshot.completed_count,
+                        snapshot.total_count
+                    )?;
                 } else {
                     cycle_start = snapshot.clone();
                 }
@@ -214,7 +237,7 @@ pub fn run_workstream_loop(
                     update_pass_state(&workstream.dir, &run, phase, clock, 0, &snapshot)?;
                     writeln!(
                         output,
-                        "workstream `{workstream_name}` completed after review"
+                        "✅ workstream `{workstream_name}` completed after review"
                     )?;
                     clear_run_file(&workstream.dir)?;
                     clear_on_drop.disarm();
@@ -231,7 +254,7 @@ pub fn run_workstream_loop(
                     update_pass_state(&workstream.dir, &run, phase, clock, stall_count, &snapshot)?;
                 writeln!(
                     output,
-                    "review introduced new undone tasks: {}",
+                    "🔁 review introduced new undone tasks: {}",
                     join_task_ids(&snapshot)
                 )?;
                 if !made_net_progress && stall_count >= MAX_CONSECUTIVE_STALLS {
@@ -242,6 +265,14 @@ pub fn run_workstream_loop(
                 }
                 phase = StepPhase::Execute;
                 run = transition_phase(&workstream.dir, &run, phase, clock, &snapshot)?;
+                writeln!(
+                    output,
+                    "🧭 phase={} iteration={} done={}/{}",
+                    phase.as_str(),
+                    run.iteration,
+                    snapshot.completed_count,
+                    snapshot.total_count
+                )?;
                 cycle_start = snapshot.clone();
             }
         }

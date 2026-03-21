@@ -128,6 +128,14 @@ fn ws_ls_summarizes_idle_workstreams() -> Result<()> {
         String::from_utf8_lossy(&output.stderr)
     );
     assert!(
+        stdout.contains("🔎 scanning workstreams in"),
+        "expected stdout to include a scan log, got: {stdout}"
+    );
+    assert!(
+        stdout.contains("📚 found 1 workstream"),
+        "expected stdout to include a workstream count log, got: {stdout}"
+    );
+    assert!(
         stdout.contains("demo"),
         "expected stdout to include workstream name, got: {stdout}"
     );
@@ -221,6 +229,7 @@ fn ws_rm_deletes_a_stopped_workstream_directory() -> Result<()> {
     fixture.write_run_json("{}")?;
 
     let output = fixture.run_ws_rm("demo")?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
 
     assert!(
         output.status.success(),
@@ -230,6 +239,14 @@ fn ws_rm_deletes_a_stopped_workstream_directory() -> Result<()> {
     assert!(
         !fixture.workstream_dir("demo").exists(),
         "expected workstream directory to be removed"
+    );
+    assert!(
+        stdout.contains("🗑️ removing workstream `demo`"),
+        "expected stdout to include a remove start log, got: {stdout}"
+    );
+    assert!(
+        stdout.contains("✅ removed workstream `demo`"),
+        "expected stdout to include a remove success log, got: {stdout}"
     );
 
     Ok(())
@@ -576,6 +593,22 @@ fn ws_exec_exits_success_when_review_keeps_all_tasks_done() -> Result<()> {
         "expected run.json to be cleared after a successful review"
     );
     assert_eq!(fixture.logged_prompts("demo")?.len(), 2);
+    assert!(
+        stdout.contains("🚀 starting workstream `demo`"),
+        "expected stdout to include the exec start log, got: {stdout}"
+    );
+    assert!(
+        stdout.contains("🤖 launching execute agent for `demo`"),
+        "expected stdout to include an execute launch log, got: {stdout}"
+    );
+    assert!(
+        stdout.contains("🧪 all tasks are done; starting review"),
+        "expected stdout to include the review transition log, got: {stdout}"
+    );
+    assert!(
+        stdout.contains("🤖 launching review agent for `demo`"),
+        "expected stdout to include a review launch log, got: {stdout}"
+    );
     assert!(
         stdout.contains("workstream `demo` completed after review"),
         "expected stdout to include a completion message after review, got: {stdout}"
