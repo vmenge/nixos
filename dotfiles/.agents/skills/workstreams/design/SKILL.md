@@ -1,6 +1,6 @@
 ---
 name: workstream-design
-description: Use when defining or refining a repository workstream in `.workstreams/<name>/design.md` before planning ordered execution waves. Trigger phrases: "ws design", "ws-design", "workstream design".
+description: "Use when defining or refining a repository workstream in `.workstreams/<name>/design.md` before planning ordered execution waves. Trigger phrases: \"ws design\", \"ws-design\", \"workstream design\"."
 ---
 
 # Brainstorming Ideas Into Designs

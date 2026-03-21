@@ -1,6 +1,6 @@
 ---
 name: workstream-review
-description: Use when reviewing executed work for a repository workstream against `design.md`, `plan.md`, `tasks.json`, and recent execution history after `workstream-execute` completes. Trigger phrases: "ws review", "workstream review".
+description: "Use when reviewing executed work for a repository workstream against `design.md`, `plan.md`, `tasks.json`, and recent execution history after `workstream-execute` completes. Trigger phrases: \"ws review\", \"workstream review\"."
 ---
 
 # Code Review Agent

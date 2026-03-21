@@ -1,6 +1,6 @@
 ---
 name: workstream-tasks
-description: Use when building or refreshing `.workstreams/<name>/tasks.json` from `plan.md` and optional `review.md` while preserving execution state across the review loop. Trigger phrases: "ws tasks", "workstream tasks".
+description: "Use when building or refreshing `.workstreams/<name>/tasks.json` from `plan.md` and optional `review.md` while preserving execution state across the review loop. Trigger phrases: \"ws tasks\", \"workstream tasks\"."
 ---
 
 # Writing a `tasks.json` for guided workstream execution

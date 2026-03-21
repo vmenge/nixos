@@ -1,6 +1,6 @@
 ---
 name: workstream-about
-description: Use when working with repository workstreams stored under `.workstreams/` and you need to understand their structure, files, lifecycle, and execution loop. Trigger phrases: "workstream about".
+description: "Use when working with repository workstreams stored under `.workstreams/` and you need to understand their structure, files, lifecycle, and execution loop. Trigger phrases: \"workstream about\"."
 ---
 
 # Workstream About

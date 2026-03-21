@@ -1,6 +1,6 @@
 ---
 name: workstream-execute
-description: Use when executing a workstream from `.workstreams/<name>/tasks.json`, completing all waves serially and tasks within a wave in parallel. Trigger phrases: "ws execute", "workstream execute".
+description: "Use when executing a workstream from `.workstreams/<name>/tasks.json`, completing all waves serially and tasks within a wave in parallel. Trigger phrases: \"ws execute\", \"workstream execute\"."
 ---
 
 # Overview

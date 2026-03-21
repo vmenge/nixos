@@ -1,6 +1,6 @@
 ---
 name: workstream-plan
-description: Use when creating or updating a workstream plan in `.workstreams/<name>/plan.md` that must break the workstream into ordered execution waves, parallel tasks within a wave, per-task behavioral specs, and meaningful review gates between waves. Trigger phrases: "ws plan", "workstream plan".
+description: "Use when creating or updating a workstream plan in `.workstreams/<name>/plan.md` that must break the workstream into ordered execution waves, parallel tasks within a wave, per-task behavioral specs, and meaningful review gates between waves. Trigger phrases: \"ws plan\", \"workstream plan\"."
 ---
 
 # Building Workstream Wave Plans
