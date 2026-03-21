@@ -8,6 +8,11 @@ use crate::workstream::fs::{load_from_dir, load_from_repo_root};
 use crate::workstream::r#loop::{HelperBinaryRunner, SystemClock, run_workstream_loop};
 
 const ACTIVITY_SUMMARY_LIMIT: usize = 46;
+const ANSI_RESET: &str = "\x1b[0m";
+const ANSI_BOLD: &str = "\x1b[1m";
+const ANSI_GREEN: &str = "\x1b[32m";
+const ANSI_YELLOW: &str = "\x1b[33m";
+const ANSI_RED: &str = "\x1b[31m";
 
 #[derive(clap::Args, Debug)]
 pub struct Args {
@@ -204,18 +209,60 @@ fn format_ls_table(rows: &[ListRow]) -> Vec<String> {
         .max("DONE".len());
 
     let mut lines = vec![format!(
-        "{:<name_width$}  {:<status_width$}  {:<done_width$}  LAST ACTIVITY",
-        "NAME", "STATUS", "DONE"
+        "{}  {}  {}  {}",
+        style_bold_cell(format!("{:<name_width$}", "NAME")),
+        style_bold_cell(format!("{:<status_width$}", "STATUS")),
+        style_bold_cell(format!("{:<done_width$}", "DONE")),
+        style_bold_cell(String::from("LAST ACTIVITY"))
     )];
 
     for row in rows {
+        let name = format!("{:<name_width$}", row.name);
+        let status = format!("{:<status_width$}", row.status);
+        let done = format!("{:<done_width$}", row.completed);
         lines.push(format!(
-            "{:<name_width$}  {:<status_width$}  {:<done_width$}  {}",
-            row.name, row.status, row.completed, row.last_activity
+            "{}  {}  {}  {}",
+            name,
+            style_status_cell(&status),
+            style_done_cell(&done),
+            row.last_activity
         ));
     }
 
     lines
+}
+
+fn style_bold_cell(text: String) -> String {
+    format!("{ANSI_BOLD}{text}{ANSI_RESET}")
+}
+
+fn style_status_cell(text: &str) -> String {
+    let trimmed = text.trim();
+    match trimmed {
+        "idle" => format!("{ANSI_GREEN}{text}{ANSI_RESET}"),
+        "running:execute" | "running:review" => {
+            format!("{ANSI_BOLD}{ANSI_YELLOW}{text}{ANSI_RESET}")
+        }
+        "stale-lock" | "error" => format!("{ANSI_BOLD}{ANSI_RED}{text}{ANSI_RESET}"),
+        _ => text.to_owned(),
+    }
+}
+
+fn style_done_cell(text: &str) -> String {
+    if is_complete_done_cell(text) {
+        text.to_owned()
+    } else {
+        format!("{ANSI_BOLD}{text}{ANSI_RESET}")
+    }
+}
+
+fn is_complete_done_cell(text: &str) -> bool {
+    let trimmed = text.trim();
+    let Some((completed, total)) = trimmed.split_once('/') else {
+        return false;
+    };
+
+    completed == total
 }
 
 trait ProcessProbe {
@@ -277,11 +324,29 @@ mod tests {
 
         let lines = format_ls_table(&rows);
 
-        assert_eq!(lines[0], "NAME       STATUS           DONE    LAST ACTIVITY");
-        assert_eq!(lines[1], "alpha      idle             1/3     short note");
+        assert_eq!(
+            lines[0],
+            "\u{1b}[1mNAME     \u{1b}[0m  \u{1b}[1mSTATUS         \u{1b}[0m  \u{1b}[1mDONE  \u{1b}[0m  \u{1b}[1mLAST ACTIVITY\u{1b}[0m"
+        );
+        assert_eq!(
+            lines[1],
+            "alpha      \u{1b}[32midle           \u{1b}[0m  \u{1b}[1m1/3   \u{1b}[0m  short note"
+        );
         assert_eq!(
             lines[2],
-            "demo-long  running:execute  12/120  a much longer activity summary"
+            "demo-long  \u{1b}[1m\u{1b}[33mrunning:execute\u{1b}[0m  \u{1b}[1m12/120\u{1b}[0m  a much longer activity summary"
+        );
+    }
+
+    #[test]
+    fn styles_error_and_stale_statuses_in_red() {
+        assert_eq!(
+            style_status_cell("stale-lock"),
+            "\u{1b}[1m\u{1b}[31mstale-lock\u{1b}[0m"
+        );
+        assert_eq!(
+            style_status_cell("error"),
+            "\u{1b}[1m\u{1b}[31merror\u{1b}[0m"
         );
     }
 
