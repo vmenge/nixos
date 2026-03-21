@@ -67,6 +67,7 @@ pub enum TaskCategory {
     Setup,
     Feature,
     Testing,
+    Bugfix,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]

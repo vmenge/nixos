@@ -52,7 +52,7 @@ They strictly follow this type definition:
 type Task = {
   id: string; // stable task id carried from plan.md, e.g. WS-W2-TA
   name: string;
-  category: "setup" | "feature" | "testing";
+  category: "setup" | "feature" | "testing" | "bugfix";
   description: string;
   acceptance_criteria: string[];
   verification: string[];

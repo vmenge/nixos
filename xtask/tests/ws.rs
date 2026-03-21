@@ -148,8 +148,43 @@ fn ws_ls_summarizes_idle_workstreams() -> Result<()> {
         "expected stdout to include completed task count, got: {stdout}"
     );
     assert!(
+        stdout.contains("LAST UPDATE"),
+        "expected stdout to include a last-update column, got: {stdout}"
+    );
+    assert!(
         stdout.contains("Finished the summary row."),
         "expected stdout to include latest activity message, got: {stdout}"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_ls_shows_duration_for_running_workstreams() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_run_json(&format!(
+        r#"{{
+  "pid": {},
+  "started_at": "2026-03-21T09:00:00Z",
+  "updated_at": "2026-03-21T09:05:00Z",
+  "phase": "execute",
+  "iteration": 2,
+  "stall_count": 0,
+  "completed_tasks": 1,
+  "total_tasks": 3
+}}"#,
+        std::process::id()
+    ))?;
+
+    let output = fixture.run_ws_ls()?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    assert!(output.status.success(), "expected `x ws ls` to succeed");
+    assert!(stdout.contains("DURATION"));
+    assert!(stdout.contains("LAST UPDATE"));
+    assert!(
+        stdout.contains("ago"),
+        "expected stdout to include relative last-update age, got: {stdout}"
     );
 
     Ok(())
@@ -251,18 +286,26 @@ fn ws_info_shows_pretty_activity_view() -> Result<()> {
     let stdout = String::from_utf8_lossy(&output.stdout);
 
     assert!(output.status.success(), "expected `x ws info demo` to succeed");
+    assert!(stdout.contains("📝 activity"));
+    assert!(stdout.contains("🕒 2026-03-21T09:00:00Z  🎯 NAV-W1-TA  🤖 agent-1"));
+    assert!(stdout.contains("💬 Started the first task."));
+    assert!(stdout.contains("➡️ Keep going"));
+    assert!(stdout.contains("🕒 2026-03-21T09:05:00Z  🎯 NAV-W1-TB  🤖 agent-2"));
+    assert!(stdout.contains("💬 Finished the summary row."));
+    assert!(stdout.contains("➡️ Review output formatting"));
+    assert!(stdout.contains("────────────────────────"));
     assert!(stdout.contains("🧵 workstream `demo`"));
     assert!(stdout.contains("📊 progress: 1/3 complete"));
     assert!(stdout.contains("🏃 status: idle"));
-    assert!(stdout.contains("📝 activity"));
-    assert!(stdout.contains("🕒 2026-03-21T09:05:00Z"));
-    assert!(stdout.contains("🎯 NAV-W1-TB"));
-    assert!(stdout.contains("🤖 agent-2"));
-    assert!(stdout.contains("💬 Finished the summary row."));
-    assert!(stdout.contains("➡️ Review output formatting"));
+    assert!(stdout.contains("⏱️ duration:"));
+    assert!(stdout.contains("🕓 last update:"));
     assert!(
-        stdout.find("2026-03-21T09:05:00Z").unwrap()
-            < stdout.find("2026-03-21T09:00:00Z").unwrap()
+        stdout.find("2026-03-21T09:00:00Z").unwrap()
+            < stdout.find("2026-03-21T09:05:00Z").unwrap()
+    );
+    assert!(
+        stdout.find("────────────────────────").unwrap()
+            > stdout.find("2026-03-21T09:05:00Z").unwrap()
     );
 
     Ok(())

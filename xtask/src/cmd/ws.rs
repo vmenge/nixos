@@ -1,9 +1,10 @@
-use std::cmp::Reverse;
 use std::fs;
 use std::io;
 use std::path::Path;
 
 use color_eyre::{Result, eyre::eyre};
+use time::OffsetDateTime;
+use time::format_description::well_known::Rfc3339;
 
 use crate::workstream::fs::{load_from_dir, load_from_repo_root};
 use crate::workstream::r#loop::{AgentKind, NonoRunner, SystemClock, run_workstream_loop};
@@ -99,6 +100,8 @@ fn run_ls(process_probe: &dyn ProcessProbe) -> Result<()> {
                             process_probe,
                         )),
                         completed: format!("{}/{}", snapshot.completed_count, snapshot.total_count),
+                        duration: running_duration(&workstream.run, process_probe),
+                        last_update: last_update_age(&workstream.run),
                         last_activity: latest_activity_message(&workstream.activity),
                     });
                 }
@@ -106,6 +109,8 @@ fn run_ls(process_probe: &dyn ProcessProbe) -> Result<()> {
                     name: entry.file_name().to_string_lossy().into_owned(),
                     status: String::from("error"),
                     completed: String::from("-"),
+                    duration: String::from("-"),
+                    last_update: String::from("-"),
                     last_activity: truncate_summary(&error.to_string()),
                 }),
             }
@@ -153,6 +158,23 @@ fn run_info(workstream_name: &str) -> Result<()> {
     let snapshot = workstream.task_snapshot();
     let status = classify_status(&workstream.run.phase, workstream.run.pid, &ProcFsProbe);
 
+    println!("📝 activity");
+
+    let mut activity = workstream.activity.clone();
+    activity.sort_by_key(|entry| entry.at.clone());
+
+    if activity.is_empty() {
+        println!("  📭 no activity recorded yet");
+    } else {
+        for entry in activity {
+            println!("🕒 {}  🎯 {}  🤖 {}", entry.at, entry.task, entry.agent);
+            println!("   💬 {}", entry.message);
+            println!("   ➡️ {}", entry.next_step);
+            println!();
+        }
+    }
+
+    println!("────────────────────────");
     println!("🧵 workstream `{}`", workstream.name);
     println!(
         "📊 progress: {}/{} complete",
@@ -169,25 +191,11 @@ fn run_info(workstream_name: &str) -> Result<()> {
         },
         workstream.run.iteration
     );
-    println!();
-    println!("📝 activity");
-
-    let mut activity = workstream.activity.clone();
-    activity.sort_by_key(|entry| Reverse(entry.at.clone()));
-
-    if activity.is_empty() {
-        println!("  📭 no activity recorded yet");
-        return Ok(());
-    }
-
-    for entry in activity {
-        println!("  🕒 {}", entry.at);
-        println!("  🎯 {}", entry.task);
-        println!("  🤖 {}", entry.agent);
-        println!("  💬 {}", entry.message);
-        println!("  ➡️ {}", entry.next_step);
-        println!();
-    }
+    println!(
+        "⏱️ duration: {}  🕓 last update: {}",
+        running_duration(&workstream.run, &ProcFsProbe),
+        last_update_age(&workstream.run)
+    );
 
     Ok(())
 }
@@ -263,6 +271,8 @@ struct ListRow {
     name: String,
     status: String,
     completed: String,
+    duration: String,
+    last_update: String,
     last_activity: String,
 }
 
@@ -285,12 +295,26 @@ fn format_ls_table(rows: &[ListRow]) -> Vec<String> {
         .max()
         .unwrap_or(0)
         .max("DONE".len());
+    let duration_width = rows
+        .iter()
+        .map(|row| row.duration.len())
+        .max()
+        .unwrap_or(0)
+        .max("DURATION".len());
+    let last_update_width = rows
+        .iter()
+        .map(|row| row.last_update.len())
+        .max()
+        .unwrap_or(0)
+        .max("LAST UPDATE".len());
 
     let mut lines = vec![format!(
-        "{}  {}  {}  {}",
+        "{}  {}  {}  {}  {}  {}",
         style_bold_cell(format!("{:<name_width$}", "NAME")),
         style_bold_cell(format!("{:<status_width$}", "STATUS")),
         style_bold_cell(format!("{:<done_width$}", "DONE")),
+        style_bold_cell(format!("{:<duration_width$}", "DURATION")),
+        style_bold_cell(format!("{:<last_update_width$}", "LAST UPDATE")),
         style_bold_cell(String::from("LAST ACTIVITY"))
     )];
 
@@ -298,11 +322,15 @@ fn format_ls_table(rows: &[ListRow]) -> Vec<String> {
         let name = format!("{:<name_width$}", row.name);
         let status = format!("{:<status_width$}", row.status);
         let done = format!("{:<done_width$}", row.completed);
+        let duration = format!("{:<duration_width$}", row.duration);
+        let last_update = format!("{:<last_update_width$}", row.last_update);
         lines.push(format!(
-            "{}  {}  {}  {}",
+            "{}  {}  {}  {}  {}  {}",
             name,
             style_status_cell(&status),
             style_done_cell(&done),
+            duration,
+            last_update,
             row.last_activity
         ));
     }
@@ -341,6 +369,54 @@ fn is_complete_done_cell(text: &str) -> bool {
     };
 
     completed == total
+}
+
+fn running_duration(
+    run: &crate::workstream::model::RunFile,
+    process_probe: &dyn ProcessProbe,
+) -> String {
+    if !has_live_run_lock(&run.phase, run.pid, process_probe) {
+        return String::from("-");
+    }
+
+    let started_at = match parse_timestamp(&run.started_at) {
+        Some(timestamp) => timestamp,
+        None => return String::from("-"),
+    };
+
+    format_elapsed(OffsetDateTime::now_utc() - started_at)
+}
+
+fn last_update_age(run: &crate::workstream::model::RunFile) -> String {
+    let updated_at = match parse_timestamp(&run.updated_at) {
+        Some(timestamp) => timestamp,
+        None => return String::from("-"),
+    };
+
+    format!("{} ago", format_elapsed(OffsetDateTime::now_utc() - updated_at))
+}
+
+fn parse_timestamp(value: &str) -> Option<OffsetDateTime> {
+    if value.is_empty() {
+        return None;
+    }
+
+    OffsetDateTime::parse(value, &Rfc3339).ok()
+}
+
+fn format_elapsed(duration: time::Duration) -> String {
+    let total_seconds = duration.whole_seconds().max(0);
+    let hours = total_seconds / 3600;
+    let minutes = (total_seconds % 3600) / 60;
+    let seconds = total_seconds % 60;
+
+    if hours > 0 {
+        format!("{hours}h {minutes:02}m")
+    } else if minutes > 0 {
+        format!("{minutes}m")
+    } else {
+        format!("{seconds}s")
+    }
 }
 
 trait ProcessProbe {
@@ -390,12 +466,16 @@ mod tests {
                 name: String::from("alpha"),
                 status: String::from("idle"),
                 completed: String::from("1/3"),
+                duration: String::from("-"),
+                last_update: String::from("2m ago"),
                 last_activity: String::from("short note"),
             },
             ListRow {
                 name: String::from("demo-long"),
                 status: String::from("running:execute"),
                 completed: String::from("12/120"),
+                duration: String::from("1h 08m"),
+                last_update: String::from("3m ago"),
                 last_activity: String::from("a much longer activity summary"),
             },
         ];
@@ -404,15 +484,15 @@ mod tests {
 
         assert_eq!(
             lines[0],
-            "\u{1b}[1mNAME     \u{1b}[0m  \u{1b}[1mSTATUS         \u{1b}[0m  \u{1b}[1mDONE  \u{1b}[0m  \u{1b}[1mLAST ACTIVITY\u{1b}[0m"
+            "\u{1b}[1mNAME     \u{1b}[0m  \u{1b}[1mSTATUS         \u{1b}[0m  \u{1b}[1mDONE  \u{1b}[0m  \u{1b}[1mDURATION\u{1b}[0m  \u{1b}[1mLAST UPDATE\u{1b}[0m  \u{1b}[1mLAST ACTIVITY\u{1b}[0m"
         );
         assert_eq!(
             lines[1],
-            "alpha      \u{1b}[32midle           \u{1b}[0m  \u{1b}[1m1/3   \u{1b}[0m  short note"
+            "alpha      \u{1b}[32midle           \u{1b}[0m  \u{1b}[1m1/3   \u{1b}[0m  -         2m ago       short note"
         );
         assert_eq!(
             lines[2],
-            "demo-long  \u{1b}[1m\u{1b}[33mrunning:execute\u{1b}[0m  \u{1b}[1m12/120\u{1b}[0m  a much longer activity summary"
+            "demo-long  \u{1b}[1m\u{1b}[33mrunning:execute\u{1b}[0m  \u{1b}[1m12/120\u{1b}[0m  1h 08m    3m ago       a much longer activity summary"
         );
     }
 

@@ -14,6 +14,10 @@ Then create or update `tasks.json` in the workstream's directory with the format
 
 Each item inside a wave in `tasks.json` must be parallelizable with the others in that wave. The waves themselves must be ordered as they will be executed serially later on.
 
+Task `category` values must stay within the known schema only: `setup`, `feature`, `testing`, or `bugfix`.
+Do NOT invent new category strings.
+If a task feels ambiguous, choose the closest allowed category instead of extending the schema ad hoc.
+
 You must preserve stable `wave.id` and `task.id` values from `plan.md`.
 
 If `tasks.json` already exists:
