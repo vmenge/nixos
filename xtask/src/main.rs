@@ -44,4 +44,30 @@ mod tests {
             })
         ));
     }
+
+    #[test]
+    fn parses_ws_rm_command_with_workstream_name() {
+        let cli = Cli::try_parse_from(["x", "ws", "rm", "demo"])
+            .expect("`x ws rm demo` should parse");
+
+        assert!(matches!(
+            cli.subcmd,
+            Cmd::Ws(ws::Args {
+                subcmd: ws::Subcmd::Rm(ws::TargetArgs { workstream_name })
+            }) if workstream_name == "demo"
+        ));
+    }
+
+    #[test]
+    fn parses_ws_exec_command_with_workstream_name() {
+        let cli = Cli::try_parse_from(["x", "ws", "exec", "demo"])
+            .expect("`x ws exec demo` should parse");
+
+        assert!(matches!(
+            cli.subcmd,
+            Cmd::Ws(ws::Args {
+                subcmd: ws::Subcmd::Exec(ws::TargetArgs { workstream_name })
+            }) if workstream_name == "demo"
+        ));
+    }
 }

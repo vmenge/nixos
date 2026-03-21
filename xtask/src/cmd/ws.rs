@@ -11,16 +11,25 @@ pub enum Subcmd {
     /// List workstreams
     Ls,
     /// Remove a workstream
-    Rm,
+    Rm(TargetArgs),
     /// Execute a workstream
-    Exec,
+    Exec(TargetArgs),
+}
+
+#[derive(clap::Args, Debug)]
+pub struct TargetArgs {
+    pub workstream_name: String,
 }
 
 pub fn run(args: Args) -> Result<()> {
     match args.subcmd {
         Subcmd::Ls => not_implemented("ws ls"),
-        Subcmd::Rm => not_implemented("ws rm"),
-        Subcmd::Exec => not_implemented("ws exec"),
+        Subcmd::Rm(TargetArgs { workstream_name }) => {
+            not_implemented(&format!("ws rm {workstream_name}"))
+        }
+        Subcmd::Exec(TargetArgs { workstream_name }) => {
+            not_implemented(&format!("ws exec {workstream_name}"))
+        }
     }
 }
 
