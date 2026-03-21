@@ -4,6 +4,7 @@ use std::process::{Command, Stdio};
 
 pub mod agentmd;
 pub mod build;
+pub mod ws;
 
 pub(crate) fn cmd(args: &[&str]) -> Result<()> {
     let (program, rest) = args.split_first().ok_or_else(|| eyre!("empty cmd"))?;
