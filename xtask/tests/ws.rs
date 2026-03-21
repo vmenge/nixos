@@ -191,6 +191,100 @@ fn ws_ls_shows_duration_for_running_workstreams() -> Result<()> {
 }
 
 #[test]
+fn ws_ls_shows_done_only_for_completed_workstreams_with_done_markers() -> Result<()> {
+    let fixture = WorkstreamFixture::new("done-ws")?;
+    fixture.add_workstream("complete-no-marker")?;
+    fixture.write_workstream_file("done-ws", "tasks.json", &sample_tasks_json(1, 1))?;
+    fixture.write_workstream_file("done-ws", "run.json", "{}")?;
+    fixture.write_workstream_file("complete-no-marker", "tasks.json", &sample_tasks_json(1, 1))?;
+    fixture.write_workstream_file("complete-no-marker", "run.json", "{}")?;
+    fixture.write_done_marker("done-ws")?;
+
+    let output = fixture.run_ws_ls()?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let done_row = stdout
+        .lines()
+        .find(|line| line.contains("done-ws"))
+        .expect("expected `done-ws` row");
+    let complete_without_marker_row = stdout
+        .lines()
+        .find(|line| line.contains("complete-no-marker"))
+        .expect("expected `complete-no-marker` row");
+
+    assert!(output.status.success(), "expected `x ws ls` to succeed");
+    assert!(
+        done_row.contains("\u{1b}[34mdone"),
+        "expected the done status to be styled blue, got: {done_row}"
+    );
+    assert!(
+        complete_without_marker_row.contains("idle"),
+        "expected a fully complete workstream without a done marker to stay idle, got: {complete_without_marker_row}"
+    );
+    assert!(
+        !complete_without_marker_row.contains("done"),
+        "expected a fully complete workstream without a done marker to avoid the done status, got: {complete_without_marker_row}"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_ls_prefers_running_and_stale_lock_statuses_over_done_markers() -> Result<()> {
+    let fixture = WorkstreamFixture::new("running")?;
+    fixture.add_workstream("stale")?;
+    fixture.write_workstream_file("running", "tasks.json", &sample_tasks_json(1, 1))?;
+    fixture.write_workstream_file(
+        "running",
+        "run.json",
+        &format!(
+            r#"{{
+  "pid": {},
+  "phase": "execute"
+}}"#,
+            std::process::id()
+        ),
+    )?;
+    fixture.write_workstream_file("stale", "tasks.json", &sample_tasks_json(1, 1))?;
+    fixture.write_workstream_file(
+        "stale",
+        "run.json",
+        r#"{
+  "pid": 4242,
+  "phase": "review"
+}"#,
+    )?;
+    fixture.write_done_marker("running")?;
+    fixture.write_done_marker("stale")?;
+
+    let output = fixture.run_ws_ls()?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let running_row = stdout
+        .lines()
+        .find(|line| line.contains("running"))
+        .expect("expected `running` row");
+    let stale_row = stdout
+        .lines()
+        .find(|line| line.contains("stale"))
+        .expect("expected `stale` row");
+
+    assert!(output.status.success(), "expected `x ws ls` to succeed");
+    assert!(
+        running_row.contains("running:execute"),
+        "expected a live execute lock to stay running, got: {running_row}"
+    );
+    assert!(
+        stale_row.contains("stale-lock"),
+        "expected a dead lock to stay stale-lock, got: {stale_row}"
+    );
+    assert!(
+        !running_row.contains("done") && !stale_row.contains("done"),
+        "expected done markers to be ignored for active or stale locks, got: {running_row} / {stale_row}"
+    );
+
+    Ok(())
+}
+
+#[test]
 fn ws_ls_truncates_the_latest_activity_message() -> Result<()> {
     let fixture = WorkstreamFixture::new("demo")?;
     fixture.write_activity_json(
@@ -285,7 +379,10 @@ fn ws_info_shows_pretty_activity_view() -> Result<()> {
     let output = fixture.run_ws_info("demo")?;
     let stdout = String::from_utf8_lossy(&output.stdout);
 
-    assert!(output.status.success(), "expected `x ws info demo` to succeed");
+    assert!(
+        output.status.success(),
+        "expected `x ws info demo` to succeed"
+    );
     assert!(stdout.contains("📝 activity"));
     assert!(stdout.contains("🕒 2026-03-21T09:00:00Z  🎯 NAV-W1-TA  🤖 agent-1"));
     assert!(stdout.contains("💬 Started the first task."));
@@ -300,8 +397,7 @@ fn ws_info_shows_pretty_activity_view() -> Result<()> {
     assert!(stdout.contains("⏱️ duration:"));
     assert!(stdout.contains("🕓 last update:"));
     assert!(
-        stdout.find("2026-03-21T09:00:00Z").unwrap()
-            < stdout.find("2026-03-21T09:05:00Z").unwrap()
+        stdout.find("2026-03-21T09:00:00Z").unwrap() < stdout.find("2026-03-21T09:05:00Z").unwrap()
     );
     assert!(
         stdout.find("────────────────────────").unwrap()
@@ -701,6 +797,10 @@ fn ws_exec_exits_success_when_review_keeps_all_tasks_done() -> Result<()> {
         !fixture.workstream_dir("demo").join("run.json").exists(),
         "expected run.json to be cleared after a successful review"
     );
+    assert!(
+        fixture.workstream_dir("demo").join("done").exists(),
+        "expected a successful review to create the done marker"
+    );
     assert_eq!(fixture.logged_prompts("demo")?.len(), 2);
     assert!(
         stdout.contains("🚀 starting workstream `demo`"),
@@ -721,6 +821,74 @@ fn ws_exec_exits_success_when_review_keeps_all_tasks_done() -> Result<()> {
     assert!(
         stdout.contains("workstream `demo` completed after review"),
         "expected stdout to include a completion message after review, got: {stdout}"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_exec_writes_done_marker_after_successful_review() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_tasks_json(&sample_tasks_json(0, 1))?;
+    let runner = fixture.install_scripted_runner(
+        "demo",
+        &[
+            ScriptedStep::execute(sample_tasks_json(1, 1)),
+            ScriptedStep::review(sample_tasks_json(1, 1)),
+        ],
+    )?;
+
+    let output = fixture.run_ws_exec_with_runner("demo", &runner)?;
+
+    assert!(
+        output.status.success(),
+        "expected `x ws exec demo` to succeed, stderr was: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        fixture.workstream_dir("demo").join("done").exists(),
+        "expected a done marker after successful review completion"
+    );
+    assert!(
+        !fixture.workstream_dir("demo").join("run.json").exists(),
+        "expected run.json to be cleared after writing the done marker"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_exec_clears_stale_done_marker_before_rerun() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_tasks_json(&sample_tasks_json(0, 1))?;
+    fixture.write_done_marker("demo")?;
+    let runner = fixture.install_scripted_runner(
+        "demo",
+        &[
+            ScriptedStep::execute(sample_tasks_json(0, 1)),
+            ScriptedStep::execute(sample_tasks_json(0, 1)),
+            ScriptedStep::execute(sample_tasks_json(0, 1)),
+        ],
+    )?;
+
+    let output =
+        fixture.run_ws_exec_with_runner_and_args("demo", &runner, &["--stall-limit", "3"])?;
+
+    assert!(
+        !output.status.success(),
+        "expected the rerun fixture to fail after the scripted stalls"
+    );
+    assert_eq!(
+        fixture.logged_done_states("demo")?,
+        vec![
+            String::from("missing"),
+            String::from("missing"),
+            String::from("missing"),
+        ]
+    );
+    assert!(
+        !fixture.workstream_dir("demo").join("done").exists(),
+        "expected the stale done marker to stay cleared after the rerun starts"
     );
 
     Ok(())
@@ -778,17 +946,11 @@ fn ws_exec_restarts_execution_when_review_adds_new_undone_tasks() -> Result<()> 
 }
 
 #[test]
-fn ws_exec_fails_after_three_consecutive_no_progress_passes() -> Result<()> {
+fn ws_exec_fails_after_ten_consecutive_no_progress_passes_by_default() -> Result<()> {
     let fixture = WorkstreamFixture::new("demo")?;
     fixture.write_tasks_json(&sample_tasks_json(0, 2))?;
-    let runner = fixture.install_scripted_runner(
-        "demo",
-        &[
-            ScriptedStep::execute(sample_tasks_json(0, 2)),
-            ScriptedStep::execute(sample_tasks_json(0, 2)),
-            ScriptedStep::execute(sample_tasks_json(0, 2)),
-        ],
-    )?;
+    let steps = repeated_execute_steps(10, sample_tasks_json(0, 2));
+    let runner = fixture.install_scripted_runner("demo", &steps)?;
 
     let output = fixture.run_ws_exec_with_runner("demo", &runner)?;
     let stderr = String::from_utf8_lossy(&output.stderr);
@@ -807,12 +969,32 @@ fn ws_exec_fails_after_three_consecutive_no_progress_passes() -> Result<()> {
     );
     assert_eq!(
         fixture.logged_prompts("demo")?,
-        vec![
-            String::from("workstream-execute demo"),
-            String::from("workstream-execute demo"),
-            String::from("workstream-execute demo"),
-        ]
+        repeated_execute_prompts(10)
     );
+
+    Ok(())
+}
+
+#[test]
+fn ws_exec_honors_explicit_stall_limit_for_execute_stalls() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_tasks_json(&sample_tasks_json(0, 2))?;
+    let steps = repeated_execute_steps(4, sample_tasks_json(0, 2));
+    let runner = fixture.install_scripted_runner("demo", &steps)?;
+
+    let output =
+        fixture.run_ws_exec_with_runner_and_args("demo", &runner, &["--stall-limit", "4"])?;
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        !output.status.success(),
+        "expected `x ws exec demo --stall-limit 4` to fail after four repeated stalls"
+    );
+    assert!(
+        stderr.contains("stalled after 4 consecutive execute passes"),
+        "expected stderr to mention the explicit stall limit, got: {stderr}"
+    );
+    assert_eq!(fixture.logged_prompts("demo")?, repeated_execute_prompts(4));
 
     Ok(())
 }
@@ -832,7 +1014,8 @@ fn ws_exec_resets_the_stall_counter_after_progress() -> Result<()> {
         ],
     )?;
 
-    let output = fixture.run_ws_exec_with_runner("demo", &runner)?;
+    let output =
+        fixture.run_ws_exec_with_runner_and_args("demo", &runner, &["--stall-limit", "3"])?;
     let stderr = String::from_utf8_lossy(&output.stderr);
 
     assert!(
@@ -858,20 +1041,11 @@ fn ws_exec_resets_the_stall_counter_after_progress() -> Result<()> {
 }
 
 #[test]
-fn ws_exec_fails_after_three_no_net_progress_execute_review_cycles() -> Result<()> {
+fn ws_exec_fails_after_ten_no_net_progress_execute_review_cycles_by_default() -> Result<()> {
     let fixture = WorkstreamFixture::new("demo")?;
     fixture.write_tasks_json(&sample_tasks_json(0, 1))?;
-    let runner = fixture.install_scripted_runner(
-        "demo",
-        &[
-            ScriptedStep::execute(sample_tasks_json(1, 1)),
-            ScriptedStep::review(sample_tasks_json(0, 1)),
-            ScriptedStep::execute(sample_tasks_json(1, 1)),
-            ScriptedStep::review(sample_tasks_json(0, 1)),
-            ScriptedStep::execute(sample_tasks_json(1, 1)),
-            ScriptedStep::review(sample_tasks_json(0, 1)),
-        ],
-    )?;
+    let steps = repeated_no_net_progress_cycles(10);
+    let runner = fixture.install_scripted_runner("demo", &steps)?;
 
     let output = fixture.run_ws_exec_with_runner("demo", &runner)?;
     let stderr = String::from_utf8_lossy(&output.stderr);
@@ -886,14 +1060,336 @@ fn ws_exec_fails_after_three_no_net_progress_execute_review_cycles() -> Result<(
     );
     assert_eq!(
         fixture.logged_prompts("demo")?,
+        repeated_execute_review_prompts(10)
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_exec_honors_explicit_stall_limit_for_execute_review_cycles() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_tasks_json(&sample_tasks_json(0, 1))?;
+    let steps = repeated_no_net_progress_cycles(2);
+    let runner = fixture.install_scripted_runner("demo", &steps)?;
+
+    let output =
+        fixture.run_ws_exec_with_runner_and_args("demo", &runner, &["--stall-limit", "2"])?;
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        !output.status.success(),
+        "expected `x ws exec demo --stall-limit 2` to fail after two no-net-progress cycles"
+    );
+    assert!(
+        stderr.contains("made no net progress after 2 execute/review cycles"),
+        "expected stderr to mention the explicit no-net-progress limit, got: {stderr}"
+    );
+    assert_eq!(
+        fixture.logged_prompts("demo")?,
+        repeated_execute_review_prompts(2)
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_queue_runs_workstreams_serially_in_argv_order() -> Result<()> {
+    let fixture = WorkstreamFixture::new("alpha")?;
+    fixture.add_workstream("beta")?;
+    fixture.add_workstream("gamma")?;
+    fixture.write_workstream_file("alpha", "tasks.json", &sample_tasks_json(0, 1))?;
+    fixture.write_workstream_file("beta", "tasks.json", &sample_tasks_json(0, 1))?;
+    fixture.write_workstream_file("gamma", "tasks.json", &sample_tasks_json(0, 1))?;
+    let runner = fixture.install_queue_scripted_runner(&[
+        (
+            "alpha",
+            &[
+                ScriptedStep::execute(sample_tasks_json(1, 1)),
+                ScriptedStep::review(sample_tasks_json(1, 1)),
+            ],
+        ),
+        (
+            "beta",
+            &[
+                ScriptedStep::execute(sample_tasks_json(1, 1)),
+                ScriptedStep::review(sample_tasks_json(1, 1)),
+            ],
+        ),
+        (
+            "gamma",
+            &[
+                ScriptedStep::execute(sample_tasks_json(1, 1)),
+                ScriptedStep::review(sample_tasks_json(1, 1)),
+            ],
+        ),
+    ])?;
+
+    let output =
+        fixture.run_ws_queue_with_runner_and_args(&["alpha", "beta", "gamma"], &runner, &[])?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    assert!(
+        output.status.success(),
+        "expected `x ws queue run alpha beta gamma --agent codex` to succeed, stderr was: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(
+        fixture.logged_global_order()?,
         vec![
-            String::from("workstream-execute demo"),
-            String::from("workstream-review demo"),
-            String::from("workstream-execute demo"),
-            String::from("workstream-review demo"),
-            String::from("workstream-execute demo"),
-            String::from("workstream-review demo"),
+            String::from("alpha:execute"),
+            String::from("alpha:review"),
+            String::from("beta:execute"),
+            String::from("beta:review"),
+            String::from("gamma:execute"),
+            String::from("gamma:review"),
         ]
+    );
+    assert!(
+        stdout.contains("queue completed 3/3 workstreams"),
+        "expected stdout to include a success summary, got: {stdout}"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_queue_stops_on_first_failed_workstream_and_reports_summary() -> Result<()> {
+    let fixture = WorkstreamFixture::new("alpha")?;
+    fixture.add_workstream("beta")?;
+    fixture.add_workstream("gamma")?;
+    fixture.write_workstream_file("alpha", "tasks.json", &sample_tasks_json(0, 1))?;
+    fixture.write_workstream_file("beta", "tasks.json", &sample_tasks_json(0, 1))?;
+    fixture.write_workstream_file("gamma", "tasks.json", &sample_tasks_json(0, 1))?;
+    let runner = fixture.install_queue_scripted_runner(&[
+        (
+            "alpha",
+            &[
+                ScriptedStep::execute(sample_tasks_json(1, 1)),
+                ScriptedStep::review(sample_tasks_json(1, 1)),
+            ],
+        ),
+        (
+            "beta",
+            &[
+                ScriptedStep::execute(sample_tasks_json(0, 1)),
+                ScriptedStep::execute(sample_tasks_json(0, 1)),
+            ],
+        ),
+        (
+            "gamma",
+            &[
+                ScriptedStep::execute(sample_tasks_json(1, 1)),
+                ScriptedStep::review(sample_tasks_json(1, 1)),
+            ],
+        ),
+    ])?;
+
+    let output = fixture.run_ws_queue_with_runner_and_args(
+        &["alpha", "beta", "gamma"],
+        &runner,
+        &["--stall-limit", "2"],
+    )?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        !output.status.success(),
+        "expected queue execution to fail when a queued workstream stalls"
+    );
+    assert!(
+        stderr.contains("queue failed after completing 1 of 3 workstreams"),
+        "expected stderr to include the partial completion count, got: {stderr}"
+    );
+    assert!(
+        stderr.contains("failed workstream: beta"),
+        "expected stderr to identify the failed workstream, got: {stderr}"
+    );
+    assert!(
+        stderr.contains("completed workstreams: alpha"),
+        "expected stderr to list completed workstreams, got: {stderr}"
+    );
+    assert_eq!(
+        fixture.logged_global_order()?,
+        vec![
+            String::from("alpha:execute"),
+            String::from("alpha:review"),
+            String::from("beta:execute"),
+            String::from("beta:execute"),
+        ]
+    );
+    assert!(
+        fixture.logged_prompts("gamma")?.is_empty(),
+        "expected the queue to stop before starting gamma"
+    );
+    assert!(
+        stdout.contains("🚀 queue starting"),
+        "expected stdout to include the queue start log, got: {stdout}"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_queue_passes_through_explicit_stall_limit() -> Result<()> {
+    let fixture = WorkstreamFixture::new("alpha")?;
+    fixture.write_workstream_file("alpha", "tasks.json", &sample_tasks_json(0, 1))?;
+    let steps = repeated_execute_steps(4, sample_tasks_json(0, 1));
+    let runner = fixture.install_queue_scripted_runner(&[("alpha", &steps)])?;
+
+    let output =
+        fixture.run_ws_queue_with_runner_and_args(&["alpha"], &runner, &["--stall-limit", "4"])?;
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        !output.status.success(),
+        "expected queue execution to fail once the explicit stall limit is reached"
+    );
+    assert!(
+        stderr.contains("stalled after 4 consecutive execute passes"),
+        "expected stderr to reflect the explicit queue stall limit, got: {stderr}"
+    );
+    assert_eq!(
+        fixture.logged_global_order()?,
+        vec![
+            String::from("alpha:execute"),
+            String::from("alpha:execute"),
+            String::from("alpha:execute"),
+            String::from("alpha:execute"),
+        ]
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_queue_rejects_invalid_names_before_runner_invocation() -> Result<()> {
+    let fixture = WorkstreamFixture::new("alpha")?;
+    let runner = fixture.install_queue_scripted_runner(&[(
+        "alpha",
+        &[ScriptedStep::review(sample_tasks_json(1, 1))],
+    )])?;
+
+    let output = fixture.run_ws_queue_with_runner_and_args(&["alpha", "../beta"], &runner, &[])?;
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        !output.status.success(),
+        "expected invalid queue names to fail before execution starts"
+    );
+    assert!(
+        stderr.contains("single directory name under .workstreams"),
+        "expected stderr to explain the invalid workstream naming, got: {stderr}"
+    );
+    assert!(
+        fixture.logged_prompts("alpha")?.is_empty(),
+        "expected invalid queue names to fail before any runner invocation"
+    );
+    assert!(
+        fixture.logged_global_order()?.is_empty(),
+        "expected invalid queue names to avoid any queue runner side effects"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_ls_shows_done_status_for_completed_workstreams_with_done_marker() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_tasks_json(&sample_tasks_json(1, 1))?;
+    fixture.write_run_json("{}")?;
+    fixture.write_done_marker("demo")?;
+
+    let output = fixture.run_ws_ls()?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    assert!(output.status.success(), "expected `x ws ls` to succeed");
+    assert!(
+        stdout.contains("\u{1b}[34mdone"),
+        "expected stdout to render done status in blue, got: {stdout}"
+    );
+    assert!(
+        !stdout.contains("\u{1b}[32midle"),
+        "expected stdout to show done instead of idle, got: {stdout}"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_ls_keeps_fully_complete_workstreams_idle_without_done_marker() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_tasks_json(&sample_tasks_json(1, 1))?;
+    fixture.write_run_json("{}")?;
+
+    let output = fixture.run_ws_ls()?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    assert!(output.status.success(), "expected `x ws ls` to succeed");
+    assert!(
+        stdout.contains("\u{1b}[32midle"),
+        "expected stdout to keep fully complete workstreams idle without the done marker, got: {stdout}"
+    );
+    assert!(
+        !stdout.contains("\u{1b}[34mdone"),
+        "expected stdout to omit done without the marker, got: {stdout}"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_ls_keeps_running_status_even_with_done_marker() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_tasks_json(&sample_tasks_json(1, 1))?;
+    fixture.write_done_marker("demo")?;
+    fixture.write_run_json(&format!(
+        r#"{{
+  "pid": {},
+  "phase": "execute"
+}}"#,
+        std::process::id()
+    ))?;
+
+    let output = fixture.run_ws_ls()?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    assert!(output.status.success(), "expected `x ws ls` to succeed");
+    assert!(
+        stdout.contains("running:execute"),
+        "expected a live run lock to keep the running status, got: {stdout}"
+    );
+    assert!(
+        !stdout.contains("\u{1b}[34mdone"),
+        "expected running status to override done, got: {stdout}"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_ls_keeps_stale_lock_status_even_with_done_marker() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_tasks_json(&sample_tasks_json(1, 1))?;
+    fixture.write_done_marker("demo")?;
+    fixture.write_run_json(
+        r#"{
+  "pid": 4242,
+  "phase": "review"
+}"#,
+    )?;
+
+    let output = fixture.run_ws_ls()?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    assert!(output.status.success(), "expected `x ws ls` to succeed");
+    assert!(
+        stdout.contains("stale-lock"),
+        "expected a stale lock to keep the stale-lock status, got: {stdout}"
+    );
+    assert!(
+        !stdout.contains("\u{1b}[34mdone"),
+        "expected stale-lock status to override done, got: {stdout}"
     );
 
     Ok(())
@@ -932,6 +1428,12 @@ impl WorkstreamFixture {
 
     fn write_run_json(&self, contents: &str) -> Result<()> {
         self.write_workstream_file("demo", "run.json", contents)?;
+
+        Ok(())
+    }
+
+    fn write_done_marker(&self, name: &str) -> Result<()> {
+        fs::write(self.workstream_dir(name).join("done"), "")?;
 
         Ok(())
     }
@@ -978,7 +1480,41 @@ impl WorkstreamFixture {
     }
 
     fn run_ws_exec_with_runner(&self, name: &str, runner: &PathBuf) -> Result<Output> {
-        self.run_ws_command_with_optional_runner("exec", name, Some(runner))
+        self.run_ws_exec_with_runner_and_args(name, runner, &[])
+    }
+
+    fn run_ws_exec_with_runner_and_args(
+        &self,
+        name: &str,
+        runner: &PathBuf,
+        extra_args: &[&str],
+    ) -> Result<Output> {
+        let mut command = Command::new(env!("CARGO_BIN_EXE_x"));
+        command
+            .args(["ws", "exec", name, "--agent", "codex"])
+            .args(extra_args)
+            .current_dir(&self.repo_root)
+            .env("X_WS_AGENT_RUNNER_BIN", runner);
+
+        Ok(command.output()?)
+    }
+
+    fn run_ws_queue_with_runner_and_args(
+        &self,
+        names: &[&str],
+        runner: &PathBuf,
+        extra_args: &[&str],
+    ) -> Result<Output> {
+        let mut command = Command::new(env!("CARGO_BIN_EXE_x"));
+        command
+            .args(["ws", "queue", "run"])
+            .args(names)
+            .args(["--agent", "codex"])
+            .args(extra_args)
+            .current_dir(&self.repo_root)
+            .env("X_WS_AGENT_RUNNER_BIN", runner);
+
+        Ok(command.output()?)
     }
 
     fn add_workstream(&self, name: &str) -> Result<()> {
@@ -1057,12 +1593,103 @@ run_file="$ws/run.json"
 phase=$(sed -n 's/.*"phase": "\(.*\)".*/\1/p' "$run_file")
 iteration=$(sed -n 's/.*"iteration": \([0-9][0-9]*\).*/\1/p' "$run_file")
 stall=$(sed -n 's/.*"stall_count": \([0-9][0-9]*\).*/\1/p' "$run_file")
+done_marker="missing"
+if [ -f "$ws/done" ]; then
+  done_marker="present"
+fi
 printf 'phase=%s iteration=%s stall=%s\n' "$phase" "$iteration" "$stall" >> "$ws/runner-state.log"
 printf '%s\n' "workstream-$expected_phase {name}" >> "$ws/runner-prompts.log"
+printf '%s\n' "$done_marker" >> "$ws/runner-done.log"
 
 cp "$ws/runner-step-$step.json" "$ws/tasks.json"
 "#
             ),
+        )?;
+        let mut permissions = fs::metadata(&runner_path)?.permissions();
+        permissions.set_mode(0o755);
+        fs::set_permissions(&runner_path, permissions)?;
+
+        Ok(runner_path)
+    }
+
+    fn install_queue_scripted_runner(
+        &self,
+        workstreams: &[(&str, &[ScriptedStep])],
+    ) -> Result<PathBuf> {
+        for (name, steps) in workstreams {
+            let workstream_dir = self.workstream_dir(name);
+            for (index, step) in steps.iter().enumerate() {
+                let step_number = index + 1;
+                fs::write(
+                    workstream_dir.join(format!("runner-step-{step_number}.json")),
+                    &step.tasks_json,
+                )?;
+                fs::write(
+                    workstream_dir.join(format!("runner-step-{step_number}.phase")),
+                    step.phase,
+                )?;
+            }
+        }
+
+        let runner_path = self.repo_root.join("fake-ws-queue-runner.sh");
+        fs::write(
+            &runner_path,
+            r#"#!/bin/sh
+set -eu
+
+repo=""
+prompt=""
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --repo)
+      repo="$2"
+      shift 2
+      ;;
+    --prompt)
+      prompt="$2"
+      shift 2
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+
+phase=$(printf '%s' "$prompt" | sed -n 's/^workstream-\([^ ]*\) .*/\1/p')
+name=$(printf '%s' "$prompt" | sed -n 's/^workstream-[^ ]* \(.*\)$/\1/p')
+
+if [ -z "$phase" ] || [ -z "$name" ]; then
+  echo "unexpected prompt: $prompt" >&2
+  exit 1
+fi
+
+ws="$repo/.workstreams/$name"
+count_file="$ws/runner-count"
+step=1
+if [ -f "$count_file" ]; then
+  step=$(($(cat "$count_file") + 1))
+fi
+printf '%s' "$step" > "$count_file"
+
+expected_phase=$(cat "$ws/runner-step-$step.phase")
+case "$prompt" in
+  "workstream-$expected_phase $name") ;;
+  *)
+    echo "unexpected prompt: $prompt" >&2
+    exit 1
+    ;;
+esac
+
+run_file="$ws/run.json"
+run_phase=$(sed -n 's/.*"phase": "\(.*\)".*/\1/p' "$run_file")
+iteration=$(sed -n 's/.*"iteration": \([0-9][0-9]*\).*/\1/p' "$run_file")
+stall=$(sed -n 's/.*"stall_count": \([0-9][0-9]*\).*/\1/p' "$run_file")
+printf 'phase=%s iteration=%s stall=%s\n' "$run_phase" "$iteration" "$stall" >> "$ws/runner-state.log"
+printf '%s\n' "workstream-$expected_phase $name" >> "$ws/runner-prompts.log"
+printf '%s:%s\n' "$name" "$expected_phase" >> "$repo/runner-global.log"
+
+cp "$ws/runner-step-$step.json" "$ws/tasks.json"
+"#,
         )?;
         let mut permissions = fs::metadata(&runner_path)?.permissions();
         permissions.set_mode(0o755);
@@ -1077,6 +1704,19 @@ cp "$ws/runner-step-$step.json" "$ws/tasks.json"
 
     fn logged_run_states(&self, name: &str) -> Result<Vec<String>> {
         self.read_log_lines(name, "runner-state.log")
+    }
+
+    fn logged_done_states(&self, name: &str) -> Result<Vec<String>> {
+        self.read_log_lines(name, "runner-done.log")
+    }
+
+    fn logged_global_order(&self) -> Result<Vec<String>> {
+        let path = self.repo_root.join("runner-global.log");
+        match fs::read_to_string(path) {
+            Ok(contents) => Ok(contents.lines().map(str::to_owned).collect()),
+            Err(error) if error.kind() == ErrorKind::NotFound => Ok(Vec::new()),
+            Err(error) => Err(error.into()),
+        }
     }
 
     fn read_log_lines(&self, name: &str, file_name: &str) -> Result<Vec<String>> {
@@ -1181,4 +1821,36 @@ impl ScriptedStep {
             tasks_json,
         }
     }
+}
+
+fn repeated_execute_steps(count: usize, tasks_json: String) -> Vec<ScriptedStep> {
+    (0..count)
+        .map(|_| ScriptedStep::execute(tasks_json.clone()))
+        .collect()
+}
+
+fn repeated_no_net_progress_cycles(count: usize) -> Vec<ScriptedStep> {
+    let mut steps = Vec::with_capacity(count * 2);
+    for _ in 0..count {
+        steps.push(ScriptedStep::execute(sample_tasks_json(1, 1)));
+        steps.push(ScriptedStep::review(sample_tasks_json(0, 1)));
+    }
+
+    steps
+}
+
+fn repeated_execute_prompts(count: usize) -> Vec<String> {
+    (0..count)
+        .map(|_| String::from("workstream-execute demo"))
+        .collect()
+}
+
+fn repeated_execute_review_prompts(count: usize) -> Vec<String> {
+    let mut prompts = Vec::with_capacity(count * 2);
+    for _ in 0..count {
+        prompts.push(String::from("workstream-execute demo"));
+        prompts.push(String::from("workstream-review demo"));
+    }
+
+    prompts
 }

@@ -133,12 +133,40 @@ pub fn clear_run_file(workstream_dir: &Path) -> Result<()> {
     }
 }
 
+pub fn write_done_marker(workstream_dir: &Path) -> Result<()> {
+    let done_path = done_file_path(workstream_dir);
+    fs::write(&done_path, "")
+        .wrap_err_with(|| format!("failed to write {}", done_path.display()))?;
+
+    Ok(())
+}
+
+pub fn clear_done_marker(workstream_dir: &Path) -> Result<()> {
+    let done_path = done_file_path(workstream_dir);
+
+    match fs::remove_file(&done_path) {
+        Ok(()) => Ok(()),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(()),
+        Err(error) => {
+            Err(error).wrap_err_with(|| format!("failed to remove {}", done_path.display()))
+        }
+    }
+}
+
+pub fn has_done_marker(workstream_dir: &Path) -> bool {
+    done_file_path(workstream_dir).exists()
+}
+
 fn write_run_file(workstream_dir: &Path, run: &RunFile) -> Result<()> {
     write_json_file(&run_file_path(workstream_dir), run)
 }
 
 fn run_file_path(workstream_dir: &Path) -> PathBuf {
     workstream_dir.join("run.json")
+}
+
+fn done_file_path(workstream_dir: &Path) -> PathBuf {
+    workstream_dir.join("done")
 }
 
 fn read_optional_json_file<T>(path: &Path) -> Result<T>

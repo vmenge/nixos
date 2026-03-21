@@ -333,14 +333,8 @@ mod tests {
         )?;
         let codex_path = fs::canonicalize(custom_bin_dir.join("codex"))?;
 
-        assert!(sandbox_paths.contains(&SandboxPath::read(fs::canonicalize(
-            &custom_bin_dir
-        )?)));
-        assert!(
-            !sandbox_paths
-                .iter()
-                .any(|entry| entry.path == codex_path)
-        );
+        assert!(sandbox_paths.contains(&SandboxPath::read(fs::canonicalize(&custom_bin_dir)?)));
+        assert!(!sandbox_paths.iter().any(|entry| entry.path == codex_path));
 
         Ok(())
     }

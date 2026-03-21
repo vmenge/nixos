@@ -9,13 +9,14 @@ use time::format_description::well_known::Rfc3339;
 
 use crate::workstream::agent::{AgentRunnerRequest, SandboxAccess};
 use crate::workstream::fs::{
-    RunFileUpdate, clear_run_file, load_from_repo_root, update_run_file, write_run_started,
+    RunFileUpdate, clear_done_marker, clear_run_file, load_from_repo_root, update_run_file,
+    write_done_marker, write_run_started,
 };
 use crate::workstream::model::{RunFile, TaskSnapshot};
 
 const EXECUTE_PHASE: &str = "execute";
 const REVIEW_PHASE: &str = "review";
-const MAX_CONSECUTIVE_STALLS: usize = 3;
+pub const DEFAULT_STALL_LIMIT: usize = 10;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum AgentKind {
@@ -77,7 +78,9 @@ pub struct NonoRunner {
 impl NonoRunner {
     pub fn from_env(agent: AgentKind, unsafe_mode: bool) -> Self {
         Self {
-            override_program: std::env::var("X_WS_AGENT_RUNNER_BIN").ok().map(PathBuf::from),
+            override_program: std::env::var("X_WS_AGENT_RUNNER_BIN")
+                .ok()
+                .map(PathBuf::from),
             agent,
             unsafe_mode,
         }
@@ -102,7 +105,9 @@ impl StepRunner for NonoRunner {
                 .current_dir(request.repo_root)
                 .status()?
         } else if let Some(program) = &self.override_program {
-            Command::new(program).args(agent_request.helper_args()).status()?
+            Command::new(program)
+                .args(agent_request.helper_args())
+                .status()?
         } else {
             let mut command = Command::new("nono");
             command.arg("run").arg("--silent");
@@ -142,11 +147,13 @@ impl StepRunner for NonoRunner {
 pub fn run_workstream_loop(
     repo_root: &Path,
     workstream_name: &str,
+    stall_limit: usize,
     runner: &dyn StepRunner,
     clock: &mut dyn Clock,
     output: &mut dyn Write,
 ) -> Result<()> {
     let workstream = load_from_repo_root(repo_root, workstream_name)?;
+    clear_done_marker(&workstream.dir)?;
     let mut snapshot = workstream.task_snapshot();
     let mut phase = next_phase(&snapshot);
     let mut cycle_start = snapshot.clone();
@@ -205,7 +212,7 @@ pub fn run_workstream_loop(
                     )?;
                 }
 
-                if !progressed && stall_count >= MAX_CONSECUTIVE_STALLS {
+                if !progressed && stall_count >= stall_limit {
                     return Err(eyre!(
                         "workstream `{workstream_name}` stalled after {stall_count} consecutive execute passes; remaining undone tasks: {}",
                         join_task_ids(&snapshot)
@@ -236,6 +243,7 @@ pub fn run_workstream_loop(
                         "✅ workstream `{workstream_name}` completed after review"
                     )?;
                     clear_run_file(&workstream.dir)?;
+                    write_done_marker(&workstream.dir)?;
                     clear_on_drop.disarm();
                     return Ok(());
                 }
@@ -253,7 +261,7 @@ pub fn run_workstream_loop(
                     "🔁 review introduced new undone tasks: {}",
                     join_task_ids(&snapshot)
                 )?;
-                if !made_net_progress && stall_count >= MAX_CONSECUTIVE_STALLS {
+                if !made_net_progress && stall_count >= stall_limit {
                     return Err(eyre!(
                         "workstream `{workstream_name}` made no net progress after {stall_count} execute/review cycles; remaining undone tasks: {}",
                         join_task_ids(&snapshot)
@@ -374,7 +382,10 @@ mod tests {
 
         let runner = NonoRunner::from_env(AgentKind::Codex, false);
 
-        assert_eq!(runner.override_program, Some(PathBuf::from("/tmp/fake-runner")));
+        assert_eq!(
+            runner.override_program,
+            Some(PathBuf::from("/tmp/fake-runner"))
+        );
         assert_eq!(runner.agent, AgentKind::Codex);
         assert!(!runner.unsafe_mode);
 
@@ -438,10 +449,7 @@ mod tests {
 
     #[test]
     fn helper_override_runner_can_be_executable_file() -> Result<()> {
-        let root = std::env::temp_dir().join(format!(
-            "xtask-loop-override-{}",
-            std::process::id()
-        ));
+        let root = std::env::temp_dir().join(format!("xtask-loop-override-{}", std::process::id()));
         fs::create_dir_all(&root)?;
         let script = root.join("runner.sh");
         fs::write(&script, "#!/bin/sh\nexit 0\n")?;

@@ -1,18 +1,23 @@
 use std::fs;
 use std::io;
+use std::io::Write;
 use std::path::Path;
 
 use color_eyre::{Result, eyre::eyre};
 use time::OffsetDateTime;
 use time::format_description::well_known::Rfc3339;
 
-use crate::workstream::fs::{load_from_dir, load_from_repo_root};
-use crate::workstream::r#loop::{AgentKind, NonoRunner, SystemClock, run_workstream_loop};
+use crate::workstream::fs::{has_done_marker, load_from_dir, load_from_repo_root};
+use crate::workstream::r#loop::{
+    AgentKind, DEFAULT_STALL_LIMIT, NonoRunner, SystemClock, run_workstream_loop,
+};
+use crate::workstream::model::TaskSnapshot;
 
 const ACTIVITY_SUMMARY_LIMIT: usize = 46;
 const ANSI_RESET: &str = "\x1b[0m";
 const ANSI_BOLD: &str = "\x1b[1m";
 const ANSI_GREEN: &str = "\x1b[32m";
+const ANSI_BLUE: &str = "\x1b[34m";
 const ANSI_YELLOW: &str = "\x1b[33m";
 const ANSI_RED: &str = "\x1b[31m";
 
@@ -26,6 +31,8 @@ pub struct Args {
 pub enum Subcmd {
     /// List workstreams
     Ls,
+    /// Queue multiple workstreams
+    Queue(QueueArgs),
     /// Remove a workstream
     Rm(TargetArgs),
     /// Show detailed workstream info
@@ -37,6 +44,18 @@ pub enum Subcmd {
 #[derive(clap::Args, Debug)]
 pub struct TargetArgs {
     pub workstream_name: String,
+}
+
+#[derive(clap::Args, Debug)]
+pub struct QueueArgs {
+    #[command(subcommand)]
+    pub subcmd: QueueSubcmd,
+}
+
+#[derive(clap::Subcommand, Debug)]
+pub enum QueueSubcmd {
+    /// Run queued workstreams serially
+    Run(QueueRunArgs),
 }
 
 #[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
@@ -59,6 +78,20 @@ pub struct ExecArgs {
     pub workstream_name: String,
     #[arg(long, value_enum)]
     pub agent: AgentArg,
+    #[arg(long, default_value_t = DEFAULT_STALL_LIMIT)]
+    pub stall_limit: usize,
+    #[arg(long = "unsafe")]
+    pub unsafe_mode: bool,
+}
+
+#[derive(clap::Args, Debug)]
+pub struct QueueRunArgs {
+    #[arg(required = true)]
+    pub workstream_names: Vec<String>,
+    #[arg(long, value_enum)]
+    pub agent: AgentArg,
+    #[arg(long, default_value_t = DEFAULT_STALL_LIMIT)]
+    pub stall_limit: usize,
     #[arg(long = "unsafe")]
     pub unsafe_mode: bool,
 }
@@ -66,13 +99,23 @@ pub struct ExecArgs {
 pub fn run(args: Args) -> Result<()> {
     match args.subcmd {
         Subcmd::Ls => run_ls(&ProcFsProbe),
+        Subcmd::Queue(QueueArgs {
+            subcmd:
+                QueueSubcmd::Run(QueueRunArgs {
+                    workstream_names,
+                    agent,
+                    stall_limit,
+                    unsafe_mode,
+                }),
+        }) => run_queue(&workstream_names, agent.into(), stall_limit, unsafe_mode),
         Subcmd::Rm(TargetArgs { workstream_name }) => run_rm(&ProcFsProbe, &workstream_name),
         Subcmd::Info(TargetArgs { workstream_name }) => run_info(&workstream_name),
         Subcmd::Exec(ExecArgs {
             workstream_name,
             agent,
+            stall_limit,
             unsafe_mode,
-        }) => run_exec(&workstream_name, agent.into(), unsafe_mode),
+        }) => run_exec(&workstream_name, agent.into(), stall_limit, unsafe_mode),
     }
 }
 
@@ -97,6 +140,8 @@ fn run_ls(process_probe: &dyn ProcessProbe) -> Result<()> {
                         status: String::from(classify_status(
                             &workstream.run.phase,
                             workstream.run.pid,
+                            &snapshot,
+                            has_done_marker(&workstream.dir),
                             process_probe,
                         )),
                         completed: format!("{}/{}", snapshot.completed_count, snapshot.total_count),
@@ -156,7 +201,13 @@ fn run_info(workstream_name: &str) -> Result<()> {
     let repo_root = std::env::current_dir()?;
     let workstream = load_from_repo_root(&repo_root, workstream_name)?;
     let snapshot = workstream.task_snapshot();
-    let status = classify_status(&workstream.run.phase, workstream.run.pid, &ProcFsProbe);
+    let status = classify_status(
+        &workstream.run.phase,
+        workstream.run.pid,
+        &snapshot,
+        has_done_marker(&workstream.dir),
+        &ProcFsProbe,
+    );
 
     println!("📝 activity");
 
@@ -200,16 +251,112 @@ fn run_info(workstream_name: &str) -> Result<()> {
     Ok(())
 }
 
-fn run_exec(workstream_name: &str, agent: AgentKind, unsafe_mode: bool) -> Result<()> {
-    let _ = unsafe_mode;
+fn run_exec(
+    workstream_name: &str,
+    agent: AgentKind,
+    stall_limit: usize,
+    unsafe_mode: bool,
+) -> Result<()> {
     let repo_root = std::env::current_dir()?;
-    println!("🚀 starting workstream `{workstream_name}`");
-    let workstream = load_from_repo_root(&repo_root, workstream_name)?;
-    if has_live_run_lock(&workstream.run.phase, workstream.run.pid, &ProcFsProbe) {
-        println!(
+    let stdout = io::stdout();
+    let mut output = stdout.lock();
+
+    run_single_workstream(
+        &repo_root,
+        workstream_name,
+        agent,
+        stall_limit,
+        unsafe_mode,
+        &mut output,
+        &ProcFsProbe,
+    )
+}
+
+fn run_queue(
+    workstream_names: &[String],
+    agent: AgentKind,
+    stall_limit: usize,
+    unsafe_mode: bool,
+) -> Result<()> {
+    let repo_root = std::env::current_dir()?;
+
+    for workstream_name in workstream_names {
+        let _ = load_from_repo_root(&repo_root, workstream_name)?;
+    }
+
+    let stdout = io::stdout();
+    let mut output = stdout.lock();
+    writeln!(
+        output,
+        "🚀 queue starting {} workstreams: {}",
+        workstream_names.len(),
+        workstream_names.join(", ")
+    )?;
+
+    let mut completed = Vec::new();
+    for workstream_name in workstream_names {
+        writeln!(
+            output,
+            "📦 queue running {}/{}: `{}`",
+            completed.len() + 1,
+            workstream_names.len(),
+            workstream_name
+        )?;
+
+        if let Err(error) = run_single_workstream(
+            &repo_root,
+            workstream_name,
+            agent,
+            stall_limit,
+            unsafe_mode,
+            &mut output,
+            &ProcFsProbe,
+        ) {
+            let completed_names = if completed.is_empty() {
+                String::from("none")
+            } else {
+                completed.join(", ")
+            };
+            return Err(error.wrap_err(format!(
+                "queue failed after completing {} of {} workstreams; failed workstream: {}; completed workstreams: {}",
+                completed.len(),
+                workstream_names.len(),
+                workstream_name,
+                completed_names
+            )));
+        }
+
+        completed.push(workstream_name.clone());
+    }
+
+    writeln!(
+        output,
+        "✅ queue completed {}/{} workstreams: {}",
+        completed.len(),
+        workstream_names.len(),
+        completed.join(", ")
+    )?;
+
+    Ok(())
+}
+
+fn run_single_workstream(
+    repo_root: &Path,
+    workstream_name: &str,
+    agent: AgentKind,
+    stall_limit: usize,
+    unsafe_mode: bool,
+    output: &mut dyn Write,
+    process_probe: &dyn ProcessProbe,
+) -> Result<()> {
+    writeln!(output, "🚀 starting workstream `{workstream_name}`")?;
+    let workstream = load_from_repo_root(repo_root, workstream_name)?;
+    if has_live_run_lock(&workstream.run.phase, workstream.run.pid, process_probe) {
+        writeln!(
+            output,
             "🚫 refusing to start `{workstream_name}` because pid {} already holds the lock",
             workstream.run.pid
-        );
+        )?;
         return Err(eyre!(
             "refusing to start workstream `{workstream_name}` because it already has a live run.json lock for pid {}",
             workstream.run.pid
@@ -218,15 +365,14 @@ fn run_exec(workstream_name: &str, agent: AgentKind, unsafe_mode: bool) -> Resul
 
     let runner = NonoRunner::from_env(agent, unsafe_mode);
     let mut clock = SystemClock;
-    let stdout = io::stdout();
-    let mut output = stdout.lock();
 
     run_workstream_loop(
-        &repo_root,
+        repo_root,
         workstream_name,
+        stall_limit,
         &runner,
         &mut clock,
-        &mut output,
+        output,
     )
 }
 
@@ -238,20 +384,24 @@ fn latest_activity_message(activity: &[crate::workstream::model::ActivityEntry])
         .unwrap_or_else(|| String::from("-"))
 }
 
-fn classify_status(phase: &str, pid: u32, process_probe: &dyn ProcessProbe) -> &'static str {
+fn classify_status(
+    phase: &str,
+    pid: u32,
+    snapshot: &TaskSnapshot,
+    done_marker_exists: bool,
+    process_probe: &dyn ProcessProbe,
+) -> &'static str {
     match phase {
         "execute" if pid != 0 && process_probe.is_alive(pid) => "running:execute",
         "review" if pid != 0 && process_probe.is_alive(pid) => "running:review",
         "execute" | "review" if pid != 0 => "stale-lock",
+        _ if snapshot.completed_count == snapshot.total_count && done_marker_exists => "done",
         _ => "idle",
     }
 }
 
 fn has_live_run_lock(phase: &str, pid: u32, process_probe: &dyn ProcessProbe) -> bool {
-    matches!(
-        classify_status(phase, pid, process_probe),
-        "running:execute" | "running:review"
-    )
+    matches!(phase, "execute" | "review") && pid != 0 && process_probe.is_alive(pid)
 }
 
 fn truncate_summary(message: &str) -> String {
@@ -346,6 +496,7 @@ fn style_status_cell(text: &str) -> String {
     let trimmed = text.trim();
     match trimmed {
         "idle" => format!("{ANSI_GREEN}{text}{ANSI_RESET}"),
+        "done" => format!("{ANSI_BLUE}{text}{ANSI_RESET}"),
         "running:execute" | "running:review" => {
             format!("{ANSI_BOLD}{ANSI_YELLOW}{text}{ANSI_RESET}")
         }
@@ -393,7 +544,10 @@ fn last_update_age(run: &crate::workstream::model::RunFile) -> String {
         None => return String::from("-"),
     };
 
-    format!("{} ago", format_elapsed(OffsetDateTime::now_utc() - updated_at))
+    format!(
+        "{} ago",
+        format_elapsed(OffsetDateTime::now_utc() - updated_at)
+    )
 }
 
 fn parse_timestamp(value: &str) -> Option<OffsetDateTime> {
@@ -438,7 +592,13 @@ mod tests {
     #[test]
     fn classifies_execute_phase_as_running_when_pid_is_alive() {
         assert_eq!(
-            classify_status("execute", 4242, &FakeProcessProbe::alive()),
+            classify_status(
+                "execute",
+                4242,
+                &snapshot(0, 1),
+                false,
+                &FakeProcessProbe::alive(),
+            ),
             "running:execute"
         );
     }
@@ -446,7 +606,13 @@ mod tests {
     #[test]
     fn classifies_review_phase_as_running_when_pid_is_alive() {
         assert_eq!(
-            classify_status("review", 4242, &FakeProcessProbe::alive()),
+            classify_status(
+                "review",
+                4242,
+                &snapshot(0, 1),
+                false,
+                &FakeProcessProbe::alive(),
+            ),
             "running:review"
         );
     }
@@ -454,8 +620,30 @@ mod tests {
     #[test]
     fn classifies_dead_in_progress_pid_as_stale_lock() {
         assert_eq!(
-            classify_status("execute", 4242, &FakeProcessProbe::dead()),
+            classify_status(
+                "execute",
+                4242,
+                &snapshot(1, 1),
+                true,
+                &FakeProcessProbe::dead(),
+            ),
             "stale-lock"
+        );
+    }
+
+    #[test]
+    fn classifies_completed_workstream_with_done_marker_as_done() {
+        assert_eq!(
+            classify_status("", 0, &snapshot(1, 1), true, &FakeProcessProbe::dead()),
+            "done"
+        );
+    }
+
+    #[test]
+    fn keeps_completed_workstream_idle_without_done_marker() {
+        assert_eq!(
+            classify_status("", 0, &snapshot(1, 1), false, &FakeProcessProbe::dead()),
+            "idle"
         );
     }
 
@@ -508,6 +696,11 @@ mod tests {
         );
     }
 
+    #[test]
+    fn styles_done_status_in_blue() {
+        assert_eq!(style_status_cell("done"), "\u{1b}[34mdone\u{1b}[0m");
+    }
+
     struct FakeProcessProbe {
         alive: bool,
     }
@@ -525,6 +718,14 @@ mod tests {
     impl ProcessProbe for FakeProcessProbe {
         fn is_alive(&self, _pid: u32) -> bool {
             self.alive
+        }
+    }
+
+    fn snapshot(completed_count: usize, total_count: usize) -> TaskSnapshot {
+        TaskSnapshot {
+            completed_count,
+            total_count,
+            undone_task_ids: Default::default(),
         }
     }
 }
