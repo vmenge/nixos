@@ -87,11 +87,15 @@ There is a task example in `tasks.example.json`
 type ActivityFile = ActivityEntry[];
 
 type ActivityEntry = {
+  agent: string;
   at: string; // ISO 8601
   task: string; // the relevant task to this message
   message: string;
+  next_step: string;
 };
 ```
+
+There is a task example in `activity.example.json`
 
 ## Workstream Lifecycle
 
