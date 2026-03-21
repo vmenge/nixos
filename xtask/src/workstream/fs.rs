@@ -1,11 +1,12 @@
 use std::fs;
+use std::path::Component;
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use color_eyre::Result;
-use color_eyre::eyre::{ContextCompat, WrapErr};
-use serde::de::DeserializeOwned;
+use color_eyre::eyre::{ContextCompat, WrapErr, eyre};
 use serde::Serialize;
+use serde::de::DeserializeOwned;
 
 use crate::workstream::model::{ActivityFile, RunFile, TaskSnapshot, TasksFile};
 
@@ -27,7 +28,22 @@ impl LoadedWorkstream {
 }
 
 pub fn load_from_repo_root(repo_root: &Path, workstream_name: &str) -> Result<LoadedWorkstream> {
+    validate_workstream_name(workstream_name)?;
     load_from_dir(&repo_root.join(WORKSTREAMS_DIR).join(workstream_name))
+}
+
+pub fn validate_workstream_name(workstream_name: &str) -> Result<()> {
+    let mut components = Path::new(workstream_name).components();
+    let valid =
+        matches!(components.next(), Some(Component::Normal(_))) && components.next().is_none();
+
+    if valid {
+        Ok(())
+    } else {
+        Err(eyre!(
+            "invalid workstream name `{workstream_name}`: workstream name must be a single directory name under .workstreams"
+        ))
+    }
 }
 
 pub fn load_from_dir(workstream_dir: &Path) -> Result<LoadedWorkstream> {
@@ -111,7 +127,9 @@ pub fn clear_run_file(workstream_dir: &Path) -> Result<()> {
     match fs::remove_file(&run_path) {
         Ok(()) => Ok(()),
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(()),
-        Err(error) => Err(error).wrap_err_with(|| format!("failed to remove {}", run_path.display())),
+        Err(error) => {
+            Err(error).wrap_err_with(|| format!("failed to remove {}", run_path.display()))
+        }
     }
 }
 

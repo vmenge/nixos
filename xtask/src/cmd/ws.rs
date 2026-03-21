@@ -104,6 +104,14 @@ fn run_rm(process_probe: &dyn ProcessProbe, workstream_name: &str) -> Result<()>
 
 fn run_exec(workstream_name: &str) -> Result<()> {
     let repo_root = std::env::current_dir()?;
+    let workstream = load_from_repo_root(&repo_root, workstream_name)?;
+    if has_live_run_lock(&workstream.run.phase, workstream.run.pid, &ProcFsProbe) {
+        return Err(eyre!(
+            "refusing to start workstream `{workstream_name}` because it already has a live run.json lock for pid {}",
+            workstream.run.pid
+        ));
+    }
+
     let runner = HelperBinaryRunner::from_env();
     let mut clock = SystemClock;
     let stdout = io::stdout();

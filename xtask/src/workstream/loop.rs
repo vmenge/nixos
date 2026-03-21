@@ -153,6 +153,7 @@ pub fn run_workstream_loop(
     let workstream = load_from_repo_root(repo_root, workstream_name)?;
     let mut snapshot = workstream.task_snapshot();
     let mut phase = next_phase(&snapshot);
+    let mut cycle_start = snapshot.clone();
     let mut run = write_run_started(
         &workstream.dir,
         std::process::id(),
@@ -176,7 +177,13 @@ pub fn run_workstream_loop(
         match phase {
             StepPhase::Execute => {
                 let progressed = snapshot.undone_task_ids != before.undone_task_ids;
-                let stall_count = if progressed { 0 } else { run.stall_count + 1 };
+                let stall_count = if snapshot.undone_task_ids.is_empty() {
+                    run.stall_count
+                } else if progressed {
+                    0
+                } else {
+                    run.stall_count + 1
+                };
                 run =
                     update_pass_state(&workstream.dir, &run, phase, clock, stall_count, &snapshot)?;
 
@@ -198,12 +205,13 @@ pub fn run_workstream_loop(
                 if snapshot.undone_task_ids.is_empty() {
                     phase = StepPhase::Review;
                     run = transition_phase(&workstream.dir, &run, phase, clock, &snapshot)?;
+                } else {
+                    cycle_start = snapshot.clone();
                 }
             }
             StepPhase::Review => {
-                run = update_pass_state(&workstream.dir, &run, phase, clock, 0, &snapshot)?;
-
                 if snapshot.undone_task_ids.is_empty() {
+                    update_pass_state(&workstream.dir, &run, phase, clock, 0, &snapshot)?;
                     writeln!(
                         output,
                         "workstream `{workstream_name}` completed after review"
@@ -213,13 +221,28 @@ pub fn run_workstream_loop(
                     return Ok(());
                 }
 
+                let made_net_progress = snapshot.completed_count > cycle_start.completed_count;
+                let stall_count = if made_net_progress {
+                    0
+                } else {
+                    run.stall_count + 1
+                };
+                run =
+                    update_pass_state(&workstream.dir, &run, phase, clock, stall_count, &snapshot)?;
                 writeln!(
                     output,
                     "review introduced new undone tasks: {}",
                     join_task_ids(&snapshot)
                 )?;
+                if !made_net_progress && stall_count >= MAX_CONSECUTIVE_STALLS {
+                    return Err(eyre!(
+                        "workstream `{workstream_name}` made no net progress after {stall_count} execute/review cycles; remaining undone tasks: {}",
+                        join_task_ids(&snapshot)
+                    ));
+                }
                 phase = StepPhase::Execute;
                 run = transition_phase(&workstream.dir, &run, phase, clock, &snapshot)?;
+                cycle_start = snapshot.clone();
             }
         }
     }

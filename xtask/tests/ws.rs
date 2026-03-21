@@ -266,6 +266,72 @@ fn ws_rm_refuses_to_delete_a_live_workstream_directory() -> Result<()> {
 }
 
 #[test]
+fn ws_rejects_workstream_names_that_escape_the_workstreams_directory() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    let runner = fixture
+        .install_scripted_runner("demo", &[ScriptedStep::review(sample_tasks_json(0, 0))])?;
+
+    for (subcommand, name) in [
+        ("rm", "../demo"),
+        ("exec", "nested/demo"),
+        ("exec", "/tmp/demo"),
+    ] {
+        let output =
+            fixture.run_ws_command_with_optional_runner(subcommand, name, Some(&runner))?;
+        let stderr = String::from_utf8_lossy(&output.stderr);
+
+        assert!(
+            !output.status.success(),
+            "expected `x ws {subcommand} {name}` to fail"
+        );
+        assert!(
+            stderr.contains("single directory name under .workstreams"),
+            "expected stderr to explain invalid workstream naming, got: {stderr}"
+        );
+    }
+
+    assert!(
+        fixture.logged_prompts("demo")?.is_empty(),
+        "expected invalid exec names to fail before invoking the runner"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_exec_refuses_to_start_when_a_live_lock_already_exists() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_run_json(&format!(
+        r#"{{
+  "pid": {},
+  "phase": "review"
+}}"#,
+        std::process::id()
+    ))?;
+    let runner = fixture
+        .install_scripted_runner("demo", &[ScriptedStep::review(sample_tasks_json(1, 1))])?;
+
+    let output = fixture.run_ws_exec_with_runner("demo", &runner)?;
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        !output.status.success(),
+        "expected `x ws exec demo` to fail when the workstream is already running"
+    );
+    assert!(
+        stderr.contains("already has a live run.json lock"),
+        "expected stderr to mention the live lock, got: {stderr}"
+    );
+    assert_eq!(
+        fixture.logged_prompts("demo")?,
+        Vec::<String>::new(),
+        "expected a live lock to prevent any runner invocation"
+    );
+
+    Ok(())
+}
+
+#[test]
 fn agent_runner_builds_the_required_inner_codex_command() {
     let request = AgentRunnerRequest::new(
         PathBuf::from("/repo/project"),
@@ -649,6 +715,48 @@ fn ws_exec_resets_the_stall_counter_after_progress() -> Result<()> {
     Ok(())
 }
 
+#[test]
+fn ws_exec_fails_after_three_no_net_progress_execute_review_cycles() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_tasks_json(&sample_tasks_json(0, 1))?;
+    let runner = fixture.install_scripted_runner(
+        "demo",
+        &[
+            ScriptedStep::execute(sample_tasks_json(1, 1)),
+            ScriptedStep::review(sample_tasks_json(0, 1)),
+            ScriptedStep::execute(sample_tasks_json(1, 1)),
+            ScriptedStep::review(sample_tasks_json(0, 1)),
+            ScriptedStep::execute(sample_tasks_json(1, 1)),
+            ScriptedStep::review(sample_tasks_json(0, 1)),
+        ],
+    )?;
+
+    let output = fixture.run_ws_exec_with_runner("demo", &runner)?;
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        !output.status.success(),
+        "expected `x ws exec demo` to fail after repeated execute/review oscillation"
+    );
+    assert!(
+        stderr.contains("no net progress"),
+        "expected stderr to describe the no-net-progress livelock, got: {stderr}"
+    );
+    assert_eq!(
+        fixture.logged_prompts("demo")?,
+        vec![
+            String::from("workstream-execute demo"),
+            String::from("workstream-review demo"),
+            String::from("workstream-execute demo"),
+            String::from("workstream-review demo"),
+            String::from("workstream-execute demo"),
+            String::from("workstream-review demo"),
+        ]
+    );
+
+    Ok(())
+}
+
 struct WorkstreamFixture {
     repo_root: PathBuf,
 }
@@ -700,12 +808,26 @@ impl WorkstreamFixture {
             .output()?)
     }
 
+    fn run_ws_command_with_optional_runner(
+        &self,
+        subcommand: &str,
+        name: &str,
+        runner: Option<&PathBuf>,
+    ) -> Result<Output> {
+        let mut command = Command::new(env!("CARGO_BIN_EXE_x"));
+        command
+            .args(["ws", subcommand, name])
+            .current_dir(&self.repo_root);
+
+        if let Some(runner) = runner {
+            command.env("X_WS_AGENT_RUNNER_BIN", runner);
+        }
+
+        Ok(command.output()?)
+    }
+
     fn run_ws_exec_with_runner(&self, name: &str, runner: &PathBuf) -> Result<Output> {
-        Ok(Command::new(env!("CARGO_BIN_EXE_x"))
-            .args(["ws", "exec", name])
-            .env("X_WS_AGENT_RUNNER_BIN", runner)
-            .current_dir(&self.repo_root)
-            .output()?)
+        self.run_ws_command_with_optional_runner("exec", name, Some(runner))
     }
 
     fn add_workstream(&self, name: &str) -> Result<()> {
