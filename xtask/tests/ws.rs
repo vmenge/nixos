@@ -1,4 +1,3 @@
-use std::collections::BTreeSet;
 use std::fs;
 use std::path::PathBuf;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -15,11 +14,14 @@ const ACTIVITY_EXAMPLE: &str = include_str!(concat!(
     "/../dotfiles/.agents/skills/workstreams/about/activity.example.json"
 ));
 const RUN_EXAMPLE: &str = r#"{
-  "current_wave_id": "NAV-W2",
-  "active_task_ids": [
-    "NAV-W2-TA",
-    "NAV-W2-TC"
-  ]
+  "pid": 4242,
+  "started_at": "2026-03-21T09:15:00Z",
+  "updated_at": "2026-03-21T09:18:30Z",
+  "phase": "executing",
+  "iteration": 3,
+  "stall_count": 1,
+  "completed_tasks": 4,
+  "total_tasks": 11
 }
 "#;
 
@@ -33,11 +35,14 @@ fn loads_workstream_files_and_builds_a_task_snapshot() -> Result<()> {
     assert_eq!(workstream.name, "demo");
     assert_eq!(workstream.tasks.must_read_files.len(), 5);
     assert_eq!(workstream.activity.len(), 3);
-    assert_eq!(workstream.run.current_wave_id.as_deref(), Some("NAV-W2"));
-    assert_eq!(
-        workstream.run.active_task_ids,
-        BTreeSet::from([String::from("NAV-W2-TA"), String::from("NAV-W2-TC"),])
-    );
+    assert_eq!(workstream.run.pid, 4242);
+    assert_eq!(workstream.run.started_at, "2026-03-21T09:15:00Z");
+    assert_eq!(workstream.run.updated_at, "2026-03-21T09:18:30Z");
+    assert_eq!(workstream.run.phase, "executing");
+    assert_eq!(workstream.run.iteration, 3);
+    assert_eq!(workstream.run.stall_count, 1);
+    assert_eq!(workstream.run.completed_tasks, 4);
+    assert_eq!(workstream.run.total_tasks, 11);
     assert_eq!(snapshot.completed_count, 0);
     assert_eq!(snapshot.total_count, 11);
     assert_eq!(

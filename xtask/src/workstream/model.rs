@@ -90,7 +90,19 @@ pub struct ActivityEntry {
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RunFile {
     #[serde(default)]
-    pub current_wave_id: Option<String>,
+    pub pid: u32,
     #[serde(default)]
-    pub active_task_ids: BTreeSet<String>,
+    pub started_at: String,
+    #[serde(default)]
+    pub updated_at: String,
+    #[serde(default)]
+    pub phase: String,
+    #[serde(default)]
+    pub iteration: usize,
+    #[serde(default)]
+    pub stall_count: usize,
+    #[serde(default)]
+    pub completed_tasks: usize,
+    #[serde(default)]
+    pub total_tasks: usize,
 }
