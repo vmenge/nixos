@@ -322,6 +322,7 @@ fn run_file_lifecycle_writes_updates_and_clears_state() -> Result<()> {
         &workstream_dir,
         &started,
         RunFileUpdate {
+            phase: String::from("execute"),
             updated_at: String::from("2026-03-21T10:04:00Z"),
             iteration: 3,
             stall_count: 1,
@@ -345,6 +346,43 @@ fn run_file_lifecycle_writes_updates_and_clears_state() -> Result<()> {
     clear_run_file(&workstream_dir)?;
     assert!(!workstream_dir.join("run.json").exists());
     assert_eq!(load_from_repo_root(&fixture.repo_root, "demo")?.run, RunFile::default());
+
+    Ok(())
+}
+
+#[test]
+fn run_file_update_can_transition_between_phases() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    let workstream_dir = fixture.workstream_dir("demo");
+    let snapshot = TaskSnapshot {
+        completed_count: 1,
+        total_count: 5,
+        undone_task_ids: Default::default(),
+    };
+
+    let started = write_run_started(
+        &workstream_dir,
+        4242,
+        "execute",
+        "2026-03-21T10:00:00Z",
+        &snapshot,
+    )?;
+
+    let updated = update_run_file(
+        &workstream_dir,
+        &started,
+        RunFileUpdate {
+            phase: String::from("review"),
+            updated_at: String::from("2026-03-21T10:05:00Z"),
+            iteration: 1,
+            stall_count: 0,
+            completed_tasks: 5,
+            total_tasks: 5,
+        },
+    )?;
+
+    assert_eq!(updated.phase, "review");
+    assert_eq!(load_from_repo_root(&fixture.repo_root, "demo")?.run.phase, "review");
 
     Ok(())
 }

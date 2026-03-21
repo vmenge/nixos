@@ -53,6 +53,7 @@ pub fn load_from_dir(workstream_dir: &Path) -> Result<LoadedWorkstream> {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RunFileUpdate {
+    pub phase: String,
     pub updated_at: String,
     pub iteration: usize,
     pub stall_count: usize,
@@ -92,7 +93,7 @@ pub fn update_run_file(
         pid: current.pid,
         started_at: current.started_at.clone(),
         updated_at: update.updated_at,
-        phase: current.phase.clone(),
+        phase: update.phase,
         iteration: update.iteration,
         stall_count: update.stall_count,
         completed_tasks: update.completed_tasks,
