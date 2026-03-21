@@ -1,4 +1,11 @@
+use std::fs;
+use std::path::Path;
+
 use color_eyre::{Result, eyre::eyre};
+
+use crate::workstream::fs::load_from_dir;
+
+const ACTIVITY_SUMMARY_LIMIT: usize = 46;
 
 #[derive(clap::Args, Debug)]
 pub struct Args {
@@ -23,7 +30,7 @@ pub struct TargetArgs {
 
 pub fn run(args: Args) -> Result<()> {
     match args.subcmd {
-        Subcmd::Ls => not_implemented("ws ls"),
+        Subcmd::Ls => run_ls(&ProcFsProbe),
         Subcmd::Rm(TargetArgs { workstream_name }) => {
             not_implemented(&format!("ws rm {workstream_name}"))
         }
@@ -33,6 +40,153 @@ pub fn run(args: Args) -> Result<()> {
     }
 }
 
+fn run_ls(process_probe: &dyn ProcessProbe) -> Result<()> {
+    let repo_root = std::env::current_dir()?;
+    let mut rows = Vec::new();
+    let workstreams_dir = repo_root.join(".workstreams");
+    if workstreams_dir.exists() {
+        for entry in fs::read_dir(&workstreams_dir)? {
+            let entry = entry?;
+            let path = entry.path();
+            if !path.is_dir() {
+                continue;
+            }
+
+            match load_from_dir(&path) {
+                Ok(workstream) => {
+                    let snapshot = workstream.task_snapshot();
+                    rows.push(ListRow {
+                        name: workstream.name,
+                        status: String::from(classify_status(
+                            &workstream.run.phase,
+                            workstream.run.pid,
+                            process_probe,
+                        )),
+                        completed: format!("{}/{}", snapshot.completed_count, snapshot.total_count),
+                        last_activity: latest_activity_message(&workstream.activity),
+                    });
+                }
+                Err(error) => rows.push(ListRow {
+                    name: entry.file_name().to_string_lossy().into_owned(),
+                    status: String::from("error"),
+                    completed: String::from("-"),
+                    last_activity: truncate_summary(&error.to_string()),
+                }),
+            }
+        }
+    }
+
+    rows.sort_by(|left, right| left.name.cmp(&right.name));
+
+    println!("NAME\tSTATUS\tDONE\tLAST ACTIVITY");
+    for row in rows {
+        println!(
+            "{}\t{}\t{}\t{}",
+            row.name, row.status, row.completed, row.last_activity
+        );
+    }
+
+    Ok(())
+}
+
+fn latest_activity_message(activity: &[crate::workstream::model::ActivityEntry]) -> String {
+    activity
+        .iter()
+        .max_by(|left, right| left.at.cmp(&right.at))
+        .map(|entry| truncate_summary(&entry.message))
+        .unwrap_or_else(|| String::from("-"))
+}
+
+fn classify_status(phase: &str, pid: u32, process_probe: &dyn ProcessProbe) -> &'static str {
+    match phase {
+        "executing" if pid != 0 && process_probe.is_alive(pid) => "running:execute",
+        "reviewing" if pid != 0 && process_probe.is_alive(pid) => "running:review",
+        "executing" | "reviewing" if pid != 0 => "stale:lock",
+        _ => "idle",
+    }
+}
+
+fn truncate_summary(message: &str) -> String {
+    if message.chars().count() <= ACTIVITY_SUMMARY_LIMIT {
+        return message.to_owned();
+    }
+
+    let mut truncated = message
+        .chars()
+        .take(ACTIVITY_SUMMARY_LIMIT.saturating_sub(3))
+        .collect::<String>();
+    truncated.push_str("...");
+    truncated
+}
+
+struct ListRow {
+    name: String,
+    status: String,
+    completed: String,
+    last_activity: String,
+}
+
+trait ProcessProbe {
+    fn is_alive(&self, pid: u32) -> bool;
+}
+
+struct ProcFsProbe;
+
+impl ProcessProbe for ProcFsProbe {
+    fn is_alive(&self, pid: u32) -> bool {
+        pid != 0 && Path::new("/proc").join(pid.to_string()).exists()
+    }
+}
+
 fn not_implemented(command: &str) -> Result<()> {
     Err(eyre!("{command} not implemented"))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn classifies_execute_phase_as_running_when_pid_is_alive() {
+        assert_eq!(
+            classify_status("executing", 4242, &FakeProcessProbe::alive()),
+            "running:execute"
+        );
+    }
+
+    #[test]
+    fn classifies_review_phase_as_running_when_pid_is_alive() {
+        assert_eq!(
+            classify_status("reviewing", 4242, &FakeProcessProbe::alive()),
+            "running:review"
+        );
+    }
+
+    #[test]
+    fn classifies_dead_in_progress_pid_as_stale_lock() {
+        assert_eq!(
+            classify_status("executing", 4242, &FakeProcessProbe::dead()),
+            "stale:lock"
+        );
+    }
+
+    struct FakeProcessProbe {
+        alive: bool,
+    }
+
+    impl FakeProcessProbe {
+        fn alive() -> Self {
+            Self { alive: true }
+        }
+
+        fn dead() -> Self {
+            Self { alive: false }
+        }
+    }
+
+    impl ProcessProbe for FakeProcessProbe {
+        fn is_alive(&self, _pid: u32) -> bool {
+            self.alive
+        }
+    }
 }
