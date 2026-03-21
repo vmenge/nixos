@@ -1,15 +1,14 @@
 ---
-name: workstream-track
-description: Use when creating or updating a workstream track in `.workstreams/<name>/track.md` that must break the workstream into sequential phases, parallel task waves, per-task behavioral specs, and meaningful phase gates.
+name: workstream-plan
+description: Use when creating or updating a workstream plan in `.workstreams/<name>/plan.md` that must break the workstream into sequential phases, parallel task waves, per-task behavioral specs, and meaningful phase gates. Usuall invocable by "ws plan"
+user-invocable: true
 ---
 
 # Building Workstream Tracks
 
 ## Overview
 
-Use this skill to create workstream track pages in `.workstreams/<name>/track.md` that turn a workstream into ordered phases with wave-structured tasks, explicit behavioral expectations, and meaningful completion criteria.
-
-`track.md` is the primary planning artifact for the workstream. Derived artifacts in `docs/plans/` may support lower-level brainstorming, design, or implementation, but they must be derived from and stay aligned with the track.
+Use this skill to create workstream track pages in `.workstreams/<name>/plan.md` that turn a workstream into ordered phases with wave-structured tasks, explicit behavioral expectations, and meaningful completion criteria.
 
 Use `workstream-about` when needed to understand the workstream model itself.
 
@@ -19,7 +18,6 @@ Each phase must:
 - explain parallel work through task-wave naming
 - contain only tasks that are parallelizable within the same wave
 - give every task a behavioral spec, acceptance criteria, scenarios, and verification evidence
-- use checkboxes for phases, tasks, and acceptance criteria so execution can mark progress directly in the track
 - end with a real gate
 - use gates that matter for TDD-heavy development
 
@@ -29,7 +27,7 @@ This skill is for workstream tracking, not internal scratch notes.
 
 Use this skill when:
 
-- a workstream in `.workstreams/<name>/` needs its own `track.md`
+- a workstream in `.workstreams/<name>/` needs its own `plan.md`
 - the workstream needs to be broken into phases
 - each phase needs tagged tasks, per-task specs, and a completion gate
 - phase boundaries must reflect real dependency edges
@@ -39,7 +37,7 @@ Use this skill when:
 Do not use this skill for:
 
 - internal task execution plans outside the workstream folder
-- high-level research capture in `research.md`
+- high-level research capture in `design.md`
 - architecture boundary documents that are not the workstream track itself
 
 ## Required Inputs
@@ -48,7 +46,7 @@ First resolve the exact workstream folder. If the target is ambiguous, confirm i
 
 Before writing the track, read:
 
-- `.workstreams/<name>/research.md`
+- `.workstreams/<name>/design.md`
 - the most relevant architecture, spec, or package documents for the workstream
 
 Use them to determine:
@@ -61,9 +59,9 @@ Use them to determine:
 
 ## Output Location
 
-Create the track in:
+Create the plan in:
 
-- `.workstreams/<name>/track.md`
+- `.workstreams/<name>/plan.md`
 
 ## Core Rules
 
@@ -72,8 +70,7 @@ Create the track in:
 - Resolve the exact workstream folder before writing.
 - If the target is ambiguous, confirm it with the user.
 - If the workstream does not exist yet and the user is starting one, create `.workstreams/<name>/`.
-- `track.md` is the primary planning artifact for the workstream.
-- If you create lower-level plan docs in `docs/plans/`, derive them from `track.md` and keep them aligned with it.
+- `plan.md` is the primary planning artifact for the workstream.
 
 ### 1. Phases Are Sequential
 

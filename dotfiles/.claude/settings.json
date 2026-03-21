@@ -11,7 +11,9 @@
       "Read(//home/vmenge/.agents/AGENTS.md)",
       "Bash(cargo check:*)"
     ],
-    "additionalDirectories": ["/home/vmenge/.agents"]
+    "additionalDirectories": [
+      "/home/vmenge/.agents"
+    ]
   },
   "model": "opus[1m]",
   "hooks": {
@@ -45,6 +47,7 @@
     "lua-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
   },
+  "skipDangerousModePermissionPrompt": true,
   "mcpServers": {
     "fff": {
       "type": "stdio",
@@ -53,5 +56,5 @@
       "env": {}
     }
   },
-  "skipDangerousModePermissionPrompt": true
+  "voiceEnabled": true
 }

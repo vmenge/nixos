@@ -1,0 +1,157 @@
+{
+  "must_read_files": [
+    "/project/docs/spec/navigation.md",
+    "/project/package.json",
+    "/project/src/App.tsx",
+    "/project/src/routes.tsx",
+    "/project/src/styles/global.css"
+  ],
+  "waves": [
+    {
+      "name": "foundation",
+      "checklist": [
+        {
+          "name": "audit app shell entrypoints",
+          "category": "setup",
+          "description": "Review the main application entrypoints and shared layout constraints before implementation begins",
+          "steps": [
+            "Read App.tsx",
+            "Read routes.tsx",
+            "Identify global layout structure",
+            "Note shared dependencies and constraints"
+          ],
+          "done": false
+        },
+        {
+          "name": "audit global styling setup",
+          "category": "setup",
+          "description": "Review the global styling system and existing conventions used across the app",
+          "steps": [
+            "Read global.css",
+            "Identify typography and spacing conventions",
+            "Check responsive breakpoints",
+            "Note reusable utility classes"
+          ],
+          "done": false
+        }
+      ]
+    },
+    {
+      "name": "independent feature implementation",
+      "checklist": [
+        {
+          "name": "implement navigation component",
+          "category": "feature",
+          "description": "Build the navigation component without depending on hero section implementation",
+          "steps": [
+            "Create Navigation component",
+            "Add desktop layout",
+            "Add mobile menu toggle",
+            "Export component for integration"
+          ],
+          "done": false
+        },
+        {
+          "name": "implement hero component",
+          "category": "feature",
+          "description": "Build the hero section independently from navigation work",
+          "steps": [
+            "Create Hero component",
+            "Add headline and supporting text",
+            "Add CTA button",
+            "Export component for integration"
+          ],
+          "done": false
+        },
+        {
+          "name": "implement footer component",
+          "category": "feature",
+          "description": "Build the footer independently from navigation and hero work",
+          "steps": [
+            "Create Footer component",
+            "Add navigation links",
+            "Add copyright text",
+            "Export component for integration"
+          ],
+          "done": false
+        }
+      ]
+    },
+    {
+      "name": "integration",
+      "checklist": [
+        {
+          "name": "wire navigation into app shell",
+          "category": "feature",
+          "description": "Integrate the completed navigation component into the main app layout",
+          "steps": [
+            "Import Navigation into App.tsx",
+            "Place component in layout",
+            "Verify responsive behavior in context"
+          ],
+          "done": false
+        },
+        {
+          "name": "wire hero into landing page",
+          "category": "feature",
+          "description": "Integrate the completed hero component into the landing page layout",
+          "steps": [
+            "Import Hero into the landing page",
+            "Place component in correct section order",
+            "Verify spacing in context"
+          ],
+          "done": false
+        },
+        {
+          "name": "wire footer into app shell",
+          "category": "feature",
+          "description": "Integrate the completed footer component into the main app layout",
+          "steps": [
+            "Import Footer into App.tsx",
+            "Place component at bottom of layout",
+            "Verify spacing in context"
+          ],
+          "done": false
+        }
+      ]
+    },
+    {
+      "name": "verification",
+      "checklist": [
+        {
+          "name": "test navigation behavior",
+          "category": "testing",
+          "description": "Verify navigation works correctly after integration",
+          "steps": [
+            "Test desktop navigation",
+            "Test mobile menu toggle",
+            "Verify all nav links work"
+          ],
+          "done": false
+        },
+        {
+          "name": "test hero rendering",
+          "category": "testing",
+          "description": "Verify hero content renders correctly after integration",
+          "steps": [
+            "Check headline and subhead rendering",
+            "Verify CTA visibility and alignment",
+            "Test responsive layout"
+          ],
+          "done": false
+        },
+        {
+          "name": "test footer rendering",
+          "category": "testing",
+          "description": "Verify footer content renders correctly after integration",
+          "steps": [
+            "Check footer links",
+            "Verify layout at multiple breakpoints",
+            "Check for console errors"
+          ],
+          "done": false
+        }
+      ]
+    }
+  ]
+}
