@@ -4,7 +4,6 @@ source $HOME/.scripts/safe_env.sh
 source $HOME/.scripts/zed.sh
 source $HOME/.scripts/dconf.sh
 source $HOME/.scripts/steam.sh
-source $HOME/.scripts/workstreams.sh
 source $HOME/.scripts/lock.sh
 source $HOME/.scripts/suspend.sh
 source $HOME/.scripts/kanshi.sh
