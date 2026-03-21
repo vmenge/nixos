@@ -4,7 +4,9 @@ use std::process::{Command, Output};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use color_eyre::Result;
-use x::workstream::fs::load_from_repo_root;
+use x::workstream::agent::AgentRunnerRequest;
+use x::workstream::fs::{RunFileUpdate, clear_run_file, load_from_repo_root, update_run_file, write_run_started};
+use x::workstream::model::{RunFile, TaskSnapshot};
 
 const TASKS_EXAMPLE: &str = include_str!(concat!(
     env!("CARGO_MANIFEST_DIR"),
@@ -255,6 +257,94 @@ fn ws_rm_refuses_to_delete_a_live_workstream_directory() -> Result<()> {
         stderr.contains("running"),
         "expected stderr to mention the running workstream, got: {stderr}"
     );
+
+    Ok(())
+}
+
+#[test]
+fn agent_runner_builds_the_required_inner_codex_command() {
+    let request = AgentRunnerRequest::new(
+        PathBuf::from("/repo/project"),
+        String::from("Execute the next workstream step."),
+    );
+    let (program, args) = request.inner_command();
+
+    assert_eq!(program, "codex");
+    assert_eq!(
+        args,
+        vec![
+            String::from("exec"),
+            String::from("--cd"),
+            String::from("/repo/project"),
+            String::from("--ask-for-approval"),
+            String::from("never"),
+            String::from("--sandbox"),
+            String::from("danger-full-access"),
+            String::from("Execute the next workstream step."),
+        ]
+    );
+}
+
+#[test]
+fn run_file_lifecycle_writes_updates_and_clears_state() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    let workstream_dir = fixture.workstream_dir("demo");
+    let snapshot = TaskSnapshot {
+        completed_count: 2,
+        total_count: 5,
+        undone_task_ids: Default::default(),
+    };
+
+    let started = write_run_started(
+        &workstream_dir,
+        4242,
+        "execute",
+        "2026-03-21T10:00:00Z",
+        &snapshot,
+    )?;
+
+    assert_eq!(
+        started,
+        RunFile {
+            pid: 4242,
+            started_at: String::from("2026-03-21T10:00:00Z"),
+            updated_at: String::from("2026-03-21T10:00:00Z"),
+            phase: String::from("execute"),
+            iteration: 0,
+            stall_count: 0,
+            completed_tasks: 2,
+            total_tasks: 5,
+        }
+    );
+    assert_eq!(load_from_repo_root(&fixture.repo_root, "demo")?.run, started);
+
+    let updated = update_run_file(
+        &workstream_dir,
+        &started,
+        RunFileUpdate {
+            updated_at: String::from("2026-03-21T10:04:00Z"),
+            iteration: 3,
+            stall_count: 1,
+            completed_tasks: 4,
+            total_tasks: 5,
+        },
+    )?;
+
+    assert_eq!(
+        updated,
+        RunFile {
+            updated_at: String::from("2026-03-21T10:04:00Z"),
+            iteration: 3,
+            stall_count: 1,
+            completed_tasks: 4,
+            ..started.clone()
+        }
+    );
+    assert_eq!(load_from_repo_root(&fixture.repo_root, "demo")?.run, updated);
+
+    clear_run_file(&workstream_dir)?;
+    assert!(!workstream_dir.join("run.json").exists());
+    assert_eq!(load_from_repo_root(&fixture.repo_root, "demo")?.run, RunFile::default());
 
     Ok(())
 }
