@@ -21,7 +21,9 @@ Each phase must:
 - end with a real gate
 - use gates that matter for TDD-heavy development
 
-This skill is for workstream tracking, not internal scratch notes.
+This skill is for workstream planning, not internal scratch notes.
+
+Once `plan.md` is completely one, we **MUST** invoke the workstream-tasks skill to build `tasks.json`
 
 ## When to Use
 
