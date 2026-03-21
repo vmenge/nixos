@@ -209,6 +209,56 @@ fn ws_ls_keeps_broken_workstreams_local_to_their_row() -> Result<()> {
     Ok(())
 }
 
+#[test]
+fn ws_rm_deletes_a_stopped_workstream_directory() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_run_json("{}")?;
+
+    let output = fixture.run_ws_rm("demo")?;
+
+    assert!(
+        output.status.success(),
+        "expected `x ws rm demo` to succeed, stderr was: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        !fixture.workstream_dir("demo").exists(),
+        "expected workstream directory to be removed"
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ws_rm_refuses_to_delete_a_live_workstream_directory() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_run_json(&format!(
+        r#"{{
+  "pid": {},
+  "phase": "execute"
+}}"#,
+        std::process::id()
+    ))?;
+
+    let output = fixture.run_ws_rm("demo")?;
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        !output.status.success(),
+        "expected `x ws rm demo` to fail for a live workstream"
+    );
+    assert!(
+        fixture.workstream_dir("demo").exists(),
+        "expected workstream directory to remain in place"
+    );
+    assert!(
+        stderr.contains("running"),
+        "expected stderr to mention the running workstream, got: {stderr}"
+    );
+
+    Ok(())
+}
+
 struct WorkstreamFixture {
     repo_root: PathBuf,
 }
@@ -249,6 +299,13 @@ impl WorkstreamFixture {
     fn run_ws_ls(&self) -> Result<Output> {
         Ok(Command::new(env!("CARGO_BIN_EXE_x"))
             .args(["ws", "ls"])
+            .current_dir(&self.repo_root)
+            .output()?)
+    }
+
+    fn run_ws_rm(&self, name: &str) -> Result<Output> {
+        Ok(Command::new(env!("CARGO_BIN_EXE_x"))
+            .args(["ws", "rm", name])
             .current_dir(&self.repo_root)
             .output()?)
     }

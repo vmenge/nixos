@@ -3,7 +3,7 @@ use std::path::Path;
 
 use color_eyre::{Result, eyre::eyre};
 
-use crate::workstream::fs::load_from_dir;
+use crate::workstream::fs::{load_from_dir, load_from_repo_root};
 
 const ACTIVITY_SUMMARY_LIMIT: usize = 46;
 
@@ -31,9 +31,7 @@ pub struct TargetArgs {
 pub fn run(args: Args) -> Result<()> {
     match args.subcmd {
         Subcmd::Ls => run_ls(&ProcFsProbe),
-        Subcmd::Rm(TargetArgs { workstream_name }) => {
-            not_implemented(&format!("ws rm {workstream_name}"))
-        }
+        Subcmd::Rm(TargetArgs { workstream_name }) => run_rm(&ProcFsProbe, &workstream_name),
         Subcmd::Exec(TargetArgs { workstream_name }) => {
             not_implemented(&format!("ws exec {workstream_name}"))
         }
@@ -89,6 +87,21 @@ fn run_ls(process_probe: &dyn ProcessProbe) -> Result<()> {
     Ok(())
 }
 
+fn run_rm(process_probe: &dyn ProcessProbe, workstream_name: &str) -> Result<()> {
+    let repo_root = std::env::current_dir()?;
+    let workstream = load_from_repo_root(&repo_root, workstream_name)?;
+
+    if has_live_run_lock(&workstream.run.phase, workstream.run.pid, process_probe) {
+        return Err(eyre!(
+            "refusing to remove running workstream `{workstream_name}` with live pid {}",
+            workstream.run.pid
+        ));
+    }
+
+    fs::remove_dir_all(&workstream.dir)?;
+    Ok(())
+}
+
 fn latest_activity_message(activity: &[crate::workstream::model::ActivityEntry]) -> String {
     activity
         .iter()
@@ -104,6 +117,13 @@ fn classify_status(phase: &str, pid: u32, process_probe: &dyn ProcessProbe) -> &
         "execute" | "review" if pid != 0 => "stale-lock",
         _ => "idle",
     }
+}
+
+fn has_live_run_lock(phase: &str, pid: u32, process_probe: &dyn ProcessProbe) -> bool {
+    matches!(
+        classify_status(phase, pid, process_probe),
+        "running:execute" | "running:review"
+    )
 }
 
 fn truncate_summary(message: &str) -> String {
