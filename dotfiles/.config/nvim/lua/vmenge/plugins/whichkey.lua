@@ -103,6 +103,7 @@ return {
       },
       { "<leader>an", function() require("agentic").new_session() end, desc = "New Session" },
       { "<leader>ar", function() require("agentic").restore_session() end, desc = "Restore Session" },
+      { "<leader>as", function() require("agentic").switch_provider() end, desc = "Switch Provider" },
       {
         "<leader>ad",
         function() require("agentic").add_current_line_diagnostics() end,
