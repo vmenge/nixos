@@ -5,6 +5,7 @@
 **/target
 
 docs/
+.worktrees/
 
 # bin
 dotfiles/.bin/
