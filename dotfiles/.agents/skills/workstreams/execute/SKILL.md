@@ -39,9 +39,17 @@ A wave review gate means:
 - the integrated result of the wave works together
 - the next wave's prerequisites are satisfied
 
+Append a dated progress entry to `activity.json` when you START a wave describing:
+- which wave is starting
+- the most important tasks in that wave
+- what you plan to do next
+
 After you complete and verify a wave, make one git commit for that wave with a clear message summarizing the completed task ids.
 
 Append a dated progress entry to `activity.json` after each completed wave describing what changed, what was verified, and what wave comes next.
+
+Also append a dated progress entry whenever you hit a meaningful blocker or important discovery that changes execution strategy.
+Do not log every thought or every task-level micro-step. Prefer fewer, higher-signal entries.
 
 Do not git init, do not change remotes, do not push.
 
