@@ -258,8 +258,8 @@ fn ws_rm_refuses_to_delete_a_live_workstream_directory() -> Result<()> {
         "expected workstream directory to remain in place"
     );
     assert!(
-        stderr.contains("running"),
-        "expected stderr to mention the running workstream, got: {stderr}"
+        stderr.contains("workstream `demo` is running"),
+        "expected stderr to clearly say the workstream is running, got: {stderr}"
     );
 
     Ok(())
@@ -498,6 +498,7 @@ fn ws_exec_exits_success_when_review_keeps_all_tasks_done() -> Result<()> {
     )?;
 
     let output = fixture.run_ws_exec_with_runner("demo", &runner)?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
 
     assert!(
         output.status.success(),
@@ -509,6 +510,10 @@ fn ws_exec_exits_success_when_review_keeps_all_tasks_done() -> Result<()> {
         "expected run.json to be cleared after a successful review"
     );
     assert_eq!(fixture.logged_prompts("demo")?.len(), 2);
+    assert!(
+        stdout.contains("workstream `demo` completed after review"),
+        "expected stdout to include a completion message after review, got: {stdout}"
+    );
 
     Ok(())
 }
@@ -585,8 +590,12 @@ fn ws_exec_fails_after_three_consecutive_no_progress_passes() -> Result<()> {
         "expected `x ws exec demo` to fail after repeated stalls"
     );
     assert!(
-        stderr.contains("no progress"),
-        "expected stderr to mention stalled progress, got: {stderr}"
+        stderr.contains("workstream `demo` stalled"),
+        "expected stderr to mention the stalled workstream, got: {stderr}"
+    );
+    assert!(
+        stderr.contains("NAV-W1-T0, NAV-W1-T1"),
+        "expected stderr to include remaining undone task ids, got: {stderr}"
     );
     assert_eq!(
         fixture.logged_prompts("demo")?,
@@ -623,7 +632,7 @@ fn ws_exec_resets_the_stall_counter_after_progress() -> Result<()> {
         "expected `x ws exec demo` to fail only after stalls resume"
     );
     assert!(
-        stderr.contains("no progress"),
+        stderr.contains("workstream `demo` stalled"),
         "expected stderr to mention stalled progress, got: {stderr}"
     );
     assert_eq!(

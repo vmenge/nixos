@@ -93,7 +93,7 @@ fn run_rm(process_probe: &dyn ProcessProbe, workstream_name: &str) -> Result<()>
 
     if has_live_run_lock(&workstream.run.phase, workstream.run.pid, process_probe) {
         return Err(eyre!(
-            "refusing to remove running workstream `{workstream_name}` with live pid {}",
+            "refusing to remove workstream `{workstream_name}` because workstream `{workstream_name}` is running with live pid {}",
             workstream.run.pid
         ));
     }

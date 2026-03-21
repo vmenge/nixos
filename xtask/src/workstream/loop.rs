@@ -190,7 +190,8 @@ pub fn run_workstream_loop(
 
                 if !progressed && stall_count >= MAX_CONSECUTIVE_STALLS {
                     return Err(eyre!(
-                        "no progress after {stall_count} consecutive execute passes"
+                        "workstream `{workstream_name}` stalled after {stall_count} consecutive execute passes; remaining undone tasks: {}",
+                        join_task_ids(&snapshot)
                     ));
                 }
 
@@ -203,6 +204,10 @@ pub fn run_workstream_loop(
                 run = update_pass_state(&workstream.dir, &run, phase, clock, 0, &snapshot)?;
 
                 if snapshot.undone_task_ids.is_empty() {
+                    writeln!(
+                        output,
+                        "workstream `{workstream_name}` completed after review"
+                    )?;
                     clear_run_file(&workstream.dir)?;
                     clear_on_drop.disarm();
                     return Ok(());
