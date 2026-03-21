@@ -9,13 +9,6 @@ source $HOME/.scripts/suspend.sh
 source $HOME/.scripts/kanshi.sh
 
 ##########################################
-# rust                                   #
-##########################################
-# export PATH="$HOME/.rustup/toolchains/$(rustup show active-toolchain | cut -d" " -f1)/bin:$PATH"
-# export PATH="$HOME/.cargo/bin:$PATH"
-
-
-##########################################
 # ocaml                                  #
 ##########################################
 # BEGIN opam configuration
