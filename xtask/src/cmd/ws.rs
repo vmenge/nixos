@@ -1,9 +1,11 @@
 use std::fs;
+use std::io;
 use std::path::Path;
 
 use color_eyre::{Result, eyre::eyre};
 
 use crate::workstream::fs::{load_from_dir, load_from_repo_root};
+use crate::workstream::r#loop::{HelperBinaryRunner, SystemClock, run_workstream_loop};
 
 const ACTIVITY_SUMMARY_LIMIT: usize = 46;
 
@@ -32,9 +34,7 @@ pub fn run(args: Args) -> Result<()> {
     match args.subcmd {
         Subcmd::Ls => run_ls(&ProcFsProbe),
         Subcmd::Rm(TargetArgs { workstream_name }) => run_rm(&ProcFsProbe, &workstream_name),
-        Subcmd::Exec(TargetArgs { workstream_name }) => {
-            not_implemented(&format!("ws exec {workstream_name}"))
-        }
+        Subcmd::Exec(TargetArgs { workstream_name }) => run_exec(&workstream_name),
     }
 }
 
@@ -102,6 +102,22 @@ fn run_rm(process_probe: &dyn ProcessProbe, workstream_name: &str) -> Result<()>
     Ok(())
 }
 
+fn run_exec(workstream_name: &str) -> Result<()> {
+    let repo_root = std::env::current_dir()?;
+    let runner = HelperBinaryRunner::from_env();
+    let mut clock = SystemClock;
+    let stdout = io::stdout();
+    let mut output = stdout.lock();
+
+    run_workstream_loop(
+        &repo_root,
+        workstream_name,
+        &runner,
+        &mut clock,
+        &mut output,
+    )
+}
+
 fn latest_activity_message(activity: &[crate::workstream::model::ActivityEntry]) -> String {
     activity
         .iter()
@@ -156,10 +172,6 @@ impl ProcessProbe for ProcFsProbe {
     fn is_alive(&self, pid: u32) -> bool {
         pid != 0 && Path::new("/proc").join(pid.to_string()).exists()
     }
-}
-
-fn not_implemented(command: &str) -> Result<()> {
-    Err(eyre!("{command} not implemented"))
 }
 
 #[cfg(test)]

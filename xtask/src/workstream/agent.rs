@@ -30,6 +30,18 @@ impl AgentRunnerRequest {
         )
     }
 
+    pub fn helper_command(&self, program: &str) -> (String, Vec<String>) {
+        (
+            String::from(program),
+            vec![
+                String::from("--repo"),
+                self.repo_root.display().to_string(),
+                String::from("--prompt"),
+                self.prompt.clone(),
+            ],
+        )
+    }
+
     pub fn sandbox_paths(&self) -> Result<Vec<SandboxPath>> {
         let home_dir = std::env::var_os("HOME")
             .map(PathBuf::from)
@@ -96,8 +108,8 @@ fn resolve_git_dir(repo_root: &Path) -> Result<Option<PathBuf>> {
         return Ok(None);
     }
 
-    let contents =
-        std::fs::read_to_string(&dot_git).with_context(|| format!("failed to read {}", dot_git.display()))?;
+    let contents = std::fs::read_to_string(&dot_git)
+        .with_context(|| format!("failed to read {}", dot_git.display()))?;
     let git_dir = contents
         .strip_prefix("gitdir:")
         .map(str::trim)
@@ -133,13 +145,17 @@ fn resolve_common_git_dir(git_dir: &Path) -> Result<Option<PathBuf>> {
 }
 
 fn canonicalize_path(path: &Path) -> Result<PathBuf> {
-    std::fs::canonicalize(path).with_context(|| format!("failed to canonicalize {}", path.display()))
+    std::fs::canonicalize(path)
+        .with_context(|| format!("failed to canonicalize {}", path.display()))
 }
 
 fn dedup_paths(paths: Vec<SandboxPath>) -> Vec<SandboxPath> {
     let mut deduped = Vec::new();
     for path in paths {
-        if !deduped.iter().any(|candidate: &SandboxPath| candidate.path == path.path) {
+        if !deduped
+            .iter()
+            .any(|candidate: &SandboxPath| candidate.path == path.path)
+        {
             deduped.push(path);
         }
     }
@@ -187,15 +203,21 @@ mod tests {
         let request = AgentRunnerRequest::new(fixture.repo_root.clone(), String::from("prompt"));
         let sandbox_paths = request.sandbox_paths_with_home(&fixture.home_dir)?;
 
-        assert!(sandbox_paths.contains(&SandboxPath::read_write(
-            fs::canonicalize(&fixture.repo_root)?
-        )));
-        assert!(sandbox_paths.contains(&SandboxPath::read_write(
-            fs::canonicalize(&fixture.git_dir)?
-        )));
-        assert!(sandbox_paths.contains(&SandboxPath::read_write(
-            fs::canonicalize(&fixture.common_git_dir)?
-        )));
+        assert!(
+            sandbox_paths.contains(&SandboxPath::read_write(fs::canonicalize(
+                &fixture.repo_root
+            )?))
+        );
+        assert!(
+            sandbox_paths.contains(&SandboxPath::read_write(fs::canonicalize(
+                &fixture.git_dir
+            )?))
+        );
+        assert!(
+            sandbox_paths.contains(&SandboxPath::read_write(fs::canonicalize(
+                &fixture.common_git_dir
+            )?))
+        );
 
         Ok(())
     }
@@ -248,7 +270,10 @@ mod tests {
             fs::create_dir_all(&repo_root)?;
             fs::create_dir_all(&home_dir)?;
             fs::create_dir_all(&git_dir)?;
-            fs::write(repo_root.join(".git"), format!("gitdir: {}\n", git_dir.display()))?;
+            fs::write(
+                repo_root.join(".git"),
+                format!("gitdir: {}\n", git_dir.display()),
+            )?;
             fs::write(git_dir.join("commondir"), "../..")?;
 
             Ok(Self {
