@@ -171,6 +171,7 @@
     zenoh
     mermaid-cli
     worktrunk
+    nono
 
     # dev services
     awscli2 # AWS cli

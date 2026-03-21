@@ -92,3 +92,183 @@ config_file = "agents/gsd-verifier.toml"
 [mcp_servers.fff]
 command = "fff-mcp"
 
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-add-phase/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/finishing-a-development-branch/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/executing-plans/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/dispatching-parallel-agents/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/brainstorming/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-add-tests/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-add-todo/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-audit-milestone/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-check-todos/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-cleanup/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-complete-milestone/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-health/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-execute-phase/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-discuss-phase/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-debug/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-help/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-insert-phase/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-join-discord/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-list-phase-assumptions/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-map-codebase/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-new-milestone/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-new-project/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-pause-work/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-plan-milestone-gaps/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-plan-phase/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-progress/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-quick/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-reapply-patches/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-remove-phase/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-research-phase/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-resume-work/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-update/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-set-profile/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-settings/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-validate-phase/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/skills/gsd-verify-work/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/receiving-code-review/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/requesting-code-review/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/subagent-driven-development/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/systematic-debugging/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/using-git-worktrees/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/using-superpowers/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/verification-before-completion/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/writing-plans/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/vmenge/.codex/superpowers/skills/test-driven-development/SKILL.md"
+enabled = false
+

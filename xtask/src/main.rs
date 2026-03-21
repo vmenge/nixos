@@ -59,15 +59,32 @@ mod tests {
     }
 
     #[test]
-    fn parses_ws_exec_command_with_workstream_name() {
-        let cli = Cli::try_parse_from(["x", "ws", "exec", "demo"])
-            .expect("`x ws exec demo` should parse");
+    fn parses_ws_info_command_with_workstream_name() {
+        let cli = Cli::try_parse_from(["x", "ws", "info", "demo"])
+            .expect("`x ws info demo` should parse");
 
         assert!(matches!(
             cli.subcmd,
             Cmd::Ws(ws::Args {
-                subcmd: ws::Subcmd::Exec(ws::TargetArgs { workstream_name })
+                subcmd: ws::Subcmd::Info(ws::TargetArgs { workstream_name })
             }) if workstream_name == "demo"
+        ));
+    }
+
+    #[test]
+    fn parses_ws_exec_command_with_workstream_name() {
+        let cli = Cli::try_parse_from(["x", "ws", "exec", "demo", "--agent", "codex"])
+            .expect("`x ws exec demo --agent codex` should parse");
+
+        assert!(matches!(
+            cli.subcmd,
+            Cmd::Ws(ws::Args {
+                subcmd: ws::Subcmd::Exec(ws::ExecArgs {
+                    workstream_name,
+                    agent,
+                    unsafe_mode
+                })
+            }) if workstream_name == "demo" && agent == ws::AgentArg::Codex && !unsafe_mode
         ));
     }
 }

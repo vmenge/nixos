@@ -1,3 +1,4 @@
+use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 
 use color_eyre::Result;
@@ -18,13 +19,26 @@ impl AgentRunnerRequest {
         (
             "codex",
             vec![
+                String::from("--ask-for-approval"),
+                String::from("never"),
                 String::from("exec"),
                 String::from("--cd"),
                 self.repo_root.display().to_string(),
-                String::from("--ask-for-approval"),
-                String::from("never"),
                 String::from("--sandbox"),
                 String::from("danger-full-access"),
+                self.prompt.clone(),
+            ],
+        )
+    }
+
+    pub fn claude_command(&self) -> (&'static str, Vec<String>) {
+        (
+            "claude",
+            vec![
+                String::from("--dangerously-skip-permissions"),
+                String::from("-p"),
+                String::from("--add-dir"),
+                self.repo_root.display().to_string(),
                 self.prompt.clone(),
             ],
         )
@@ -46,12 +60,54 @@ impl AgentRunnerRequest {
     pub fn sandbox_paths(&self) -> Result<Vec<SandboxPath>> {
         let home_dir = std::env::var_os("HOME")
             .map(PathBuf::from)
-            .context("HOME is not set for ws-agent-runner")?;
+            .context("HOME is not set for workstream runner")?;
 
         self.sandbox_paths_with_home(&home_dir)
     }
 
     pub fn sandbox_paths_with_home(&self, home_dir: &Path) -> Result<Vec<SandboxPath>> {
+        let dotfiles_dir = home_dir.join("nixos/dotfiles");
+        let git_config_dir = home_dir.join(".config/git");
+        let cache_home_dir = xdg_cache_home(home_dir);
+        let git_home_dir = home_dir.join(".git");
+        self.sandbox_paths_with_home_and_path(
+            home_dir,
+            std::env::var_os("PATH"),
+            vec![
+                Some((home_dir.to_path_buf(), SandboxAccess::Read)),
+                if dotfiles_dir.exists() {
+                    Some((dotfiles_dir, SandboxAccess::Read))
+                } else {
+                    None
+                },
+                if git_config_dir.exists() {
+                    Some((git_config_dir, SandboxAccess::Read))
+                } else {
+                    None
+                },
+                if cache_home_dir.exists() {
+                    Some((cache_home_dir, SandboxAccess::ReadWrite))
+                } else {
+                    None
+                },
+                if git_home_dir.exists() {
+                    Some((git_home_dir, SandboxAccess::Read))
+                } else {
+                    None
+                },
+            ]
+            .into_iter()
+            .flatten()
+            .collect(),
+        )
+    }
+
+    fn sandbox_paths_with_home_and_path(
+        &self,
+        home_dir: &Path,
+        path_env: Option<OsString>,
+        extra_paths: Vec<(PathBuf, SandboxAccess)>,
+    ) -> Result<Vec<SandboxPath>> {
         let mut paths = vec![SandboxPath::read_write(canonicalize_path(&self.repo_root)?)];
 
         if let Some(git_dir) = resolve_git_dir(&self.repo_root)? {
@@ -84,19 +140,33 @@ impl AgentRunnerRequest {
             }
         }
 
-        if let Some(codex_path) = resolve_codex_path() {
-            paths.push(SandboxPath::read(canonicalize_path(&codex_path)?));
+        for (path, access) in extra_paths {
+            paths.push(SandboxPath {
+                path: canonicalize_path(&path)?,
+                access,
+            });
+        }
+
+        if let Some(codex_dir) = resolve_codex_dir(path_env) {
+            paths.push(SandboxPath::read(canonicalize_path(&codex_dir)?));
         }
 
         Ok(dedup_paths(paths))
     }
 }
 
-fn resolve_codex_path() -> Option<PathBuf> {
-    let path = std::env::var_os("PATH")?;
-    std::env::split_paths(&path)
+fn resolve_codex_dir(path_env: Option<OsString>) -> Option<PathBuf> {
+    let path_env = path_env?;
+    std::env::split_paths(&path_env)
         .map(|dir| dir.join("codex"))
         .find(|candidate| candidate.is_file())
+        .and_then(|candidate| candidate.parent().map(Path::to_path_buf))
+}
+
+fn xdg_cache_home(home_dir: &Path) -> PathBuf {
+    std::env::var_os("XDG_CACHE_HOME")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| home_dir.join(".cache"))
 }
 
 fn resolve_git_dir(repo_root: &Path) -> Result<Option<PathBuf>> {
@@ -244,6 +314,109 @@ mod tests {
                 .iter()
                 .any(|entry| entry.path == fixture.home_dir.join(".codex"))
         );
+
+        Ok(())
+    }
+
+    #[test]
+    fn sandbox_paths_allow_codex_parent_directory_not_executable() -> Result<()> {
+        let fixture = AgentFixture::new()?;
+        let request = AgentRunnerRequest::new(fixture.repo_root.clone(), String::from("prompt"));
+        let custom_bin_dir = fixture.root.join("custom-bin");
+        fs::create_dir_all(&custom_bin_dir)?;
+        fs::write(custom_bin_dir.join("codex"), "#!/bin/sh\n")?;
+
+        let sandbox_paths = request.sandbox_paths_with_home_and_path(
+            &fixture.home_dir,
+            Some(std::env::join_paths([custom_bin_dir.clone()])?),
+            Vec::new(),
+        )?;
+        let codex_path = fs::canonicalize(custom_bin_dir.join("codex"))?;
+
+        assert!(sandbox_paths.contains(&SandboxPath::read(fs::canonicalize(
+            &custom_bin_dir
+        )?)));
+        assert!(
+            !sandbox_paths
+                .iter()
+                .any(|entry| entry.path == codex_path)
+        );
+
+        Ok(())
+    }
+
+    #[test]
+    fn sandbox_paths_include_repo_dotfiles_when_present() -> Result<()> {
+        let fixture = AgentFixture::new()?;
+        let request = AgentRunnerRequest::new(fixture.repo_root.clone(), String::from("prompt"));
+        let repo_dotfiles = fixture.home_dir.join("nixos/dotfiles");
+        fs::create_dir_all(&repo_dotfiles)?;
+
+        let sandbox_paths = request.sandbox_paths_with_home_and_path(
+            &fixture.home_dir,
+            None,
+            vec![(repo_dotfiles.clone(), SandboxAccess::Read)],
+        )?;
+
+        assert!(sandbox_paths.contains(&SandboxPath {
+            path: fs::canonicalize(repo_dotfiles)?,
+            access: SandboxAccess::Read,
+        }));
+
+        Ok(())
+    }
+
+    #[test]
+    fn sandbox_paths_include_git_config_directories_when_present() -> Result<()> {
+        let fixture = AgentFixture::new()?;
+        let request = AgentRunnerRequest::new(fixture.repo_root.clone(), String::from("prompt"));
+        let git_config_dir = fixture.home_dir.join(".config/git");
+        let git_home_dir = fixture.home_dir.join(".git");
+        fs::create_dir_all(&git_config_dir)?;
+        fs::create_dir_all(&git_home_dir)?;
+
+        let sandbox_paths = request.sandbox_paths_with_home(&fixture.home_dir)?;
+
+        assert!(sandbox_paths.contains(&SandboxPath {
+            path: fs::canonicalize(git_config_dir)?,
+            access: SandboxAccess::Read,
+        }));
+        assert!(sandbox_paths.contains(&SandboxPath {
+            path: fs::canonicalize(git_home_dir)?,
+            access: SandboxAccess::Read,
+        }));
+
+        Ok(())
+    }
+
+    #[test]
+    fn sandbox_paths_include_cache_home_when_present() -> Result<()> {
+        let fixture = AgentFixture::new()?;
+        let request = AgentRunnerRequest::new(fixture.repo_root.clone(), String::from("prompt"));
+        let cache_home_dir = fixture.home_dir.join(".cache");
+        fs::create_dir_all(&cache_home_dir)?;
+
+        let sandbox_paths = request.sandbox_paths_with_home(&fixture.home_dir)?;
+
+        assert!(sandbox_paths.contains(&SandboxPath {
+            path: fs::canonicalize(cache_home_dir)?,
+            access: SandboxAccess::ReadWrite,
+        }));
+
+        Ok(())
+    }
+
+    #[test]
+    fn sandbox_paths_include_home_directory_when_present() -> Result<()> {
+        let fixture = AgentFixture::new()?;
+        let request = AgentRunnerRequest::new(fixture.repo_root.clone(), String::from("prompt"));
+
+        let sandbox_paths = request.sandbox_paths_with_home(&fixture.home_dir)?;
+
+        assert!(sandbox_paths.contains(&SandboxPath {
+            path: fs::canonicalize(&fixture.home_dir)?,
+            access: SandboxAccess::Read,
+        }));
 
         Ok(())
     }

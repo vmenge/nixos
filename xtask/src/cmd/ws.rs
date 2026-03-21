@@ -1,3 +1,4 @@
+use std::cmp::Reverse;
 use std::fs;
 use std::io;
 use std::path::Path;
@@ -5,7 +6,7 @@ use std::path::Path;
 use color_eyre::{Result, eyre::eyre};
 
 use crate::workstream::fs::{load_from_dir, load_from_repo_root};
-use crate::workstream::r#loop::{HelperBinaryRunner, SystemClock, run_workstream_loop};
+use crate::workstream::r#loop::{AgentKind, NonoRunner, SystemClock, run_workstream_loop};
 
 const ACTIVITY_SUMMARY_LIMIT: usize = 46;
 const ANSI_RESET: &str = "\x1b[0m";
@@ -26,8 +27,10 @@ pub enum Subcmd {
     Ls,
     /// Remove a workstream
     Rm(TargetArgs),
+    /// Show detailed workstream info
+    Info(TargetArgs),
     /// Execute a workstream
-    Exec(TargetArgs),
+    Exec(ExecArgs),
 }
 
 #[derive(clap::Args, Debug)]
@@ -35,11 +38,40 @@ pub struct TargetArgs {
     pub workstream_name: String,
 }
 
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum AgentArg {
+    Codex,
+    Claude,
+}
+
+impl From<AgentArg> for AgentKind {
+    fn from(value: AgentArg) -> Self {
+        match value {
+            AgentArg::Codex => AgentKind::Codex,
+            AgentArg::Claude => AgentKind::Claude,
+        }
+    }
+}
+
+#[derive(clap::Args, Debug)]
+pub struct ExecArgs {
+    pub workstream_name: String,
+    #[arg(long, value_enum)]
+    pub agent: AgentArg,
+    #[arg(long = "unsafe")]
+    pub unsafe_mode: bool,
+}
+
 pub fn run(args: Args) -> Result<()> {
     match args.subcmd {
         Subcmd::Ls => run_ls(&ProcFsProbe),
         Subcmd::Rm(TargetArgs { workstream_name }) => run_rm(&ProcFsProbe, &workstream_name),
-        Subcmd::Exec(TargetArgs { workstream_name }) => run_exec(&workstream_name),
+        Subcmd::Info(TargetArgs { workstream_name }) => run_info(&workstream_name),
+        Subcmd::Exec(ExecArgs {
+            workstream_name,
+            agent,
+            unsafe_mode,
+        }) => run_exec(&workstream_name, agent.into(), unsafe_mode),
     }
 }
 
@@ -115,7 +147,53 @@ fn run_rm(process_probe: &dyn ProcessProbe, workstream_name: &str) -> Result<()>
     Ok(())
 }
 
-fn run_exec(workstream_name: &str) -> Result<()> {
+fn run_info(workstream_name: &str) -> Result<()> {
+    let repo_root = std::env::current_dir()?;
+    let workstream = load_from_repo_root(&repo_root, workstream_name)?;
+    let snapshot = workstream.task_snapshot();
+    let status = classify_status(&workstream.run.phase, workstream.run.pid, &ProcFsProbe);
+
+    println!("🧵 workstream `{}`", workstream.name);
+    println!(
+        "📊 progress: {}/{} complete",
+        snapshot.completed_count, snapshot.total_count
+    );
+    println!(
+        "🏃 status: {}  pid={}  phase={}  iteration={}",
+        status,
+        workstream.run.pid,
+        if workstream.run.phase.is_empty() {
+            "idle"
+        } else {
+            &workstream.run.phase
+        },
+        workstream.run.iteration
+    );
+    println!();
+    println!("📝 activity");
+
+    let mut activity = workstream.activity.clone();
+    activity.sort_by_key(|entry| Reverse(entry.at.clone()));
+
+    if activity.is_empty() {
+        println!("  📭 no activity recorded yet");
+        return Ok(());
+    }
+
+    for entry in activity {
+        println!("  🕒 {}", entry.at);
+        println!("  🎯 {}", entry.task);
+        println!("  🤖 {}", entry.agent);
+        println!("  💬 {}", entry.message);
+        println!("  ➡️ {}", entry.next_step);
+        println!();
+    }
+
+    Ok(())
+}
+
+fn run_exec(workstream_name: &str, agent: AgentKind, unsafe_mode: bool) -> Result<()> {
+    let _ = unsafe_mode;
     let repo_root = std::env::current_dir()?;
     println!("🚀 starting workstream `{workstream_name}`");
     let workstream = load_from_repo_root(&repo_root, workstream_name)?;
@@ -130,7 +208,7 @@ fn run_exec(workstream_name: &str) -> Result<()> {
         ));
     }
 
-    let runner = HelperBinaryRunner::from_env();
+    let runner = NonoRunner::from_env(agent, unsafe_mode);
     let mut clock = SystemClock;
     let stdout = io::stdout();
     let mut output = stdout.lock();

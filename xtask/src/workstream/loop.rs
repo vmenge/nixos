@@ -7,7 +7,7 @@ use color_eyre::eyre::eyre;
 use time::OffsetDateTime;
 use time::format_description::well_known::Rfc3339;
 
-use crate::workstream::agent::AgentRunnerRequest;
+use crate::workstream::agent::{AgentRunnerRequest, SandboxAccess};
 use crate::workstream::fs::{
     RunFileUpdate, clear_run_file, load_from_repo_root, update_run_file, write_run_started,
 };
@@ -16,6 +16,12 @@ use crate::workstream::model::{RunFile, TaskSnapshot};
 const EXECUTE_PHASE: &str = "execute";
 const REVIEW_PHASE: &str = "review";
 const MAX_CONSECUTIVE_STALLS: usize = 3;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum AgentKind {
+    Codex,
+    Claude,
+}
 
 pub trait StepRunner {
     fn run_step(&self, request: StepRequest<'_>) -> Result<()>;
@@ -62,84 +68,74 @@ impl Clock for SystemClock {
     }
 }
 
-pub struct HelperBinaryRunner {
-    command: HelperCommand,
+pub struct NonoRunner {
+    override_program: Option<PathBuf>,
+    agent: AgentKind,
+    unsafe_mode: bool,
 }
 
-impl HelperBinaryRunner {
-    pub fn from_env() -> Self {
+impl NonoRunner {
+    pub fn from_env(agent: AgentKind, unsafe_mode: bool) -> Self {
         Self {
-            command: discover_helper_command(
-                std::env::var("X_WS_AGENT_RUNNER_BIN").ok().as_deref(),
-                &std::env::current_exe().unwrap_or_else(|_| PathBuf::from("x")),
-                Path::new(env!("CARGO_MANIFEST_DIR")),
-            ),
+            override_program: std::env::var("X_WS_AGENT_RUNNER_BIN").ok().map(PathBuf::from),
+            agent,
+            unsafe_mode,
         }
     }
 }
 
-impl StepRunner for HelperBinaryRunner {
+impl StepRunner for NonoRunner {
     fn run_step(&self, request: StepRequest<'_>) -> Result<()> {
         let agent_request = AgentRunnerRequest::new(
             request.repo_root.to_path_buf(),
             request.phase.prompt(request.workstream_name),
         );
-        let status = Command::new(&self.command.program)
-            .args(&self.command.base_args)
-            .args(agent_request.helper_args())
-            .status()?;
+        let (program, args) = match self.agent {
+            AgentKind::Codex => agent_request.inner_command(),
+            AgentKind::Claude => agent_request.claude_command(),
+        };
+        let status = if self.unsafe_mode {
+            println!("⚠️ unsafe mode enabled");
+            println!("🚫 nono sandbox skipped");
+            Command::new(program)
+                .args(args)
+                .current_dir(request.repo_root)
+                .status()?
+        } else if let Some(program) = &self.override_program {
+            Command::new(program).args(agent_request.helper_args()).status()?
+        } else {
+            let mut command = Command::new("nono");
+            command.arg("run").arg("--silent");
+            command
+                .arg("--allow-file")
+                .arg("/nix/var/nix/daemon-socket/socket")
+                .arg("--allow")
+                .arg("/tmp")
+                .arg("--write-file")
+                .arg("/dev/null")
+                .arg("--allow-command")
+                .arg("git");
+
+            for sandbox_path in agent_request.sandbox_paths()? {
+                let (flag, path) = match sandbox_path.access {
+                    SandboxAccess::Read => ("--read", sandbox_path.path),
+                    SandboxAccess::ReadWrite => ("--allow", sandbox_path.path),
+                };
+                command.arg(flag).arg(path);
+            }
+
+            command
+                .arg("--")
+                .arg(program)
+                .args(args)
+                .current_dir(request.repo_root)
+                .status()?
+        };
         if !status.success() {
-            return Err(eyre!(
-                "{} exited with {status}",
-                self.command.program.display()
-            ));
+            return Err(eyre!("nono exited with {status}"));
         }
 
         Ok(())
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-struct HelperCommand {
-    program: PathBuf,
-    base_args: Vec<String>,
-}
-
-fn discover_helper_command(
-    explicit_program: Option<&str>,
-    current_exe: &Path,
-    manifest_dir: &Path,
-) -> HelperCommand {
-    if let Some(program) = explicit_program {
-        return HelperCommand {
-            program: PathBuf::from(program),
-            base_args: Vec::new(),
-        };
-    }
-
-    if let Some(parent) = current_exe.parent() {
-        let sibling = parent.join("ws-agent-runner");
-        if sibling.is_file() {
-            return HelperCommand {
-                program: sibling,
-                base_args: Vec::new(),
-            };
-        }
-    }
-
-    HelperCommand {
-        program: PathBuf::from("cargo"),
-        base_args: vec![
-            String::from("run"),
-            String::from("--quiet"),
-            String::from("--manifest-path"),
-            manifest_dir.join("Cargo.toml").display().to_string(),
-            String::from("--features"),
-            String::from("ws-agent-runner"),
-            String::from("--bin"),
-            String::from("ws-agent-runner"),
-            String::from("--"),
-        ],
     }
 }
 
@@ -369,68 +365,39 @@ impl Drop for RunFileCleaner {
 mod tests {
     use super::*;
     use std::fs;
+    use std::os::unix::fs::PermissionsExt;
 
     #[test]
-    fn helper_discovery_prefers_explicit_override() -> Result<()> {
-        let fixture = LoopFixture::new()?;
+    fn nono_runner_prefers_explicit_override_runner() {
+        let original = std::env::var_os("X_WS_AGENT_RUNNER_BIN");
+        unsafe { std::env::set_var("X_WS_AGENT_RUNNER_BIN", "/tmp/fake-runner") };
 
-        let command = discover_helper_command(
-            Some("/tmp/custom-runner"),
-            &fixture.current_exe,
-            &fixture.manifest_dir,
-        );
+        let runner = NonoRunner::from_env(AgentKind::Codex, false);
 
-        assert_eq!(command.program, PathBuf::from("/tmp/custom-runner"));
-        assert!(command.base_args.is_empty());
+        assert_eq!(runner.override_program, Some(PathBuf::from("/tmp/fake-runner")));
+        assert_eq!(runner.agent, AgentKind::Codex);
+        assert!(!runner.unsafe_mode);
 
-        Ok(())
+        match original {
+            Some(value) => unsafe { std::env::set_var("X_WS_AGENT_RUNNER_BIN", value) },
+            None => unsafe { std::env::remove_var("X_WS_AGENT_RUNNER_BIN") },
+        }
     }
 
     #[test]
-    fn helper_discovery_uses_sibling_helper_when_present() -> Result<()> {
-        let fixture = LoopFixture::new()?;
-        let sibling = fixture
-            .current_exe
-            .parent()
-            .unwrap()
-            .join("ws-agent-runner");
-        fs::write(&sibling, "#!/bin/sh\n")?;
+    fn nono_runner_uses_direct_nono_by_default() {
+        let original = std::env::var_os("X_WS_AGENT_RUNNER_BIN");
+        unsafe { std::env::remove_var("X_WS_AGENT_RUNNER_BIN") };
 
-        let command = discover_helper_command(None, &fixture.current_exe, &fixture.manifest_dir);
+        let runner = NonoRunner::from_env(AgentKind::Claude, true);
 
-        assert_eq!(command.program, sibling);
-        assert!(command.base_args.is_empty());
+        assert_eq!(runner.override_program, None);
+        assert_eq!(runner.agent, AgentKind::Claude);
+        assert!(runner.unsafe_mode);
 
-        Ok(())
-    }
-
-    #[test]
-    fn helper_discovery_falls_back_to_cargo_run() -> Result<()> {
-        let fixture = LoopFixture::new()?;
-
-        let command = discover_helper_command(None, &fixture.current_exe, &fixture.manifest_dir);
-
-        assert_eq!(command.program, PathBuf::from("cargo"));
-        assert_eq!(
-            command.base_args,
-            vec![
-                String::from("run"),
-                String::from("--quiet"),
-                String::from("--manifest-path"),
-                fixture
-                    .manifest_dir
-                    .join("Cargo.toml")
-                    .display()
-                    .to_string(),
-                String::from("--features"),
-                String::from("ws-agent-runner"),
-                String::from("--bin"),
-                String::from("ws-agent-runner"),
-                String::from("--"),
-            ]
-        );
-
-        Ok(())
+        if let Some(value) = original {
+            unsafe { std::env::set_var("X_WS_AGENT_RUNNER_BIN", value) };
+        }
     }
 
     #[test]
@@ -469,38 +436,25 @@ mod tests {
             .all(|index| bytes.get(*index).is_some_and(u8::is_ascii_digit))
     }
 
-    struct LoopFixture {
-        root: PathBuf,
-        current_exe: PathBuf,
-        manifest_dir: PathBuf,
-    }
+    #[test]
+    fn helper_override_runner_can_be_executable_file() -> Result<()> {
+        let root = std::env::temp_dir().join(format!(
+            "xtask-loop-override-{}",
+            std::process::id()
+        ));
+        fs::create_dir_all(&root)?;
+        let script = root.join("runner.sh");
+        fs::write(&script, "#!/bin/sh\nexit 0\n")?;
+        let mut permissions = fs::metadata(&script)?.permissions();
+        permissions.set_mode(0o755);
+        fs::set_permissions(&script, permissions)?;
 
-    impl LoopFixture {
-        fn new() -> Result<Self> {
-            let root = std::env::temp_dir().join(format!(
-                "xtask-loop-{}-{}",
-                std::process::id(),
-                std::time::SystemTime::now()
-                    .duration_since(std::time::UNIX_EPOCH)?
-                    .as_nanos()
-            ));
-            let current_exe = root.join("target/debug/x");
-            let manifest_dir = root.join("xtask");
-            fs::create_dir_all(current_exe.parent().unwrap())?;
-            fs::create_dir_all(&manifest_dir)?;
-            fs::write(manifest_dir.join("Cargo.toml"), "[package]\nname = \"x\"\n")?;
+        let request = AgentRunnerRequest::new(root.clone(), String::from("prompt"));
+        let status = Command::new(&script).args(request.helper_args()).status()?;
 
-            Ok(Self {
-                root,
-                current_exe,
-                manifest_dir,
-            })
-        }
-    }
+        assert!(status.success());
+        let _ = fs::remove_dir_all(&root);
 
-    impl Drop for LoopFixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.root);
-        }
+        Ok(())
     }
 }

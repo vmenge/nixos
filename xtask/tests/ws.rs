@@ -224,6 +224,51 @@ fn ws_ls_keeps_broken_workstreams_local_to_their_row() -> Result<()> {
 }
 
 #[test]
+fn ws_info_shows_pretty_activity_view() -> Result<()> {
+    let fixture = WorkstreamFixture::new("demo")?;
+    fixture.write_tasks_json(&sample_tasks_json(1, 3))?;
+    fixture.write_activity_json(
+        r#"[
+  {
+    "agent": "agent-1",
+    "at": "2026-03-21T09:00:00Z",
+    "task": "NAV-W1-TA",
+    "message": "Started the first task.",
+    "next_step": "Keep going"
+  },
+  {
+    "agent": "agent-2",
+    "at": "2026-03-21T09:05:00Z",
+    "task": "NAV-W1-TB",
+    "message": "Finished the summary row.",
+    "next_step": "Review output formatting"
+  }
+]"#,
+    )?;
+    fixture.write_run_json("{}")?;
+
+    let output = fixture.run_ws_info("demo")?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    assert!(output.status.success(), "expected `x ws info demo` to succeed");
+    assert!(stdout.contains("🧵 workstream `demo`"));
+    assert!(stdout.contains("📊 progress: 1/3 complete"));
+    assert!(stdout.contains("🏃 status: idle"));
+    assert!(stdout.contains("📝 activity"));
+    assert!(stdout.contains("🕒 2026-03-21T09:05:00Z"));
+    assert!(stdout.contains("🎯 NAV-W1-TB"));
+    assert!(stdout.contains("🤖 agent-2"));
+    assert!(stdout.contains("💬 Finished the summary row."));
+    assert!(stdout.contains("➡️ Review output formatting"));
+    assert!(
+        stdout.find("2026-03-21T09:05:00Z").unwrap()
+            < stdout.find("2026-03-21T09:00:00Z").unwrap()
+    );
+
+    Ok(())
+}
+
+#[test]
 fn ws_rm_deletes_a_stopped_workstream_directory() -> Result<()> {
     let fixture = WorkstreamFixture::new("demo")?;
     fixture.write_run_json("{}")?;
@@ -360,13 +405,34 @@ fn agent_runner_builds_the_required_inner_codex_command() {
     assert_eq!(
         args,
         vec![
+            String::from("--ask-for-approval"),
+            String::from("never"),
             String::from("exec"),
             String::from("--cd"),
             String::from("/repo/project"),
-            String::from("--ask-for-approval"),
-            String::from("never"),
             String::from("--sandbox"),
             String::from("danger-full-access"),
+            String::from("Execute the next workstream step."),
+        ]
+    );
+}
+
+#[test]
+fn agent_runner_builds_the_required_inner_claude_command() {
+    let request = AgentRunnerRequest::new(
+        PathBuf::from("/repo/project"),
+        String::from("Execute the next workstream step."),
+    );
+    let (program, args) = request.claude_command();
+
+    assert_eq!(program, "claude");
+    assert_eq!(
+        args,
+        vec![
+            String::from("--dangerously-skip-permissions"),
+            String::from("-p"),
+            String::from("--add-dir"),
+            String::from("/repo/project"),
             String::from("Execute the next workstream step."),
         ]
     );
@@ -850,6 +916,11 @@ impl WorkstreamFixture {
         let mut command = Command::new(env!("CARGO_BIN_EXE_x"));
         command
             .args(["ws", subcommand, name])
+            .args(if subcommand == "exec" {
+                &["--agent", "codex"][..]
+            } else {
+                &[][..]
+            })
             .current_dir(&self.repo_root);
 
         if let Some(runner) = runner {
@@ -857,6 +928,10 @@ impl WorkstreamFixture {
         }
 
         Ok(command.output()?)
+    }
+
+    fn run_ws_info(&self, name: &str) -> Result<Output> {
+        self.run_ws_command_with_optional_runner("info", name, None)
     }
 
     fn run_ws_exec_with_runner(&self, name: &str, runner: &PathBuf) -> Result<Output> {

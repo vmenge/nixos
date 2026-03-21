@@ -7,6 +7,7 @@ source $HOME/.scripts/steam.sh
 source $HOME/.scripts/lock.sh
 source $HOME/.scripts/suspend.sh
 source $HOME/.scripts/kanshi.sh
+source $HOME/.scripts/xtask-completion.zsh
 
 ##########################################
 # ocaml                                  #
@@ -48,6 +49,7 @@ alias nxg="sudo nix-collect-garbage -d && nix-collect-garbage -d"
 # plasma manager stuff
 alias rc2nix="nix run github:nix-community/plasma-manager"
 alias x="$HOME/nixos/xtask/target/debug/x"
+alias ws="$HOME/nixos/xtask/target/debug/x ws"
 alias sucata="/home/vmenge/dev/sucata/target/debug/sucata"
 alias sucatad="/home/vmenge/dev/sucata/target/debug/sucatad"
 
