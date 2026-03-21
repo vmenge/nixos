@@ -31,15 +31,16 @@ impl AgentRunnerRequest {
     }
 
     pub fn helper_command(&self, program: &str) -> (String, Vec<String>) {
-        (
-            String::from(program),
-            vec![
-                String::from("--repo"),
-                self.repo_root.display().to_string(),
-                String::from("--prompt"),
-                self.prompt.clone(),
-            ],
-        )
+        (String::from(program), self.helper_args())
+    }
+
+    pub fn helper_args(&self) -> Vec<String> {
+        vec![
+            String::from("--repo"),
+            self.repo_root.display().to_string(),
+            String::from("--prompt"),
+            self.prompt.clone(),
+        ]
     }
 
     pub fn sandbox_paths(&self) -> Result<Vec<SandboxPath>> {
