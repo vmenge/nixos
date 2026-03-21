@@ -82,12 +82,8 @@ fn run_ls(process_probe: &dyn ProcessProbe) -> Result<()> {
         if rows.len() == 1 { "" } else { "s" }
     );
 
-    println!("NAME\tSTATUS\tDONE\tLAST ACTIVITY");
-    for row in rows {
-        println!(
-            "{}\t{}\t{}\t{}",
-            row.name, row.status, row.completed, row.last_activity
-        );
+    for line in format_ls_table(&rows) {
+        println!("{line}");
     }
 
     Ok(())
@@ -187,6 +183,41 @@ struct ListRow {
     last_activity: String,
 }
 
+fn format_ls_table(rows: &[ListRow]) -> Vec<String> {
+    let name_width = rows
+        .iter()
+        .map(|row| row.name.len())
+        .max()
+        .unwrap_or(0)
+        .max("NAME".len());
+    let status_width = rows
+        .iter()
+        .map(|row| row.status.len())
+        .max()
+        .unwrap_or(0)
+        .max("STATUS".len());
+    let done_width = rows
+        .iter()
+        .map(|row| row.completed.len())
+        .max()
+        .unwrap_or(0)
+        .max("DONE".len());
+
+    let mut lines = vec![format!(
+        "{:<name_width$}  {:<status_width$}  {:<done_width$}  LAST ACTIVITY",
+        "NAME", "STATUS", "DONE"
+    )];
+
+    for row in rows {
+        lines.push(format!(
+            "{:<name_width$}  {:<status_width$}  {:<done_width$}  {}",
+            row.name, row.status, row.completed, row.last_activity
+        ));
+    }
+
+    lines
+}
+
 trait ProcessProbe {
     fn is_alive(&self, pid: u32) -> bool;
 }
@@ -224,6 +255,33 @@ mod tests {
         assert_eq!(
             classify_status("execute", 4242, &FakeProcessProbe::dead()),
             "stale-lock"
+        );
+    }
+
+    #[test]
+    fn formats_ws_ls_table_with_padded_columns() {
+        let rows = vec![
+            ListRow {
+                name: String::from("alpha"),
+                status: String::from("idle"),
+                completed: String::from("1/3"),
+                last_activity: String::from("short note"),
+            },
+            ListRow {
+                name: String::from("demo-long"),
+                status: String::from("running:execute"),
+                completed: String::from("12/120"),
+                last_activity: String::from("a much longer activity summary"),
+            },
+        ];
+
+        let lines = format_ls_table(&rows);
+
+        assert_eq!(lines[0], "NAME       STATUS           DONE    LAST ACTIVITY");
+        assert_eq!(lines[1], "alpha      idle             1/3     short note");
+        assert_eq!(
+            lines[2],
+            "demo-long  running:execute  12/120  a much longer activity summary"
         );
     }
 
