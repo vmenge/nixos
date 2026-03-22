@@ -18,7 +18,7 @@ You are reviewing code changes for the implementation of a workstream.
 7. Only when all previous steps are done, invoke workstream-tasks to update remaining work based on `review.md`
 
 If the review has passed and there are no points to address, then delete `review.md`.
-If the review has passed and there are no undone tasks left in `tasks.json`, output <promise>COMPLETE</promise>.
+If the review has passed and there are no undone tasks left in `tasks.json`, leave no tracked review-closeout changes uncommitted. If deleting `review.md`, updating `tasks.json`, or any other review-owned change leaves tracked files dirty, create one final commit for that closeout work first. Only then output <promise>COMPLETE</promise>.
 If the review finds issues, keep `review.md` and hand off to workstream-tasks.
 
 ## Review Checklist

@@ -148,6 +148,7 @@ The skill layer carries rules such as:
 - TDD expectations
 - how `design.md`, `plan.md`, `tasks.json`, and `review.md` relate
 - when to commit
+- final review must not declare completion while tracked closeout changes remain uncommitted
 - how review gates work
 
 The Rust code carries:

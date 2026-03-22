@@ -43,7 +43,13 @@ impl StepPhase {
     }
 
     fn prompt(self, workstream_name: &str) -> String {
-        format!("workstream-{} {workstream_name}", self.as_str())
+        let base = format!("workstream-{} {workstream_name}", self.as_str());
+        match self {
+            Self::Execute => base,
+            Self::Review => format!(
+                "{base}. If the review passes and all tasks remain done, commit any remaining tracked closeout changes before outputting <promise>COMPLETE</promise>."
+            ),
+        }
     }
 }
 
@@ -420,6 +426,16 @@ mod tests {
             looks_like_rfc3339_utc(&timestamp),
             "expected RFC3339 UTC timestamp, got: {timestamp}"
         );
+    }
+
+    #[test]
+    fn review_prompt_requires_committed_closeout_before_complete() {
+        let prompt = StepPhase::Review.prompt("demo");
+
+        assert!(prompt.starts_with("workstream-review demo"));
+        assert!(prompt.contains("commit any remaining tracked closeout changes"));
+        assert!(prompt.contains("<promise>COMPLETE</promise>"));
+        assert_eq!(StepPhase::Execute.prompt("demo"), "workstream-execute demo");
     }
 
     fn looks_like_rfc3339_utc(timestamp: &str) -> bool {

@@ -1656,7 +1656,17 @@ while [ "$#" -gt 0 ]; do
 done
 
 phase=$(printf '%s' "$prompt" | sed -n 's/^workstream-\([^ ]*\) .*/\1/p')
-name=$(printf '%s' "$prompt" | sed -n 's/^workstream-[^ ]* \(.*\)$/\1/p')
+name=""
+
+for ws_dir in "$repo"/.workstreams/*; do
+  candidate=$(basename "$ws_dir")
+  case "$prompt" in
+    "workstream-$phase $candidate"*)
+      name="$candidate"
+      break
+      ;;
+  esac
+done
 
 if [ -z "$phase" ] || [ -z "$name" ]; then
   echo "unexpected prompt: $prompt" >&2
@@ -1673,7 +1683,7 @@ printf '%s' "$step" > "$count_file"
 
 expected_phase=$(cat "$ws/runner-step-$step.phase")
 case "$prompt" in
-  "workstream-$expected_phase $name") ;;
+  "workstream-$expected_phase $name"*) ;;
   *)
     echo "unexpected prompt: $prompt" >&2
     exit 1
