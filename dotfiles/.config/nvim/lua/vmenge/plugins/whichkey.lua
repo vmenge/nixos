@@ -97,6 +97,12 @@ return {
       { "<leader>a", group = "Agent" },
       { "<leader>aa", function() require("agentic").toggle() end, desc = "Toggle Chat" },
       {
+        "<leader>aa",
+        function() require("agentic").toggle() end,
+        desc = "Toggle Chat on Selection",
+        mode = "v",
+      },
+      {
         "<leader>af",
         function() require("agentic").add_selection_or_file_to_context() end,
         desc = "Add File or Selection",
