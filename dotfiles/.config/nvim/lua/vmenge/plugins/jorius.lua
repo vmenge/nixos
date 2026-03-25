@@ -1,0 +1,27 @@
+return {
+  {
+    dir = "~/dev/jorius/pkgs/jorius_nvim",
+    lazy = false,
+    config = function()
+      local repo = vim.fn.expand("~/dev/jorius")
+      local jorius = require("jorius_nvim")
+
+      jorius.setup({
+        lsp = {
+          cmd = {
+            "nix",
+            "develop",
+            "-c",
+            "dotnet",
+            "run",
+            "--project",
+            repo .. "/pkgs/jorius_cli/src/Jorius.Cli.fsproj",
+            "--",
+            "lsp",
+          },
+          cmd_cwd = repo,
+        },
+      })
+    end,
+  },
+}
