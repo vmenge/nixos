@@ -7,6 +7,7 @@
 
   nixpkgs.overlays = [
     (final: prev: {
+      consolas-nerd-font = final.callPackage ../derivations/consolas-nerd-font.nix { };
       fff-mcp = final.callPackage ../derivations/fff-mcp.nix { };
       # wallrizz hardcodes /usr/bin/bash which doesn't exist on NixOS
       wallrizz = prev.wallrizz.overrideAttrs (old: {
@@ -321,6 +322,7 @@
   ];
 
   fonts.packages = with pkgs; [
+    consolas-nerd-font
     dina-font
     fira-code
     fira-code-symbols
@@ -337,7 +339,7 @@
     nerd-fonts.departure-mono
     nerd-fonts.geist-mono
     nerd-fonts.meslo-lg
-    noto-fonts
+    nerd-fonts.monaspace
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-color-emoji
