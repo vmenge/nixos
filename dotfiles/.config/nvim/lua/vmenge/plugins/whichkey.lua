@@ -136,7 +136,7 @@ return {
       { "<leader>k", "<cmd>lua vim.lsp.buf.hover()<CR>", desc = "Hover", icon = "" },
       { "<leader>l", group = "Lsp", icon = "" },
       { "<leader>la", function() require('actions-preview').code_actions() end, desc = "Code Action" },
-      { "<leader>lc", "<cmd>lua vim.lsp.codelens.display()<CR>", desc = "CodeLens" },
+      { "<leader>lc", function() require("vmenge.fsharp").toggle_codelens() end, desc = "F# CodeLens" },
       { "<leader>ld", "<cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
       { "<leader>lf", "<cmd>lua Format()<CR>", desc = "Format" },
       { "<leader>li", "<cmd>LspInfo<CR>", desc = "Lsp Info" },

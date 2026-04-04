@@ -32,6 +32,12 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/clangler"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/dev/fungodot"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/eff.fs"]
+trust_level = "trusted"
+
 # GSD Agent Configuration — managed by get-shit-done installer
 [features]
 multi_agent = true
