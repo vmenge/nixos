@@ -572,6 +572,7 @@ fn agent_runner_builds_the_required_inner_claude_command() {
             String::from("-p"),
             String::from("--add-dir"),
             String::from("/repo/project"),
+            String::from("--"),
             String::from("Execute the next workstream step."),
         ]
     );

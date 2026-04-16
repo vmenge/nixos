@@ -1,7 +1,6 @@
 model = "gpt-5.4"
 model_reasoning_effort = "high"
 personality = "pragmatic"
-service_tier = "fast"
 [projects."/home/vmenge/dev/tfh/orb-software"]
 trust_level = "untrusted"
 
@@ -42,6 +41,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/vmenge/dev/scratch"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/EffSharp"]
 trust_level = "trusted"
 
 # GSD Agent Configuration — managed by get-shit-done installer

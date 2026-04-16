@@ -39,6 +39,7 @@ impl AgentRunnerRequest {
                 String::from("-p"),
                 String::from("--add-dir"),
                 self.repo_root.display().to_string(),
+                String::from("--"),
                 self.prompt.clone(),
             ],
         )
