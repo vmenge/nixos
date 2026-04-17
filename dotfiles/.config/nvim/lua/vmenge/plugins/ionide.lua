@@ -11,10 +11,9 @@ return {
     vim.g["fsharp#lsp_codelens"] = 0
   end,
   config = function()
-    local fsharp = require("vmenge.fsharp")
+    vim.lsp.enable('ionide')
 
-    require("ionide").setup({
-      settings = fsharp.codelens_settings(),
-    })
+    local fsharp = require("vmenge.fsharp")
+    vim.lsp.config('ionide', fsharp.codelens_settings())
   end,
 }
