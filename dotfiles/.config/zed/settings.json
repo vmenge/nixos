@@ -7,12 +7,12 @@
 // custom settings, run `zed: open default settings` from the
 // command palette
 {
+  "edit_predictions": {
+    "provider": "zed"
+  },
   "show_edit_predictions": true,
   "file_types": {
     "OCaml": ["*.mlx"],
-  },
-  "features": {
-    "edit_prediction_provider": "zed",
   },
   "agent": {
     "default_profile": "write",
@@ -29,14 +29,14 @@
   },
   "tab_bar": { "show": true },
   "scrollbar": { "show": "auto" },
-  "buffer_font_family": "DepartureMono Nerd Font Mono",
-  "ui_font_family": "DepartureMono Nerd Font Mono",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "ui_font_family": "JetBrainsMono Nerd Font",
   "ui_font_size": 15.0,
-  "buffer_font_size": 15.0,
+  "buffer_font_size": 13.0,
   "theme": {
     "mode": "dark",
     "light": "Sharp Solarized+",
-    "dark": "Serendipity Midnight",
+    "dark": "JetBrains Rider Dark",
   },
   "icon_theme": {
     "mode": "dark",

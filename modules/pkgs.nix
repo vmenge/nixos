@@ -319,6 +319,7 @@
     ddrescue
     television
     teleport
+    obsidian
   ];
 
   fonts.packages = with pkgs; [

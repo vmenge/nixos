@@ -1,6 +1,6 @@
 theme = Material Design Colors
-font-family = Consolas Nerd Font
-window-title-font-family = Consolas Nerd Font
+font-family = JetBrainsMonoNL Nerd Font Mono
+window-title-font-family = JetBrainsMonoNL Nerd Font Mono
 font-size = 12
 shell-integration-features = sudo,no-title
 cursor-style = block
