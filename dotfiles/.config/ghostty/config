@@ -1,5 +1,5 @@
 theme = Material Design Colors
-font-family = JetBrainsMonoNL Nerd Font Mono
+font-family = JetBrainsMono Nerd Font Mono
 window-title-font-family = JetBrainsMonoNL Nerd Font Mono
 font-size = 12
 shell-integration-features = sudo,no-title

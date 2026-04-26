@@ -50,10 +50,6 @@ profile BOENE135A1MNY1 {
 
 
 
-profile BOENE135A1MNY1_DellIncDELLU3425WE {
-  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 1061,1440 scale 2.00
-  output "Dell Inc. DELL U3425WE 6FLL3Z3" mode 3440x1440@59.973Hz position 0,0 scale 1.00
-}
 
 
 profile TechnicalConceptsLtdBeyondTV {
@@ -63,4 +59,15 @@ profile TechnicalConceptsLtdBeyondTV {
 profile BOENE135A1MNY1_DellIncDELLU2723QE {
   output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 605,1440 scale 2.00
   output "Dell Inc. DELL U2723QE 1TQG8H3" mode 3840x2160@59.997Hz position 0,0 scale 1.50
+}
+
+
+profile BOENE135A1MNY1_DellIncDELLU3425WE {
+  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 813,1440 scale 2.00
+  output "Dell Inc. DELL U3425WE 6FLL3Z3" mode 3440x1440@59.973Hz position 0,0 scale 1.00
+}
+
+profile BOENE135A1MNY1_DellIncDELLU3421WE {
+  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 934,1440 scale 2.00
+  output "Dell Inc. DELL U3421WE 1BP1753" mode 3440x1440@59.973Hz position 0,0 scale 1.00
 }
