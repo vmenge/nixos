@@ -37,10 +37,10 @@ in
     enable32Bit = true;
   };
 
-  programs.alvr = {
-    enable = true;
-    openFirewall = true;
-  };
+#  programs.alvr = {
+#    enable = true;
+#    openFirewall = true;
+#  };
 
   services.wivrn = {
     enable = true;

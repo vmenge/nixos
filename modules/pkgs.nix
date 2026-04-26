@@ -140,7 +140,7 @@
     dioxus-cli # dioxus
     jdk
     claude-code
-    claude-code-acp
+    claude-agent-acp
     fff-mcp
     codex
     codex-acp
@@ -167,7 +167,7 @@
     exercism
     lz4
     android-tools
-    bottles
+    # bottles (temporarily disabled)
     wild
     zenoh
     mermaid-cli
