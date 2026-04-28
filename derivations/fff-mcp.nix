@@ -1,11 +1,11 @@
 { lib, stdenvNoCC, fetchurl }:
 
 let
-  version = "6220917";
+  version = "0.6.5-nightly.7afef14";
   release = {
     x86_64-linux = {
       target = "x86_64-unknown-linux-musl";
-      hash = "sha256-SGZx7FgnQ2BifwOBQe0LPZtCgViVeOKvz/xxleve2hI=";
+      hash = "sha256-4HgcZZSLVOQLwp4LA9M1nWWS0BMsK4T+tvzvCy07Hio=";
     };
   }.${stdenvNoCC.hostPlatform.system} or (throw ''
     Unsupported system for fff-mcp: ${stdenvNoCC.hostPlatform.system}
