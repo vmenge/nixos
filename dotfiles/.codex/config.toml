@@ -1,4 +1,4 @@
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 [projects."/home/vmenge/dev/tfh/orb-software"]
@@ -247,3 +247,9 @@ enabled = false
 [[skills.config]]
 path = "/home/vmenge/.codex/superpowers/skills/test-driven-development/SKILL.md"
 enabled = false
+
+[tui.model_availability_nux]
+"gpt-5.5" = 2
+
+[notice]
+fast_default_opt_out = true
