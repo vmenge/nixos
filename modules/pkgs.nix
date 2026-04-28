@@ -8,6 +8,7 @@
   nixpkgs.overlays = [
     (final: prev: {
       consolas-nerd-font = final.callPackage ../derivations/consolas-nerd-font.nix { };
+      codex = final.callPackage ../derivations/codex.nix { };
       fff-mcp = final.callPackage ../derivations/fff-mcp.nix { };
       # wallrizz hardcodes /usr/bin/bash which doesn't exist on NixOS
       wallrizz = prev.wallrizz.overrideAttrs (old: {
