@@ -11,3 +11,6 @@ docs/
 dotfiles/.bin/
 
 .nvimlog
+nvim.log
+
+.codex
