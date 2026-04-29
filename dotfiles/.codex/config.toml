@@ -249,7 +249,7 @@ path = "/home/vmenge/.codex/superpowers/skills/test-driven-development/SKILL.md"
 enabled = false
 
 [tui.model_availability_nux]
-"gpt-5.5" = 2
+"gpt-5.5" = 3
 
 [notice]
 fast_default_opt_out = true
