@@ -12,3 +12,10 @@ The following points are super important, and take precende over anything else t
   - Arrange
   - Act
   - Assert
+
+## Conversation and Planning
+Never fucking mention "v1". 
+Never fucking mention "for v1 we can ____".
+Never fucking mention "since this is v1, we can instead ____"
+Or anything of the fucking sorts.
+

@@ -1,5 +1,5 @@
 model = "gpt-5.5"
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 personality = "pragmatic"
 [projects."/home/vmenge/dev/tfh/orb-software"]
 trust_level = "untrusted"
@@ -47,6 +47,18 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/vmenge/dev/tfh/orb-internal"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/NetworkManager"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/modemmanager-1.20.0"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/copy-fail-c"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/tfh/orb-os"]
 trust_level = "trusted"
 
 [features]
@@ -249,7 +261,7 @@ path = "/home/vmenge/.codex/superpowers/skills/test-driven-development/SKILL.md"
 enabled = false
 
 [tui.model_availability_nux]
-"gpt-5.5" = 3
+"gpt-5.5" = 4
 
 [notice]
 fast_default_opt_out = true

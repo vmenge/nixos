@@ -41,7 +41,10 @@
   services.mullvad-vpn.enable = true;
 
   virtualisation = {
-    waydroid.enable = true;
+    waydroid = {
+      enable = true;
+      package = pkgs.waydroid-nftables;
+    };
     docker.enable = true;
   };
 
@@ -282,10 +285,14 @@
     imagemagick # create, edit, compose or convert bitmap images
     timg # terminal image viewer (required by wallrizz list view)
     ffmpeg
+    ffmpegthumbnailer
     shotcut
     libcamera
     reco
     gpu-screen-recorder-gtk
+    yt-dlp
+    gallery-dl
+    audacity
 
     # filesystems
     ntfs3g
