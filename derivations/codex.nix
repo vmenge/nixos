@@ -28,7 +28,7 @@ let
   #    below and temporarily set the current platform's `sha256` there to `lib.fakeHash`.
   # 4. Run a build and copy the real hashes from the Nix error output back into this file.
   # 5. Rebuild until the derivation evaluates and builds cleanly.
-  version = "0.125.0";
+  version = "0.130.0";
 
   # This archive version is updated only when upstream Codex moves to a different
   # rusty_v8 release; it does not automatically match `version`.
@@ -58,13 +58,13 @@ rustPlatform.buildRustPackage (finalAttrs: {
     repo = "codex";
     tag = "rust-v${finalAttrs.version}";
     # Source hash for the `rust-v${version}` tag.
-    hash = "sha256-q175gmBw+edb5+w8TM36yUeFsyIdB1/IwWzbxBbBmoA=";
+    hash = "sha256-YeUeYbzUMUx0lhIKdtPa8vUYK2Cj1hmbLb68Y80r71o=";
   };
 
   sourceRoot = "${finalAttrs.src.name}/codex-rs";
 
   # Cargo dependency hash for the vendored Rust workspace at this source revision.
-  cargoHash = "sha256-fDVlj7zAZnwP9YBaYaSQZXYYWrBm5IEyLT9zoorvzFg=";
+  cargoHash = "sha256-cpkj7H/jkKGbfJ92Ty9peqfxibFw2aWWG64tmgeG+2o=";
 
   cargoBuildFlags = [
     "--package"

@@ -7,6 +7,18 @@
 // custom settings, run `zed: open default settings` from the
 // command palette
 {
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "edit_predictions": {
     "provider": "zed"
   },
@@ -15,6 +27,7 @@
     "OCaml": ["*.mlx"],
   },
   "agent": {
+    "dock": "right",
     "default_profile": "write",
     "default_model": {
       "provider": "anthropic",
