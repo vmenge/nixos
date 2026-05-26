@@ -3,8 +3,7 @@
   services.gitwatch.brain = {
     enable = true;
     path = "/home/vmenge/brain";
-    remote = "git@github.com:vmenge/nixos.git";
+    remote = "git@github.com:vmenge/brain.git";
     user = "vmenge";
-    message = "Auto-commit by gitwatch on %d";
   };
 }
