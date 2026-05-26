@@ -17,6 +17,7 @@ in
     ./hyprland.nix
     ./gnome.nix
     ./steam.nix
+    ./services.nix
   ];
 
   nix.settings.experimental-features = [

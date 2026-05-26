@@ -6,6 +6,7 @@ return {
   init = function()
     vim.g.rustaceanvim = {
       server = {
+        load_vscode_settings = false,
         cmd = function()
           -- this makes it work with the rust-analyzer provided by nix flakes
           local handle = io.popen('rustup which rust-analyzer 2>/dev/null')

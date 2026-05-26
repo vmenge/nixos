@@ -61,6 +61,12 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/tfh/orb-os"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/dev/eff-rs/eff-rs"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/eff-rs"]
+trust_level = "trusted"
+
 [features]
 multi_agent = true
 
@@ -259,6 +265,9 @@ enabled = false
 [[skills.config]]
 path = "/home/vmenge/.codex/superpowers/skills/test-driven-development/SKILL.md"
 enabled = false
+
+[tui]
+session_picker_view = "dense"
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4

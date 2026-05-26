@@ -139,7 +139,7 @@ return {
       { "<leader>lc", function() require("vmenge.fsharp").toggle_codelens() end, desc = "F# CodeLens" },
       { "<leader>ld", "<cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
       { "<leader>lf", "<cmd>lua Format()<CR>", desc = "Format" },
-      { "<leader>li", "<cmd>LspInfo<CR>", desc = "Lsp Info" },
+      { "<leader>li", "<cmd>checkhealth vim.lsp<CR>", desc = "LSP Health" },
       {
         "<leader>ll",
         "<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>",
