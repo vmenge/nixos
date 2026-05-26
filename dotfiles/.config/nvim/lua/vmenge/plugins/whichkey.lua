@@ -156,7 +156,7 @@ return {
       { "<leader>nx", '<cmd>lua require("notify").dismiss()<CR>', desc = "Dismiss" },
       { "<leader>nh", '<cmd>Telescope notify<CR>', desc = "History" },
       { "<leader>ns", "<cmd>lua ToggleNotifications()<CR>", desc = "Silence Toggle" },
-      { "<leader>o", group = "Org-mode", icon = "" },
+      { "<leader>o", group = "Obsidian", icon = "󰠮" },
       { "<leader>q", group = "Quit" },
       { "<leader>qQ", "<cmd>qa!<CR>", desc = "Quit (force)" },
       { "<leader>qq", "<cmd>qa<CR>", desc = "Quit" },

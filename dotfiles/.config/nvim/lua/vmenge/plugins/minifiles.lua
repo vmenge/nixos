@@ -1,5 +1,6 @@
 return {
-	"echasnovski/mini.files",
+	"nvim-mini/mini.files",
+	version = false,
 	opts = {
 		windows = {
 			preview = false,
@@ -28,6 +29,48 @@ return {
 	},
 	config = function(_, opts)
 		require("mini.files").setup(opts)
+
+		local sanitize_lsp_file_operation_filters = function(client)
+			local workspace = client.server_capabilities and client.server_capabilities.workspace
+			local file_operations = workspace and workspace.fileOperations
+
+			if type(file_operations) ~= "table" then
+				return
+			end
+
+			for _, operation_name in ipairs({
+				"didCreate",
+				"didDelete",
+				"didRename",
+				"willCreate",
+				"willDelete",
+				"willRename",
+			}) do
+				local operation = file_operations[operation_name]
+				local filters = type(operation) == "table" and operation.filters or nil
+
+				if type(filters) == "table" then
+					for _, filter in ipairs(filters) do
+						if type(filter.scheme) ~= "string" then
+							filter.scheme = nil
+						end
+					end
+				end
+			end
+		end
+
+		for _, client in ipairs(vim.lsp.get_clients()) do
+			sanitize_lsp_file_operation_filters(client)
+		end
+
+		vim.api.nvim_create_autocmd("LspAttach", {
+			callback = function(args)
+				local client = vim.lsp.get_client_by_id(args.data.client_id)
+				if client then
+					sanitize_lsp_file_operation_filters(client)
+				end
+			end,
+		})
 
 		local show_dotfiles = true
 		local filter_show = function(fs_entry)
