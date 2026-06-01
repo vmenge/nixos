@@ -67,6 +67,12 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/eff-rs"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/Downloads/JPEG_Ferreira_Menge_Victor_MRT_Sch_del_U_ID54223"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/tfh/orb-config-as-code"]
+trust_level = "trusted"
+
 [features]
 multi_agent = true
 
