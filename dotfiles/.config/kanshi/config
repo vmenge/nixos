@@ -44,9 +44,6 @@ profile MunichTfh3ScreenAlekseiDesk {
 
 
 
-profile BOENE135A1MNY1 {
-  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 0,0 scale 2.00
-}
 
 
 
@@ -68,7 +65,16 @@ profile BOENE135A1MNY1_DellIncDELLU3421WE {
   output "Dell Inc. DELL U3421WE 1BP1753" mode 3440x1440@59.973Hz position 0,0 scale 1.00
 }
 
+
+
+
+
+
+profile BOENE135A1MNY1 {
+  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 0,0 scale 2.00
+}
+
 profile BOENE135A1MNY1_DellIncDELLU2723QE {
-  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 501,1440 scale 2.00
-  output "Dell Inc. DELL U2723QE 2FKG8H3" mode 3840x2160@59.997Hz position 0,0 scale 1.50
+  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 534,1440 scale 2.00
+  output "Dell Inc. DELL U2723QE G6CGH34" mode 3840x2160@59.997Hz position 0,0 scale 1.50
 }
