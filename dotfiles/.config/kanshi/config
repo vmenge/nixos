@@ -9,7 +9,7 @@ profile RaiderGeAlienwareUW {
 
 profile HomeTfhNotebook {
   output "Samsung Display Corp. 0x4193 Unknown"  mode 2880x1800@90Hz     position 0,1001
-  output "Dell Inc. Dell AW3821DW #GTIYMxgwABWz" mode 3840x1600@84.971Hz position 1440,0
+  output "Dell Inc. Dell AW3821DW #GTIYMxgwABWz" mode 3840x1600@59.994Hz position 1440,0 scale 1.00
 }
 
 profile MunichTfhNotebook {
@@ -33,27 +33,9 @@ profile MunichTfh3ScreenAlekseiDesk {
   output "Samsung Display Corp. 0x4193 Unknown"     mode 2880x1800@90Hz     position 1849,2242 scale 2
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 profile TechnicalConceptsLtdBeyondTV {
   output "Technical Concepts Ltd Beyond TV 0x00010000" mode 3840x2160@60Hz position 0,0 scale 2.00
 }
-
-
 
 profile BOENE135A1MNY1_DellIncDELLU3425WE {
   output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 813,1440 scale 2.00
@@ -65,11 +47,6 @@ profile BOENE135A1MNY1_DellIncDELLU3421WE {
   output "Dell Inc. DELL U3421WE 1BP1753" mode 3440x1440@59.973Hz position 0,0 scale 1.00
 }
 
-
-
-
-
-
 profile BOENE135A1MNY1 {
   output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 0,0 scale 2.00
 }
@@ -77,4 +54,10 @@ profile BOENE135A1MNY1 {
 profile BOENE135A1MNY1_DellIncDELLU2723QE {
   output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 534,1440 scale 2.00
   output "Dell Inc. DELL U2723QE G6CGH34" mode 3840x2160@59.997Hz position 0,0 scale 1.50
+}
+
+
+profile BOENE135A1MNY1_DellIncDellAW3821DW {
+  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 0,796 scale 2.00
+  output "Dell Inc. Dell AW3821DW #GTIYMxgwABWz" mode 3840x1600@59.994Hz position 1440,0 scale 1.00
 }

@@ -24,7 +24,7 @@ in
   environment.sessionVariables.STEAM_FORCE_DESKTOPUI_SCALING = "1.0";
 
   programs.gamemode.enable = true;
-  programs.gamescope.capSysNice = true;
+  programs.gamescope.capSysNice = false;
   programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
   programs.steam.gamescopeSession.args = [

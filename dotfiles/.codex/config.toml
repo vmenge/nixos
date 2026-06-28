@@ -1,5 +1,5 @@
 model = "gpt-5.5"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
 personality = "pragmatic"
 [projects."/home/vmenge/dev/tfh/orb-software"]
 trust_level = "untrusted"
@@ -71,6 +71,30 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/vmenge/dev/tfh/orb-config-as-code"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/tfh/self-serve-android"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/dogstatsd-rs"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/datadog-agent"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/tfh/infrastructure"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/corophage"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/effects-rust"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/godot-bevy"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/effing-mad"]
 trust_level = "trusted"
 
 [features]
