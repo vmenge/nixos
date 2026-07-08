@@ -97,6 +97,21 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/effing-mad"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/dev/tfh/orb-monitoring-service"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/tfh/orb-fleet-backend"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/bevy/pong"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/tfh/orb-rustzone"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/crabwire"]
+trust_level = "trusted"
+
 [features]
 multi_agent = true
 

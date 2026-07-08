@@ -146,7 +146,7 @@ return {
         desc = "Inlay Hints",
       },
       { "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", desc = "Rename" },
-      -- { "<leader>m", "<cmd>Mason<CR>", desc = "Mason" },
+      -- { "<leader>M", "<cmd>Mason<CR>", desc = "Mason" },
       { "<leader>m", group = "Markdown" },
       { "<leader>mt", "<cmd>Checkbox toggle<CR>", desc = "Toggle Checkbox" },
       { "<leader>mi", "<cmd>Checkbox Interactive<CR>", desc = "Interactive Checkbox" },

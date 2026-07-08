@@ -129,6 +129,8 @@
     ocamlPackages.dune_3
     ocamlPackages.findlib
     ocamlPackages.melange
+    go
+    gopls
     i2c-tools
     stlink-gui
     zig
@@ -141,6 +143,7 @@
     clippy
     rust-analyzer
     bacon # rust test watcher
+    cargo-nextest
     dioxus-cli # dioxus
     jdk
     claude-code
