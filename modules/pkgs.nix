@@ -56,11 +56,12 @@
   programs.direnv.enable = true;
 
   environment.systemPackages = with pkgs; [
-    # text editors
+    # text editors and stuff
     neovim
     vim
     zed-editor
     vscode
+    tree-sitter
 
     # dev tools, lsps, fmts, runtimes and compilers
     git

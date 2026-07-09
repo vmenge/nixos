@@ -1,14 +1,14 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    build = ":TSUpdate",
     dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
+      { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
     },
     lazy = false,
     priority = 1,
     opts = {
-      highlight = { enable = true, additional_vim_regex_highlighting = { "rust" } },
-      indent = { enable = true },
       ensure_installed = {
         "asm",
         "bash",
@@ -48,7 +48,6 @@ return {
         "json",
         "json5",
         "kotlin",
-        "latex",
         "lua",
         "luadoc",
         "luap",
@@ -71,7 +70,6 @@ return {
         "scss",
         "sql",
         "svelte",
-        "swift",
         "toml",
         "tsx",
         "typescript",
@@ -81,53 +79,20 @@ return {
         "yaml",
         "zig",
       },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<C-space>",
-          node_incremental = "<C-space>",
-          scope_incremental = false,
-          node_decremental = "<bs>",
-        },
-      },
-      -- filetype_to_parsername = {
-      --   fs = "fsharp",
-      --   fsi = "fsharp",
-      --   fsx = "fsharp",
-      --   fsscript = "fsharp"
-      -- },
     },
 
-    config = function()
-      local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-      -- parser_config.fsharp = {
-      --   install_info = {
-      --     url = "https://github.com/ionide/tree-sitter-fsharp",
-      --     branch = "main",
-      --     files = { "src/scanner.c", "src/parser.c" },
-      --     location = "fsharp",
-      --   },
-      --   requires_generate_from_grammar = false,
-      --   filetype = "fsharp",
-      -- }
-      --
-      -- vim.api.nvim_create_autocmd("BufEnter", {
-      --   pattern = { "*.fs", "*.fsi", "*.fsx", "*.fsscript" },
-      --   callback = function()
-      --     require("nvim-treesitter.highlight").attach(0, "fsharp")
-      --   end,
-      -- })
+    config = function(_, opts)
+      local ts = require("nvim-treesitter")
+      ts.setup()
 
-      parser_config.roc = {
-        install_info = {
-          url = "https://github.com/faldor20/tree-sitter-roc",
-          branch = "master",
-          files = { "src/scanner.c", "src/parser.c" },
-          location = ".",
-        },
-        requires_generate_from_grammar = false,
-        filetype = "roc",
-      }
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("vmenge-treesitter", { clear = true }),
+        callback = function(args)
+          if pcall(vim.treesitter.start, args.buf) then
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
     end,
   },
   {
