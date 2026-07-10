@@ -115,6 +115,9 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/systemd"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/dev/EffSharp/pkgs/Examples/src"]
+trust_level = "trusted"
+
 [features]
 multi_agent = true
 

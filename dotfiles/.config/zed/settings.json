@@ -8,23 +8,23 @@
 // command palette
 {
   "terminal": {
-    "font_family": "JetBrainsMono Nerd Font"
+    "font_family": "Berkeley Mono",
   },
   "cli_default_open_behavior": "new_window",
   "project_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "outline_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "collaboration_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "git_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "edit_predictions": {
-    "provider": "zed"
+    "provider": "zed",
   },
   "show_edit_predictions": true,
   "file_types": {
@@ -46,14 +46,14 @@
   },
   "tab_bar": { "show": true },
   "scrollbar": { "show": "auto" },
-  "buffer_font_family": "JetBrainsMono Nerd Font",
-  "ui_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_family": "Berkeley Mono",
+  "ui_font_family": "Berkeley Mono",
   "ui_font_size": 15.0,
   "buffer_font_size": 15.0,
   "theme": {
     "mode": "dark",
     "light": "Sharp Solarized+",
-    "dark": "JetBrains Rider Dark",
+    "dark": "Tokyo Night",
   },
   "icon_theme": {
     "mode": "dark",
@@ -77,6 +77,9 @@
     "rust-analyzer": {
       "initialization_options": {
         "checkOnSave": true,
+        "cargo": {
+          "features": "all",
+        },
       },
     },
     "zls": {
