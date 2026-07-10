@@ -168,10 +168,6 @@
     python313Packages.west
     taplo
     qemu
-    cloud-init
-    cloud-utils
-    libguestfs-with-appliance
-    guestfs-tools
     exercism
     lz4
     android-tools
@@ -189,7 +185,6 @@
     doctl # DigitalOcean cli
 
     # databases and related
-    mongodb-compass
     mongosh
 
     # containerization
