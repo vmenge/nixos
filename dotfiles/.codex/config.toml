@@ -118,6 +118,9 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/EffSharp/pkgs/Examples/src"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/dev/oxe"]
+trust_level = "trusted"
+
 [features]
 multi_agent = true
 
@@ -324,6 +327,7 @@ status_line_use_colors = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
+"gpt-5.6-sol" = 4
 
 [notice]
 fast_default_opt_out = true
