@@ -10,6 +10,7 @@
       consolas-nerd-font = final.callPackage ../derivations/consolas-nerd-font.nix { };
       ioskeley-mono = final.callPackage ../derivations/ioskeley-mono.nix { };
       fff-mcp = final.callPackage ../derivations/fff-mcp.nix { };
+      plannotator = final.callPackage ../derivations/plannotator.nix { };
       # wallrizz hardcodes /usr/bin/bash which doesn't exist on NixOS
       wallrizz = prev.wallrizz.overrideAttrs (old: {
         postPatch = (old.postPatch or "") + ''
@@ -61,6 +62,7 @@
     vim
     zed-editor
     vscode
+    pup
     tree-sitter
 
     # dev tools, lsps, fmts, runtimes and compilers
@@ -150,6 +152,7 @@
     claude-code
     claude-agent-acp
     fff-mcp
+    plannotator
     codex
     codex-acp
     amp-cli

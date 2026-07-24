@@ -3,6 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    pup-cli-nix = {
+      url = "github:DeevsDeevs/pup-cli-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,7 +23,14 @@
   };
 
   outputs =
-    { nixpkgs, home-manager, plasma-manager, voxtype, ... }:
+    {
+      nixpkgs,
+      home-manager,
+      plasma-manager,
+      voxtype,
+      pup-cli-nix,
+      ...
+    }:
     let
       cfg =
         system: hostName:
@@ -29,6 +40,7 @@
             {
               nixpkgs.overlays = [
                 (_: _: { voxtype = voxtype.packages.${system}.default; })
+                pup-cli-nix.overlays.default
               ];
             }
             ./hosts/${hostName}

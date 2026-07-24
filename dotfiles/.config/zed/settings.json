@@ -54,7 +54,7 @@
   "theme": {
     "mode": "dark",
     "light": "Sharp Solarized+",
-    "dark": "VSCode Dark Modern",
+    "dark": "Jellybeans",
   },
   "icon_theme": {
     "mode": "dark",
@@ -76,10 +76,22 @@
       },
     },
     "rust-analyzer": {
+      "binary": {
+        "env": {
+          "RA_LOG": "rust_analyzer=info,project_model=debug,flycheck=debug",
+        },
+      },
       "initialization_options": {
         "checkOnSave": true,
         "cargo": {
-          "features": "all",
+          "allTargets": false,
+          "features": [],
+        },
+        "check": {
+          "allTargets": false,
+        },
+        "cfg": {
+          "setTest": false,
         },
       },
     },
