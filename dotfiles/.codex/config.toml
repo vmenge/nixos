@@ -124,6 +124,9 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/tfh/clanker-engineering"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/brain"]
+trust_level = "trusted"
+
 [features]
 multi_agent = true
 
@@ -356,3 +359,6 @@ enabled = false
 [hooks.state."/home/vmenge/dev/tfh/orb-os/.codex/hooks.json:stop:1:0"]
 trusted_hash = "sha256:59ce9a44cb0c995c0888af27526c0b9958f8809321f92927459553754b506f46"
 enabled = false
+
+[hooks.state."/home/vmenge/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:3bf7bef7376f6b7596dad119f684e86f480221491c4bbddbeaaec932a6fb3ee5"
