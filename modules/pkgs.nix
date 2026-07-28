@@ -10,6 +10,7 @@
       consolas-nerd-font = final.callPackage ../derivations/consolas-nerd-font.nix { };
       ioskeley-mono = final.callPackage ../derivations/ioskeley-mono.nix { };
       fff-mcp = final.callPackage ../derivations/fff-mcp.nix { };
+      handy = final.callPackage ../derivations/handy.nix { };
       plannotator = final.callPackage ../derivations/plannotator.nix { };
       # wallrizz hardcodes /usr/bin/bash which doesn't exist on NixOS
       wallrizz = prev.wallrizz.overrideAttrs (old: {
@@ -276,7 +277,7 @@
     google-chrome
 
     # voice
-    voxtype
+    handy
 
     # images / video / audio
     vlc
