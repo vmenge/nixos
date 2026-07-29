@@ -1,0 +1,6 @@
+interface:
+  display_name: "VM Implementation Execute"
+  short_description: "Execute one approved implementation plan with TDD"
+  default_prompt: "Use $vm-impl-exec to execute this approved implementation plan."
+policy:
+  allow_implicit_invocation: false

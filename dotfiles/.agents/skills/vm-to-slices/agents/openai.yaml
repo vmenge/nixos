@@ -1,0 +1,6 @@
+interface:
+  display_name: "VM to Slices"
+  short_description: "Turn technical artifacts into vertical slices"
+  default_prompt: "Use $vm-to-slices to turn this source into vertical slices."
+policy:
+  allow_implicit_invocation: false
