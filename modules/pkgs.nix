@@ -10,6 +10,8 @@
       consolas-nerd-font = final.callPackage ../derivations/consolas-nerd-font.nix { };
       ioskeley-mono = final.callPackage ../derivations/ioskeley-mono.nix { };
       fff-mcp = final.callPackage ../derivations/fff-mcp.nix { };
+      handy = final.callPackage ../derivations/handy.nix { };
+      plannotator = final.callPackage ../derivations/plannotator.nix { };
       # wallrizz hardcodes /usr/bin/bash which doesn't exist on NixOS
       wallrizz = prev.wallrizz.overrideAttrs (old: {
         postPatch = (old.postPatch or "") + ''
@@ -56,11 +58,13 @@
   programs.direnv.enable = true;
 
   environment.systemPackages = with pkgs; [
-    # text editors
+    # text editors and stuff
     neovim
     vim
     zed-editor
     vscode
+    pup
+    tree-sitter
 
     # dev tools, lsps, fmts, runtimes and compilers
     git
@@ -129,6 +133,8 @@
     ocamlPackages.dune_3
     ocamlPackages.findlib
     ocamlPackages.melange
+    go
+    gopls
     i2c-tools
     stlink-gui
     zig
@@ -141,11 +147,13 @@
     clippy
     rust-analyzer
     bacon # rust test watcher
+    cargo-nextest
     dioxus-cli # dioxus
     jdk
     claude-code
     claude-agent-acp
     fff-mcp
+    plannotator
     codex
     codex-acp
     amp-cli
@@ -164,10 +172,6 @@
     python313Packages.west
     taplo
     qemu
-    cloud-init
-    cloud-utils
-    libguestfs-with-appliance
-    guestfs-tools
     exercism
     lz4
     android-tools
@@ -185,7 +189,6 @@
     doctl # DigitalOcean cli
 
     # databases and related
-    mongodb-compass
     mongosh
 
     # containerization
@@ -274,7 +277,7 @@
     google-chrome
 
     # voice
-    voxtype
+    handy
 
     # images / video / audio
     vlc

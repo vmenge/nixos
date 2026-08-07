@@ -1,0 +1,6 @@
+interface:
+  display_name: "VM Design"
+  short_description: "Align technical designs in review-ready documents"
+  default_prompt: "Use $vm-design to refine this technical design with me."
+policy:
+  allow_implicit_invocation: false

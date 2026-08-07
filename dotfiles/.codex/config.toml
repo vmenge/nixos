@@ -1,4 +1,4 @@
-model = "gpt-5.5"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
 personality = "pragmatic"
 [projects."/home/vmenge/dev/tfh/orb-software"]
@@ -95,6 +95,36 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/vmenge/dev/effing-mad"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/tfh/orb-monitoring-service"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/tfh/orb-fleet-backend"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/bevy/pong"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/tfh/orb-rustzone"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/crabwire"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/systemd"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/EffSharp/pkgs/Examples/src"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/oxe"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/tfh/clanker-engineering"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/brain"]
 trust_level = "trusted"
 
 [features]
@@ -298,9 +328,37 @@ enabled = false
 
 [tui]
 session_picker_view = "dense"
+status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-used", "used-tokens"]
+status_line_use_colors = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
+"gpt-5.6-sol" = 4
 
 [notice]
 fast_default_opt_out = true
+
+[hooks.state]
+
+[hooks.state."/home/vmenge/dev/tfh/orb-os/.codex/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:181db2fc34d0e8db4d9d21f2e69327170e0282ea40d967ccae17d1200bf8896a"
+enabled = false
+
+[hooks.state."/home/vmenge/dev/tfh/orb-os/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:ab104b80f9aede14066a7906dbade0efb4e29fc745c443b71d4f2b5d0c7f70cb"
+enabled = false
+
+[hooks.state."/home/vmenge/dev/tfh/orb-os/.codex/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:2759d15170b986aa7d17c3fff2db61a5533b03dd5fe23f944a32b863af5458da"
+enabled = false
+
+[hooks.state."/home/vmenge/dev/tfh/orb-os/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:b667168b4504bb7b99c5afea6af0dbb0f45898bf61c6dabdee686a00e6dae992"
+enabled = false
+
+[hooks.state."/home/vmenge/dev/tfh/orb-os/.codex/hooks.json:stop:1:0"]
+trusted_hash = "sha256:59ce9a44cb0c995c0888af27526c0b9958f8809321f92927459553754b506f46"
+enabled = false
+
+[hooks.state."/home/vmenge/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:3bf7bef7376f6b7596dad119f684e86f480221491c4bbddbeaaec932a6fb3ee5"

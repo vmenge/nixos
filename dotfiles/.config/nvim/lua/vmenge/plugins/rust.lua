@@ -31,7 +31,7 @@ return {
               runBuildScripts = true,
             },
             check = {
-              command = "clippy",
+              command = "check",
               extraArgs = { "--no-deps" },
             },
             checkOnSave = true,
