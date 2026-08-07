@@ -44,6 +44,24 @@ Each slice must:
 
 Never create horizontal work such as “build the database layer.” When shared groundwork is large or risky, make the first slice a thin walking skeleton that proves one real end-to-end behavior. Do not add a final “integrate everything” slice unless it delivers distinct source behavior.
 
+## Keep slices digestible
+
+Prefer more small, complete slices over fewer comprehensive ones. Each slice must be small enough to understand, review, implement, and verify as one focused change without internal implementation phases.
+
+Default to one trigger-to-observable-result flow and one primary behavior per slice. A slice may cross several architectural boundaries, but only as far as required to deliver that behavior.
+
+Split a slice again when:
+
+- Its title or outcome joins independently useful capabilities with “and.”
+- It contains multiple entrypoints, triggers, flows, or observable outcomes.
+- Its acceptance criteria mix the primary behavior with distinct variants, retry policies, administrative operations, migrations, or observability work.
+- Implementing it would require internal sequencing such as “first,” “then,” and “finally,” or would naturally produce several independently reviewable changes.
+- Its acceptance criteria cannot remain a small set—normally two to five criteria describing one coherent behavior.
+
+Split along observable scenarios, decision branches, triggers, operational risks, or independently valuable outcomes. Start with the narrowest real walking skeleton, then add error cases, variants, retries, migrations, and observability in later slices when they provide separate value.
+
+Keep every resulting slice vertical and independently demonstrable. Never reduce size by extracting horizontal setup, infrastructure, or integration slices.
+
 ## Write `slices.md`
 
 Use this adaptive structure:

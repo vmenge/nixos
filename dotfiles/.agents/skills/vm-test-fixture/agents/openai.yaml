@@ -1,0 +1,4 @@
+interface:
+  display_name: "VM Test Fixtures"
+  short_description: "Design isolated, lifecycle-safe test fixtures"
+  default_prompt: "Use $vm-test-fixture to design a reusable integration-test fixture for this code."

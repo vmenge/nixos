@@ -9,6 +9,8 @@ Execute an approved `.vm/<topic>/*.impl.md` through strict TDD and two review ga
 
 **TDD is mandatory.** Load `test-driven-development` when available; the rules below remain binding without it.
 
+**REQUIRED SUB-SKILL:** Use vm-test-fixture whenever the plan adds or changes reusable test fixtures.
+
 ## Resolve the plan
 
 Use a supplied `.impl.md`; otherwise select the only relevant plan under `.vm/<topic>/` or ask. Read it with the source slice, design, repository instructions, code, and tests. Treat the gitignored plan as read-only. Stop when repository drift invalidates planned modules, public APIs, or test strategy; never silently replan.
@@ -32,7 +34,16 @@ After approval, tests and fixtures are frozen. Any change requires pausing, show
 
 ## Implement autonomously with TDD
 
-For each approved failing behavior, write minimum production code, verify GREEN, then refactor while all approved tests remain green. Continue unsupervised unless blocked by plan drift or a test/fixture change. Preserve the plan's vertical boundary, locality of behavior, documentation, and public API.
+For each approved failing behavior, write minimum production code, verify GREEN, then refactor while all approved tests remain green. Continue unsupervised unless blocked by plan drift or a test/fixture change. Preserve the plan's vertical boundary, locality of behavior, documentation, and public API. Write doc comments in plain, human-readable language. Prefer familiar words and direct explanations. Use specialized domain terms only when readers need them to understand or use the API; do not copy jargon or grandiose wording merely because it appears in source material or sounds impressive.
+
+## Preserve slice-local design
+
+- Keep each business use case as an isolated, one-directional vertical slice. Default each external flow—such as an HTTP request, D-Bus handler, command, or job—to one implementation file. Split it only for a concrete framework constraint or a stable concept used elsewhere.
+- Keep behavior, types, helpers, and tests in the slice or package that owns them. Do not promote code to shared modules without a specific current need and more than one consumer. Prefer small local duplication.
+- Parse external representations into explicit input or domain types. Report syntax, shape, and decoding errors while parsing; keep business rules and validation in the domain decision.
+- Model the domain with explicit records (“AND” types) and choices (“OR” types) so the code mirrors the domain and invalid states are difficult to represent. Avoid inheritance, factories, proxies, primitive flags or strings, and generic containers when a domain type can state the meaning directly.
+- Do not add getters or setters mechanically. Expose data according to the language's conventions; add accessors or controlled mutation only when needed to protect an invariant or necessary abstraction boundary.
+- Do not introduce traits or interfaces solely for testing. Prefer configurable fixtures and tests against real dependencies. Add an abstraction only for a concrete production need, such as multiple real implementations, and explain that need.
 
 ## Resolve branches early
 
@@ -53,30 +64,19 @@ execute(mode)
 
 Branch into a clear value or decision, then continue linearly. Do not scatter the same condition across later effects.
 
-## Separate branching from side effects
+## Keep a functional core inside an imperative shell
 
-Prefer a pure decision followed by interpretation when this has no significant performance downside:
-
-```text
-decision = decide(input, state)
-match decision:
-    Reject(error) -> return error
-    Accept(change) -> persist(change)
-```
-
-Combine branching with effects only to avoid a relevant cost such as an extra query, allocation, or traversal. Explain the concrete cost.
-
-## Keep side effects at callsites
-
-Make I/O visible in orchestration:
+Keep database queries, API calls, clock reads, and other I/O at the edges of the flow. Parse and gather required inputs at the beginning, pass plain values through a pure deterministic decision, then perform writes and publication at the end. Keep the center testable without mocks:
 
 ```text
-change = calculate_change(input)
-repository.save(change)
-publisher.publish(change.event)
+request = parse(input)
+state = repository.load(request.id)
+decision = decide(request, state)
+repository.save(decision.change)
+publisher.publish(decision.event)
 ```
 
-Avoid helpers such as `process(input)` that secretly persist or publish.
+Do not interleave business decisions with hidden I/O. When an external protocol genuinely requires multiple I/O rounds, keep every call visible at the orchestration callsite, place a pure decision between rounds, and explain why the extra round is necessary.
 
 ## Final review gate
 

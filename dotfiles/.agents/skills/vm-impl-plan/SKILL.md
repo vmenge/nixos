@@ -21,19 +21,28 @@ Revise until the user approves. Do not write the plan first.
 
 ## Apply architectural defaults
 
-- Preserve the vertical slice; never plan layers as sequential phases.
-- Enforce **locality of behavior**: keep a slice's behavior, transformations, tests, and support together. Do not move slice-only code into generic `services`, `parsers`, or `utils` buckets.
-- Call persistence, network, clock, and publication adapters directly from orchestration. A documented service call still hides its nested I/O. Prefer pure nested functions returning values or explicit decisions.
-- Share code only for a stable concept or behavior needed by multiple consumers. Prefer small local duplication over premature coupling.
+- Use **vertical slices rather than horizontal layers**. Plan each business use case as an isolated, one-directional pipeline instead of splitting work across generic API, service, and database layers.
+- Default each external flow—such as an HTTP request, D-Bus handler, command, or job—to one implementation file. Split it only for a concrete framework constraint or a stable concept used elsewhere.
+- Enforce **locality of behavior**. Keep behavior, types, helpers, and tests in the slice or package that owns them. Do not move slice-only code into generic `services`, `parsers`, or `utils` buckets.
+- Do not share code without a specific current need and more than one consumer. Name those consumers in the plan. Prefer small local duplication over premature coupling.
+- Use a **functional core inside an imperative shell**. Gather database, API, clock, and other I/O inputs at the beginning; pass plain values through pure deterministic business logic; perform writes and publication at the end. Keep all effects visible at orchestration callsites.
+- Parse external representations into explicit input or domain types. Limit parsing errors to syntax, shape, and decoding; put business rules and validation in the pure domain decision.
+- Use **algebraic domain modeling**: compose explicit records (“AND” types) and choices (“OR” types) so the code mirrors the business language and invalid states are difficult to represent. Avoid inheritance, factories, proxies, primitive flags or strings, and generic containers when a domain type can state the meaning directly.
+- Do not plan getters or setters mechanically. Add accessors or controlled mutation only when needed to protect an invariant or necessary abstraction boundary.
+- Do not introduce traits or interfaces solely for testing. Prefer configurable fixtures and tests against real dependencies. Add an abstraction only for a concrete production need, such as multiple real implementations, and explain that need.
 - Explain deviations required by the language, framework, or existing architecture.
 
 ## Plan documentation and APIs
 
 For every touched hand-written source or test file, propose a native file/module doc comment stating responsibility and boundary. Exempt generated or unsupported files.
 
+Write doc comments in plain, human-readable language. Prefer familiar words and direct explanations. Use specialized domain terms only when readers need them to understand or use the API; do not copy jargon or grandiose wording merely because it appears in source material or sounds impressive.
+
 Show exact bodyless declarations for changed public types and functions. Use native doc comments covering meaning, invariants, lifecycle, inputs, outputs, errors, and side effects. Only reference unchanged APIs.
 
 ## Plan tests and execution
+
+**REQUIRED SUB-SKILL:** Use vm-test-fixture whenever the slice adds or changes reusable test fixtures.
 
 For each concrete test, state its behavior, level, public boundary, setup, action, observable assertions, and covered acceptance criteria.
 
