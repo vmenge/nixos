@@ -121,6 +121,8 @@
     terraform-ls # terraform lsp
     pulumi
     pulumiPackages.pulumi-nodejs
+    lua
+    luarocks
     lua-language-server
     markdown-oxide # markdown lsp
     opam # OCaml package manager

@@ -100,7 +100,7 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd("colorscheme rider")
+      -- vim.cmd("colorscheme rider")
     end,
   },
   {
@@ -157,10 +157,10 @@ return {
         palette_overrides = {},
         overrides = {},
         dim_inactive = false,
-        transparent_mode = false,
+        transparent_mode = true,
       })
 
-      -- vim.cmd.colorscheme("gruvbox")
+      vim.cmd.colorscheme("gruvbox")
     end,
   },
   {
@@ -455,13 +455,6 @@ return {
     priority = 1000,
     config = function()
       -- vim.cmd.colorscheme("moonfly")
-    end
-  },
-  {
-    "nyoom-engineering/oxocarbon.nvim",
-    config = function()
-      -- vim.opt.background = "dark"
-      -- vim.cmd.colorscheme("oxocarbon")
     end
   },
   {

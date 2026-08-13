@@ -16,7 +16,7 @@ gtk-wide-tabs = false
 gtk-tabs-location = top
 gtk-toolbar-style = flat
 gtk-titlebar-style = native
-background-opacity=0.95
+background-opacity=0.8
 background-blur=true
 
 keybind = alt+w=close_surface
