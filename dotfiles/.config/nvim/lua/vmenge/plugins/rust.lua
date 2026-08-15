@@ -32,7 +32,6 @@ return {
             },
             check = {
               command = "check",
-              extraArgs = { "--no-deps" },
             },
             checkOnSave = true,
             procMacro = {
