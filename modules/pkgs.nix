@@ -188,6 +188,7 @@
     awscli2 # AWS cli
     ssm-session-manager-plugin # AWS session manager
     cloudflared # CloudFlare tunnel daemon, toolkit and dns-over-https client
+    cloudflare-warp
     doctl # DigitalOcean cli
 
     # databases and related
