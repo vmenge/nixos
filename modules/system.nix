@@ -29,6 +29,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   networking.networkmanager.enable = true;
+  services.cloudflare-warp.enable = true;
 
   boot.kernelModules = [ "hid-wiimote" ];
 
