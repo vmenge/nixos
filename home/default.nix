@@ -8,7 +8,6 @@ in
     ./apps.nix
     ./services.nix
     ./dconf.nix
-    ./steam.nix
     # ./kde.nix
   ];
 
@@ -90,9 +89,6 @@ in
     ".codex/config.toml".source = sl ".codex/config.toml";
     ".codex/config.toml".force = true;
 
-    # openxr shit
-    # ".config/openxr/1/active_runtime.json".source =
-    #   config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamVR/steamxr_linux64.json";
   };
 
   home.pointerCursor = {
@@ -126,11 +122,9 @@ in
     # vr shit
     LD_LIBRARY_PATH = "${
       pkgs.lib.makeLibraryPath [
-        pkgs.openxr-loader
         pkgs.vulkan-loader
       ]
     }:$LD_LIBRARY_PATH";
-    XR_RUNTIME_JSON = "${config.home.homeDirectory}/.config/openxr/1/active_runtime.json";
     PROTON_ENABLE_VR = 1;
   };
 
