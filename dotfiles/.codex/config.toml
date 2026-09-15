@@ -127,6 +127,9 @@ trust_level = "trusted"
 [projects."/home/vmenge/brain"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/dev/azerothcore-wotlk"]
+trust_level = "trusted"
+
 [features]
 multi_agent = true
 

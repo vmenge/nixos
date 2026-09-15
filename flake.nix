@@ -20,6 +20,10 @@
       url = "github:peteonrails/voxtype";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS/development";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -29,6 +33,7 @@
       plasma-manager,
       voxtype,
       pup-cli-nix,
+      jovian,
       ...
     }:
     let
@@ -37,6 +42,7 @@
         nixpkgs.lib.nixosSystem {
           system = system;
           modules = [
+            jovian.nixosModules.default
             {
               nixpkgs.overlays = [
                 (_: _: { voxtype = voxtype.packages.${system}.default; })

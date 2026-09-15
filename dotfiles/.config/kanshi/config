@@ -1,5 +1,8 @@
 profile RaiderGe {
   output "Samsung Display Corp. 0x4179 Unknown" mode 2560x1440@240Hz position 0,0 scale 1.5
+  exec hyprctl keyword monitor "desc:Samsung Display Corp. 0x4179,2560x1440@240,0x0,1.5,bitdepth,10,cm,auto"
+  # Fallback if the panel cannot run 10-bit color at 240 Hz:
+  # exec hyprctl keyword monitor "desc:Samsung Display Corp. 0x4179,2560x1440@60,0x0,1.5,bitdepth,10,cm,auto"
 }
 
 profile RaiderGeAlienwareUW {
@@ -61,5 +64,6 @@ profile BOENE135A1MNY1_DellIncDellAW3821DW {
 
 profile LGElectronicsLGTVSSCR2_SamsungDisplayCorp0x4179 {
   output "Samsung Display Corp. 0x4179 Unknown" disable mode 2560x1440@60Hz position 3840,0 scale 1.60
-  output "LG Electronics LG TV SSCR2 0x01010101" enable mode 3840x2160@59.973Hz position 0,0 scale 1.00
+  output "LG Electronics LG TV SSCR2 0x01010101" enable mode 3840x2160@60Hz position 0,0 scale 1.00
+  exec hyprctl keyword monitor "desc:LG Electronics LG TV SSCR2 0x01010101,3840x2160@60,0x0,1,bitdepth,10,cm,hdr"
 }
