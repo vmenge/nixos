@@ -130,6 +130,12 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/azerothcore-wotlk"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/dev/tfh"]
+trust_level = "trusted"
+
+[projects."/home/vmenge/dev/roc-rust"]
+trust_level = "trusted"
+
 [features]
 multi_agent = true
 
@@ -140,14 +146,24 @@ max_depth = 2
 [mcp_servers.fff]
 command = "fff-mcp"
 
-[mcp_servers.fff.tools.grep]
+[mcp_servers.fff.tools.find_files]
 approval_mode = "approve"
 
-[mcp_servers.fff.tools.find_files]
+[mcp_servers.fff.tools.grep]
 approval_mode = "approve"
 
 [mcp_servers.fff.tools.multi_grep]
 approval_mode = "approve"
+
+[mcp_servers.linear]
+url = "https://mcp.linear.app/mcp"
+
+[mcp_servers.notion]
+url = "https://mcp.notion.com/mcp"
+
+[mcp_servers.github]
+url = "https://api.githubcopilot.com/mcp/"
+bearer_token_env_var = "GITHUB_PAT"
 
 [[skills.config]]
 path = "/home/vmenge/.codex/skills/gsd-add-phase/SKILL.md"
@@ -337,6 +353,7 @@ status_line_use_colors = true
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
+gpt-6-astra = 2
 
 [notice]
 fast_default_opt_out = true
@@ -365,3 +382,22 @@ enabled = false
 
 [hooks.state."/home/vmenge/.codex/hooks.json:stop:0:0"]
 trusted_hash = "sha256:3bf7bef7376f6b7596dad119f684e86f480221491c4bbddbeaaec932a6fb3ee5"
+
+[hooks.state."ponytail@ponytail:hooks/claude-codex-hooks.json:session_start:0:0"]
+trusted_hash = "sha256:5f81d38f47448a1581c08ec877e044d9e04dd6f814dce3f2671f7a8edadd719b"
+enabled = true
+
+[hooks.state."ponytail@ponytail:hooks/claude-codex-hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:6a6f42bc3b58d6262db38bfd74d7f340fcca2b09cdb134aad365063f0bfefca4"
+
+[hooks.state."ponytail@ponytail:hooks/claude-codex-hooks.json:subagent_start:0:0"]
+trusted_hash = "sha256:1423b56c1322f96c8f74c51c1e7ae9a047b904c1fa43ee9165d462fd7a6e70ef"
+
+[marketplaces.ponytail]
+last_updated = "2026-09-08T07:57:26Z"
+last_revision = "356918eba965ee1eac64bd3a7f0dd02108350de5"
+source_type = "git"
+source = "https://github.com/DietrichGebert/ponytail.git"
+
+[plugins."ponytail@ponytail"]
+enabled = true

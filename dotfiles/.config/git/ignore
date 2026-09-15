@@ -1,6 +1,8 @@
 **/.claude/settings.local.json
 **/.workstreams
+**/.worktrees
 **/docs/plans
 .codex
 .kiro
 **/.vm
+

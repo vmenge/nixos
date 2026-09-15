@@ -79,36 +79,28 @@ return {
       -- vim.cmd.colorscheme("solarized-osaka")
     end,
   },
-  {
-    dir = "~/dev/belafonte.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- vim.cmd("colorscheme belafonte")
-    end,
-  },
-  {
-    dir = "~/dev/calamity.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- vim.cmd("colorscheme calamity")
-    end,
-  },
+  -- {
+  --   dir = "~/dev/belafonte.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- vim.cmd("colorscheme belafonte")
+  --   end,
+  -- },
+  -- {
+  --   dir = "~/dev/calamity.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- vim.cmd("colorscheme calamity")
+  --   end,
+  -- },
   {
     "vmenge/rider.nvim",
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd("colorscheme rider")
-    end,
-  },
-  {
-    dir = "~/dev/materialdesigncolors.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- vim.cmd("colorscheme materialdesigncolors")
+      -- vim.cmd("colorscheme rider")
     end,
   },
   {
@@ -157,10 +149,10 @@ return {
         palette_overrides = {},
         overrides = {},
         dim_inactive = false,
-        transparent_mode = false,
+        transparent_mode = true,
       })
 
-      -- vim.cmd.colorscheme("gruvbox")
+      vim.cmd.colorscheme("gruvbox")
     end,
   },
   {
@@ -455,13 +447,6 @@ return {
     priority = 1000,
     config = function()
       -- vim.cmd.colorscheme("moonfly")
-    end
-  },
-  {
-    "nyoom-engineering/oxocarbon.nvim",
-    config = function()
-      -- vim.opt.background = "dark"
-      -- vim.cmd.colorscheme("oxocarbon")
     end
   },
   {

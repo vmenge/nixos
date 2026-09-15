@@ -54,7 +54,7 @@
   "theme": {
     "mode": "dark",
     "light": "Sharp Solarized+",
-    "dark": "Jellybeans",
+    "dark": "Everforest Dark Medium (blur)",
   },
   "icon_theme": {
     "mode": "dark",
@@ -103,24 +103,12 @@
         "highlight_global_var_declarations": true,
       },
     },
-    "roc_language_server": {
-      "binary": {
-        "path": "/run/wrappers/bin/roc",
-        "arguments": ["experimental-lsp"],
-      },
+    "roc": {
+      "command": "roc",
+      "arguments": ["experimental-lsp"],
     },
   },
   "languages": {
-    "Roc": {
-      "language_servers": ["roc_language_server"],
-    },
-    "zig": {
-      "formatter": {
-        "external": {
-          "command": "zig fmt",
-        },
-      },
-    },
     "Rust": {
       "formatter": {
         "external": {

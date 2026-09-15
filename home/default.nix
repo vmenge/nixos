@@ -66,6 +66,8 @@ in
     ".zshrc".source = sl ".zshrc";
     ".aws/config".source = sl ".aws/config";
 
+    ".config/btop/btop.conf".source = sl ".config/btop/btop.conf";
+
     ".config/sunshine/sunshine.conf".source = sl ".config/sunshine/sunshine.conf";
     ".config/sunshine/apps.json".source = sl ".config/sunshine/apps.json";
 
