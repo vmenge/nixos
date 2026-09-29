@@ -48,10 +48,6 @@ profile BOENE135A1MNY1_DellIncDELLU3421WE {
 }
 
 
-profile BOENE135A1MNY1_DellIncDELLU2723QE {
-  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 534,1440 scale 2.00
-  output "Dell Inc. DELL U2723QE G6CGH34" mode 3840x2160@59.997Hz position 0,0 scale 1.50
-}
 
 
 profile BOENE135A1MNY1_DellIncDellAW3821DW {
@@ -62,4 +58,13 @@ profile BOENE135A1MNY1_DellIncDellAW3821DW {
 profile LGElectronicsLGTVSSCR2_SamsungDisplayCorp0x4179 {
   output "Samsung Display Corp. 0x4179 Unknown" disable mode 2560x1440@60Hz position 3840,0 scale 1.60
   output "LG Electronics LG TV SSCR2 0x01010101" enable mode 3840x2160@59.973Hz position 0,0 scale 1.00
+}
+
+profile BOENE135A1MNY1_DellIncDELLU2723QE {
+  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 609,1440 scale 2
+  output "Dell Inc. DELL U2723QE 2FKG8H3" mode 3840x2160@59.997Hz position 0,0 scale 1.5
+}
+
+profile BOENE135A1MNY1 {
+  output "BOE NE135A1M-NY1 Unknown" mode 2880x1920@120Hz position 0,0 scale 2
 }
