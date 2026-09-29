@@ -79,36 +79,28 @@ return {
       -- vim.cmd.colorscheme("solarized-osaka")
     end,
   },
-  {
-    dir = "~/dev/belafonte.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- vim.cmd("colorscheme belafonte")
-    end,
-  },
-  {
-    dir = "~/dev/calamity.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- vim.cmd("colorscheme calamity")
-    end,
-  },
+  -- {
+  --   dir = "~/dev/belafonte.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- vim.cmd("colorscheme belafonte")
+  --   end,
+  -- },
+  -- {
+  --   dir = "~/dev/calamity.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- vim.cmd("colorscheme calamity")
+  --   end,
+  -- },
   {
     "vmenge/rider.nvim",
     lazy = false,
     priority = 1000,
     config = function()
       -- vim.cmd("colorscheme rider")
-    end,
-  },
-  {
-    dir = "~/dev/materialdesigncolors.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- vim.cmd("colorscheme materialdesigncolors")
     end,
   },
   {
