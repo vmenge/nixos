@@ -255,7 +255,6 @@
     lsfg-vk
     lsfg-vk-ui
     xwiimote
-    sidequest
     vulkan-loader
 
     # messaging
@@ -297,7 +296,6 @@
     gpu-screen-recorder-gtk
     yt-dlp
     gallery-dl
-    audacity
 
     # filesystems
     ntfs3g
