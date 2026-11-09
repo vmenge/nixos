@@ -139,6 +139,9 @@ trust_level = "trusted"
 [projects."/home/vmenge/dev/tfh/wld-android"]
 trust_level = "trusted"
 
+[projects."/home/vmenge/dev/DOPPLERGEIST"]
+trust_level = "trusted"
+
 [features]
 multi_agent = true
 
@@ -358,6 +361,7 @@ screen_reader_detection_done = true
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
 gpt-6-astra = 4
+"gpt-6.1-sol" = 4
 
 [notice]
 fast_default_opt_out = true

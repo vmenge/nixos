@@ -88,10 +88,12 @@ in
 
     ".codex/config.toml".source = sl ".codex/config.toml";
     ".codex/config.toml".force = true;
+    ".codex/AGENTS.md".source = sl ".agents/AGENTS.md";
 
   };
 
   home.pointerCursor = {
+    enable = true;
     name = "Adwaita";
     size = 24;
     package = pkgs.adwaita-icon-theme;

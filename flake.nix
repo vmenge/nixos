@@ -3,6 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    herdr-nixpkgs.url = "github:nixos/nixpkgs/f4a03c008967841f2a0b3cb7c436fc6fc31671f6";
+
     pup-cli-nix = {
       url = "github:DeevsDeevs/pup-cli-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,6 +32,7 @@
   outputs =
     {
       nixpkgs,
+      herdr-nixpkgs,
       home-manager,
       plasma-manager,
       voxtype,
@@ -46,6 +50,17 @@
             {
               nixpkgs.overlays = [
                 (_: _: { voxtype = voxtype.packages.${system}.default; })
+
+                (_: _: {
+                  herdr-desktop =
+                    let
+                      herdrPkgs = herdr-nixpkgs.legacyPackages.${system};
+                    in
+                    herdrPkgs.herdr-desktop.overrideAttrs (old: {
+                      buildInputs = (old.buildInputs or [ ]) ++ [ herdrPkgs.zstd ];
+                    });
+                })
+
                 pup-cli-nix.overlays.default
               ];
             }

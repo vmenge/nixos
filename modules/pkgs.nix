@@ -183,6 +183,9 @@
     mermaid-cli
     worktrunk
     nono
+    herdr-desktop
+    pi-coding-agent
+    act
 
     # dev services
     awscli2 # AWS cli
@@ -207,7 +210,6 @@
     # desktop functionality
     libnotify
     i3blocks # i3 bar scheduler
-    gtk2 # UI toolkit
     gtk3 # UI toolkit
     gtk4 # UI toolkit
     webkitgtk_4_1
@@ -273,7 +275,6 @@
     zlib
 
     # browsers
-    brave
     firefox
     google-chrome
 
@@ -325,7 +326,7 @@
     edid-decode
     pciutils
     socat
-    presenterm
+    # presenterm (broken for now)
     smartmontools
     ddrescue
     television

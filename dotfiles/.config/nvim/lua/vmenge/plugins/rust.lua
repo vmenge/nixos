@@ -27,6 +27,7 @@ return {
               experimental = true,
             },
             cargo = {
+              features = "all",
               loadOutDirsFromCheck = true,
               runBuildScripts = true,
             },
