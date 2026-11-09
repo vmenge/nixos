@@ -1,0 +1,21 @@
+{
+  "lastChangelogVersion": "1.3.0",
+  "packages": [
+    "git:github.com/pi-packages/junghan0611-pi-shell-acp"
+  ],
+  "compaction": {
+    "enabled": false
+  },
+  "piShellAcpProvider": {
+    "appendSystemPrompt": false,
+    "settingSources": [],
+    "strictMcpConfig": true,
+    "showToolNotifications": true,
+    "mcpServers": {
+      "pi-tools-bridge": {
+        "command": "/home/vmenge/.pi/agent/git/github.com/pi-packages/junghan0611-pi-shell-acp/mcp/pi-tools-bridge/start.sh",
+        "args": []
+      }
+    }
+  }
+}

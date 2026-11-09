@@ -90,6 +90,8 @@ in
     ".codex/config.toml".force = true;
     ".codex/AGENTS.md".source = sl ".agents/AGENTS.md";
 
+    ".pi/agent/settings.json".source = sl ".pi/agent/settings.json";
+
   };
 
   home.pointerCursor = {
