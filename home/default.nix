@@ -107,6 +107,8 @@ in
   ];
 
   home.sessionVariables = {
+    CODEX_ACP_COMMAND = "codex-acp";
+
     EDITOR = "nvim";
     VISUAL = "nvim";
     TERMINAL = "ghostty";
