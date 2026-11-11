@@ -19,6 +19,8 @@ in
     ".config/nvim".source = sl ".config/nvim";
     ".config/nvim".recursive = true;
 
+    ".config/navi".source = sl ".config/navi";
+
     ".config/ghostty".source = sl ".config/ghostty";
     ".config/ghostty".recursive = true;
 

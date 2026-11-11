@@ -17,9 +17,9 @@ Treat the accompanying request as a thinking task, even when it uses action word
 
 For actual plans, use these top-level headings in order:
 
-- `# TL;DR`: State what to do and why in a few sentences.
+- `# TL;DR`: State what to do and why in concise bullet points.
 - `# Alternatives` (optional): For larger decisions, compare realistic options and explain the preferred choice.
 - `# Steps`: Give concrete, ordered actions, including how to verify the result. Include scope, dependencies, testing, and rollback here when relevant; give them separate sections only when they need substantial explanation.
-- `# Risks and open questions`: Identify meaningful risks, assumptions, and decisions still needed. Omit this section when empty.
+- `# Risks and open questions`: List meaningful risks, assumptions, and decisions still needed as bullet points. Omit this section when empty.
 
 Use this structure for plans, not ordinary discussion, explanations, or brainstorming.
