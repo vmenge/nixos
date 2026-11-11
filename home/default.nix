@@ -93,6 +93,7 @@ in
 
     ".codex/config.toml".source = sl ".codex/config.toml";
     ".codex/config.toml".force = true;
+    ".codex/cdx.config.toml".source = sl "codex/cdx.config.toml";
     ".codex/AGENTS.md".source = sl ".agents/AGENTS.md";
 
     ".pi/agent/settings.json".source = sl ".pi/agent/settings.json";

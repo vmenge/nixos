@@ -1,0 +1,34 @@
+approval_policy = "never"
+default_permissions = "cdx"
+
+[features]
+network_proxy = true
+
+[permissions.cdx]
+extends = ":workspace"
+
+[permissions.cdx.filesystem]
+"~/.cargo/registry" = "write"
+"~/.cargo/git" = "write"
+"~/.cargo/.package-cache" = "write"
+"~/.cargo/.package-cache-mutate" = "write"
+"~/.cargo/.global-cache" = "write"
+"~/.cargo/.global-cache-journal" = "write"
+"~/.cargo/.global-cache-wal" = "write"
+"~/.cargo/.global-cache-shm" = "write"
+"~/.npm" = "write"
+"~/.nuget/packages" = "write"
+"~/.cache/NuGet" = "write"
+"~/.cache/nix" = "write"
+
+[permissions.cdx.filesystem.":workspace_roots"]
+".git" = "write"
+
+[permissions.cdx.network]
+enabled = true
+
+[permissions.cdx.network.domains]
+"*" = "allow"
+"localhost" = "allow"
+"127.0.0.1" = "allow"
+"::1" = "allow"
