@@ -186,6 +186,7 @@
     herdr-desktop
     pi-coding-agent
     act
+    navi
 
     # dev services
     awscli2 # AWS cli
