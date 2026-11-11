@@ -1,7 +1,9 @@
 {
   "zoom": 1.0,
+  "font_size": 16,
   "sounds": {
     "enabled": true
   },
+  "font_ligatures": true,
   "minimum_contrast": 1.0
 }
