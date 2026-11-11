@@ -124,8 +124,6 @@ hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.move({ into_group = "up" }))
 hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.move({ into_group = "right" }))
 hl.bind(mainMod .. " + SHIFT + G", hl.dsp.window.move({ out_of_group = true }))
 
-hl.bind("ALT + CTRL + J", hl.dsp.group.next())
-hl.bind("ALT + CTRL + K", hl.dsp.group.prev())
 hl.bind("ALT + Tab", hl.dsp.group.next())
 
 hl.bind(mainMod .. " + CTRL + SHIFT + H", hl.dsp.workspace.move({ monitor = "l" }))
