@@ -62,6 +62,12 @@ if [ -n "${commands[fzf-share]}" ]; then
   source "$(fzf-share)/completion.zsh"
 fi
 
+##########################################
+# navi                                   #
+##########################################
+if [ -n "${commands[navi]}" ]; then
+  eval "$(navi widget zsh)"
+fi
 
 ##########################################
 # wii remote                             #
