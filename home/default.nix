@@ -24,6 +24,9 @@ in
     ".config/ghostty".source = sl ".config/ghostty";
     ".config/ghostty".recursive = true;
 
+    ".config/herdr-app/keys.json".source = sl ".config/herdr-app/keys.json";
+    ".config/herdr-app/settings.json".source = sl ".config/herdr-app/settings.json";
+
     ".config/sway".source = sl ".config/sway";
     ".config/sway".recursive = true;
 
