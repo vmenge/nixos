@@ -23,7 +23,11 @@ Use Markdown headers (`##`, with `###` inside per-commit sections) to distinguis
 
 For one commit, before confirmation, use these sections in order:
 
-- `## Changes`: Brief bullets summarizing everything included, including changes made before this conversation.
+- `## Changes`: A fenced `text` block listing only the files included in this proposed commit, one repository-relative path per line, without prose descriptions.
+  - Prefix each path with `A` (added), `M` (modified), or `D` (deleted), followed by two spaces.
+  - Show renames as `R  old/path → new/path`.
+  - Describe the proposed commit's changes relative to its predecessor, not the current staging status. Included untracked files appear as `A`.
+  - Append ` (partial)` when only part of a file's pending changes belongs to this commit.
 - `## Commit message`: The exact proposed message in a fenced code block.
 - `## Confirmation`: Ask, "Commit these changes with this message?"
 
